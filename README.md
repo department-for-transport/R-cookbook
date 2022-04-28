@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/departmentfortransport/R-cookbook.svg?branch=master)](https://travis-ci.org/departmentfortransport/R-cookbook)
 
 # R-cookbook
-https://departmentfortransport.github.io/R-cookbook/
+https://department-for-transport.github.io/R-cookbook/index.html
 
 ## To contribute
 
