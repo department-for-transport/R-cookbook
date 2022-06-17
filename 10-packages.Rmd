@@ -1,0 +1,33 @@
+# R Packages {#packages}
+
+This chapter discusses best practice for using packages in your R code, and gives recommended packages for a range of applications.
+
+## What are packages?
+
+While base R can be used to achieve some impressive results, the vast majority of coding in R is done using one or more *packages*. Packages (often also called libraries) are shareable units of code which are written, published and maintained by other R coders. The scope of each individual package varies massively; some perform a single function, whereas others are large and underpin many core aspects of everyday R usage. The huge variety of packages is one of the reasons that R is so successful: it allows you to benefit from the work of others by downloading their packages.
+
+The most common way to install R packages is using the Comprehensive R Archive Network, or CRAN, which you do via an `install.packages()` call e.g.
+
+```{r, eval=FALSE}
+install.packages("data.table")
+install.packages("dplyr")
+```
+
+
+## Best practice in using packages
+
+### Calling packages
+
+### Core package usage
+
+### Using Github packages
+
+### When to call packages
+
+### Specifying packages when using functions
+
+
+## Recommended packages
+
+## Package management
+
