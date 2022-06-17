@@ -16,18 +16,84 @@ install.packages("dplyr")
 
 ## Best practice in using packages
 
+While it's very easy to get started with packages, there are a few best practice tips which will make it easier to manage how you use packages in a consistent, replicable and transparent way.
+
 ### Calling packages
+
+You can tell your code when you want to make use of the contents of a package by making a `library()` call in your code. This needs to be done before you run any code which references that package e.g.
+
+```{r, eval=FALSE}
+
+## This code will produce an error
+toTitleCase("hello")
+
+library(tools)
+
+## This code will run fine
+library(tools)
+
+toTitleCase("hello")
+
+```
+
+Your code should always call all libraries it uses at the very beginning of the code, even if the package won't be used until much later. This allows users to know what packages they need in any piece of code. 
+
+Your code also shouldn't include any `install.packages()` calls. Forcing code users to install packages will make significant changes to their coding environment, and may even break other code for them. If you need to ensure they have the right packages installed, you should use package version control such as renv.
+
+To ensure you've called all necessary packages in your code, it is helpful run your code in a fresh R instance (CTRL+SHIFT+F10 to refresh your environment) and rerun your code, to check it isn't dependent on any libraries pre-loaded in your environment.
 
 ### Core package usage
 
+The large number of R packages available means that it's common for there to be multiple packages which perform essentially the same functions. Use of multiple similar packages in this way makes your code difficult to use for beginners, and is more likely to cause bugs and other errors.
+
+To minimise this, your code should start from a basis of a core group of common packages, and only add additional or different packages where they fulfill functions which can't be met by the core packages. This chapter includes a number of suggestions of core packages which are well-supported and easy to use, and that you should to aim to use where possible.
+
 ### Using Github packages
 
-### When to call packages
+While there are a large number of packages available to download on CRAN, there are many more that people have released on other platforms, particularly Github. This is usually because they don't want to go through the stringent review process which CRAN requires, or their package is still under development.
+
+Packages can be easily downloaded and used from Github using the `remotes::install_github()` function, and this allows you to make use of a wider code base in your work. However, Github packages should be used with caution:
+
+* They have not been peer reviewed like CRAN packages, so are more likely to contain problems, errors or even malicious code.
+* Bugs may not be regularly (or ever) corrected.
+* There is no guarantee the package will be maintained.
+
+You should **always** use a CRAN package in preference to a Github alternative where one is available. You should also be cautious of downloading and using Github packages where the author is not known to you, and you should ensure you have a good understanding of the code in the package and what it does before installing or using it.
+
+### Using packages instead of stand-alone functions
+
+Packages offer a number of benefits over just including stand-alone functions in your code. They increase the consistency of code usage, preventing you from using different iterations of the same function in different situations. They are also regularly tested and checked, and you can be confident they are performing their function as intended.
+
+You should always aim to use a function from a package rather than writing your own where possible.
 
 ### Specifying packages when using functions
 
 
 ## Recommended packages
 
+### Tidyverse
+
+Recommended to use where possible, list packages it includes
+Don't call the whole bloody thing, just call the packages you're using
+
+### Non-tidyverse packages 
+
+openxlsx
+data.table
+
+### Specialist packages
+
+Choose one with decent community support
+Maintained
+On CRAN
+
+
+### DfT-specific packages
+
+dftplotr
+slidepackr
+
 ## Package management
+
+Renv goes here
 
