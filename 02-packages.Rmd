@@ -149,8 +149,10 @@ External to the tidyverse there are also a small number of core packages you wil
 
 ### DfT-specific packages
 
-dftplotr
-slidepackr
+In addition, there are a growing number of DfT-specific packages which have been released on our organisational Github. These have been designed to address-DfT specific gaps in the packages available, and are safe to download and use on network laptops.
+
+* **dftplotr**: ggplot2 add-on which allows you to create charts with DfT themeing and colour palettes
+* **slidepackr**: create HTML slidepacks using a DfT template
 
 ### Specialist packages
 
@@ -162,5 +164,28 @@ As previously mentioned, this isn't intended to be an exhaustive list of package
 
 ## Package management
 
-Renv goes here
+As previously mentioned, it is bad practice to include `install.package()` calls in your code. However, it is difficult to ensure that code will be functional for multiple users without controlling the packages and package versions which users have.
 
+The solution to this is use of a **package manager**. These add-ons to R keep a record of the exact version of each package used in the code on a project-basis, and that collection of packages can be easily installed by any new user to the project. The best available package manager for R is **renv**, a marked improvement from packrat.
+
+To get started with renv on any project, you just need to run:
+
+```{r, eval = FALSE}
+renv::init()
+```
+
+This will create all of the files you need to get started with renv, and will also make note of any existing dependencies your project has. Once your renv project is initialised, you can use libraries in it as normal, installing and using them as needed.
+
+To make a record of the package versions you have used, you run:
+
+```{r, eval = FALSE}
+renv::snapshot()
+```
+
+And to retrieve this list of packages and install them in a new instance of the project, use:
+
+```{r, eval = FALSE}
+renv::restore()
+```
+
+Further details on using renv can be found in the [very comprehensive documentation](https://rstudio.github.io/renv/articles/renv.html)
