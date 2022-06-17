@@ -64,34 +64,101 @@ You should **always** use a CRAN package in preference to a Github alternative w
 
 Packages offer a number of benefits over just including stand-alone functions in your code. They increase the consistency of code usage, preventing you from using different iterations of the same function in different situations. They are also regularly tested and checked, and you can be confident they are performing their function as intended.
 
-You should always aim to use a function from a package rather than writing your own where possible.
+You should generally always aim to use a function from a common package rather than writing your own where possible.
+
+### Heavy dependency packages
+
+Sometimes when calling libraries, it is easy to accidentally create a lot of **heavy dependencies** for your code. These are packages which in turn are dependent on a large number of other packages, requiring you to install many packages before running the code and increasing the points of failure.
+
+When introducing new packages into your code, it is always worth checking if the function you are calling can be sourced in a more lightweight way, e.g.
+
+```{r, eval = FALSE}
+
+##Tidyverse is an example of a heavy dependency which is not really required for simply using the pipe function
+
+library(tidyverse)
+
+mtcars %>%
+  head()
+
+##A much better alternative if other code from the tidyverse is not required, is to call the package that the pipe originates from instead (magrittr), which has few dependencies
+
+library(magrittr)
+
+mtcars %>%
+  head()
+
+```
+
 
 ### Specifying packages when using functions
 
+As well as calling libraries at the start of your code, you can also specify what package a function comes from every time you use it using "double colon" formatting:
+
+```{r, eval=FALSE}
+
+##Calling a function without referencing the package
+str_trim(" test ")
+
+##Calling a function including the package using "double colon" notation.
+stringr::str_trim(" test ")
+
+```
+
+While this format is slightly more time-consuming to write, it has a number of advantages:
+
+* Easy to understand which package each function comes from, particularly useful for unusual functions
+* Greater specificity reduces the risk of function conflicts across packages
+* Individual lines of code will run without needing to make library calls
+* Easy setup of package dependencies by packages such as renv
+* Allows code to be converted to a package easily
 
 ## Recommended packages
 
+Due to the diversity of packages available for R, and the range of tasks people successfully complete with them, it is impossible to provide a definitive list of all the packages people should be using. Rather, this section aims to capture a short list of packages which perform functions common to most analytical projects, such as data reading, cleaning and visualisation. You should expect to add more specialist packages to your projects in most cases, but shouldn't aim to substitute the below packages for others without strong rationale.
+
 ### Tidyverse
 
-Recommended to use where possible, list packages it includes
-Don't call the whole bloody thing, just call the packages you're using
+The tidyverse is the most ubiquitous set of packages used in R; to the point that most people will use tidyverse calls more frequently than they use base R. This set of packages is designed to work with tidy data, and perform a wide range of functions around data cleaning and use.
+
+These packages are widely used and supported across DfT, and best practice is to use these packages in preference to either alternatives or base R.
+
+While it is possible to call all of the packages within the tidyverse using `library(tidyverse)`, this is rarely recommended as it is a heavy dependency. Instead, call the individual packages from within the tidyverse that you will use. This includes:
+
+* **ggplot2**: data visualisation in charts and simple maps
+* **dplyr**: data manipulation and processing
+* **tidyr**: data tidying and organisation to produce tidy datasets
+* **purrr**: tools for working with functions and vectors
+* **tibble**: enhanced version of data frames
+
+* **stringr**: manipulation of strings
+* **lubridate**: manipulation of dates
+
+* **DBI** and **odbc**: connecting to SQL databases
+* **httr, rvest, jsonlite** and **xml2**: tools for extracting data from the web.
+
 
 ### Non-tidyverse packages 
 
-openxlsx
-data.table
+External to the tidyverse there are also a small number of core packages you will likely want to use when appropriate.
 
-### Specialist packages
-
-Choose one with decent community support
-Maintained
-On CRAN
-
+* **openxlsx**: reading and writing Excel files. Although readxl is a tidyverse alternative, openxlsx offers significantly enhanced functionality for changing the format and appearance of Excel documents, and is therefore a preferred alternative within DfT.  
+* **data.table**: fast reading and processing of very large datasets. The style of this package can be hard to pick up, so the tidyverse **dtplyr** may be preferred as it retains the dplyr structure.
+* **shiny**: create HTML dashboards and apps within R
+* **Rmarkdown**: create dynamic reports 
 
 ### DfT-specific packages
 
 dftplotr
 slidepackr
+
+### Specialist packages
+
+As previously mentioned, this isn't intended to be an exhaustive list of packages, and you should expect to supplement it with specialist packages which are required for your work. If you have the choice of multiple packages to complete a goal, you should always aim to select one which meets these criteria where possible:
+
+* Good documentation and community support for use
+* Still maintained
+* Available as a CRAN package
 
 ## Package management
 
