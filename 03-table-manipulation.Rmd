@@ -3,7 +3,6 @@
 ```{r include=FALSE}
 library(dplyr)
 library(readr)
-library(reshape2)
 library(tidyr)
 library(janitor)
 
@@ -54,13 +53,17 @@ caption = "Number of road accidents by accident severity and weekday")
 
 **{tidyr} package**
 
-Using the {tidyr} package, gather and spread functions can be used  to pivot the table views:
+The {tidyr} package is a tidyverse package for manipulating data into a tidy format, and should be the first choice for gathering and pivoting functions. Use of the tidyr package is made slightly more complicated by the fact that there are both legacy (prior to v1.2) and more recent (v1.2 onwards) pivoting verbs available:
+
+**gather and spread**
+
+The functions gather and spread were the tidyr functions used prior to version 1.2 of the package. These verbs are still supported in more recent versions of the package so old code will still work, but you should aim not to use these in new code.
 
 - **gather** makes wide data longer i.e. variables running along the top can be "gathered" into rows running down.
 
 - **spread** makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.
 
-**Note: Hadley Wickham is bringing out new versions of these packages called pivot_longer and pivot_wider which are not yet available on DfT laptops.**
+
 
 ```{r}
 # Pivot table using tidyr package
@@ -83,7 +86,7 @@ caption = "Number of road accidents by accident severity and weekday, tidyr::spr
 The opposite can also be done using the gather function: 
 
 ```{r}
-# Pivot table using tidyr package
+# Pivot table using older tidyr package
 library(tidyr)
 road_accidents_gather <- road_accidents_weekdays %>%
   tidyr::gather(`1`, `2`, `3`, `4`, `5`, `6`, `7`, key = "weekday", value = "n")
@@ -101,9 +104,56 @@ caption = "Number of road accidents by accident severity and weekday, tidyr::gat
 
 ```
 
+**pivot_longer and pivot_wider**
+
+The pivot_longer and pivot_wider functions are the updated version of gather and spread, available in newer versions of the tidyr package. These are designed to have more intuative names, and more logical arguments in comparison to the older versions. You should aim to use these in all new code you are writing.
+
+- **pivot_longer** makes wide data longer i.e. variables running along the top can be "gathered" into rows running down.
+
+- **pivot_wider** makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.
+
+
+```{r}
+# Pivot table using newer tidyr package
+road_accidents_weekdays <- road_accidents_small %>%
+  tidyr::pivot_wider(names_from = Day_of_Week,
+                     values_from = n)
+  
+```
+
+The pivot_wider function above works in exactly the same way as the spread function, however the naming of the arguments make it clear how to specify the column you want to take the *names from* and the one you want to take the *values from*, in this case `Day_of_Week` and `n` respectively.
+
+```{r, echo = FALSE, results='asis'}
+
+knitr::kable(head(road_accidents_weekdays),
+caption = "Number of road accidents by accident severity and weekday, tidyr::pivot_wider")
+
+```
+
+
+The opposite can also be done using the pivot_longer function: 
+
+```{r}
+# Pivot table using newer tidyr package
+road_accidents_gather <- road_accidents_weekdays %>%
+  tidyr::pivot_longer(cols = c(`1`, `2`, `3`, `4`, `5`, `6`, `7`), names_to = "weekday", values_to = "n")
+
+
+  
+```
+
+To use pivot_longer, specify which columns you want to be gathered into one column (in this case the individual weekday columns). Then specify the column name you'd like to move the *names to* (`weekday`) and the one you'd like to move the *values to* (`n`).
+
+```{r, echo = FALSE, results='asis'}
+
+knitr::kable(head(road_accidents_gather),
+caption = "Number of road accidents by accident severity and weekday, tidyr::pivot_longer")
+
+```
+
 **Extended data transpose example**
 
-This section shows how to transpose data using the **spread** and **gather** functions with the **tidyr** package.
+This section shows how to transpose data using the **pivot_wider** and **pivot_longer** functions with the **tidyr** package.
 
 <p style="background-color: #D9D9D9"><br>The aim is to take a published table of reported road accidents in which each row contains the data for one year with the severity of accident recorded in the columns. The tranposition will enable the calculation of the percentage increases for each of the last two years.<br><br></p>
 
@@ -593,8 +643,6 @@ road_accidents_weekdays <- road_accidents_weekdays %>%
 knitr::kable(road_accidents_weekdays[,-9:-10], caption = "Road accidents 2017 by accident severity and weekday")
 ```
 
-
-{reshape2} can also be used to get column totals when pivoting a table (See 5.1).
 
 ## Replace NAs or other values
 
