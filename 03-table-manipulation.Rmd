@@ -4,7 +4,6 @@
 library(dplyr)
 library(readr)
 library(tidyr)
-library(janitor)
 
 # Read in required data using public data.gov extract
 road_accidents <- readr::read_rds("data/road_accidents_2017.RDS")
@@ -591,13 +590,13 @@ knitr::kable(road_acc_3, caption = "Police force and Date information for specif
 
 ### Sum rows
 
-Summing across a row can be done using tidyverse formatting; you just need to specify that any grouping should be ignored before performing the calculation:
+Summing across a row can be done using the dplyr function **c_across**; you just need to specify that this should be done row-wise before performing the calculation:
 
 ```{r}
 # sum across a row 
 road_accidents_weekdays <- road_accidents_weekdays %>% 
-  dplyr::ungroup() %>%
-  dplyr::mutate(rowsum = rowSums(., na.rm = TRUE)) 
+  dplyr::rowwise() %>%
+  dplyr::mutate(rowsum = sum(c_across())) 
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -605,14 +604,14 @@ road_accidents_weekdays <- road_accidents_weekdays %>%
 knitr::kable(road_accidents_weekdays, caption = "Road accidents 2017 by accident severity and weekday")
 ```
 
-To sum across specific rows:
+To sum across specific rows, you can name these within the c_across function:
 
 ```{r}
 # sum across specific rows 
-road_accidents_weekdays$alldays <- road_accidents_weekdays$`1` + road_accidents_weekdays$`2`+
-                                    road_accidents_weekdays$`3`+ road_accidents_weekdays$`4`+
-                                    road_accidents_weekdays$`5`+ road_accidents_weekdays$`6`+
-                                    road_accidents_weekdays$`7`
+road_accidents_weekdays <- road_accidents_weekdays %>% 
+  dplyr::rowwise() %>%
+  dplyr::mutate(alldays = sum(c_across(`1`:`5`))) 
+
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -622,25 +621,12 @@ knitr::kable(road_accidents_weekdays[,-9], caption = "Road accidents 2017 by acc
 
 ### Sum columns
  
-To sum columns to get totals of each column, ***note this will appear as a console output not in a data object***:
+Columns can also be summed, although it isn't recommended that these sums are added to a data table:
 
 ```{r, eval = FALSE}
 # sum columns
-colSums(road_accidents_weekdays, na.rm = TRUE) 
-```
-
-
-To get the totals of each column as a row in the data:
-
-```{r}
-# create total column
-road_accidents_weekdays <- road_accidents_weekdays %>%
-  janitor::adorn_totals("row")
-```
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(road_accidents_weekdays[,-9:-10], caption = "Road accidents 2017 by accident severity and weekday")
+road_accidents_weekdays %>%
+  dplyr::summarise_if(is.numeric, sum)
 ```
 
 
@@ -678,7 +664,7 @@ To replace all NAs in a data frame or tibble:
 
 # replace all NAs with value -1
 road_accidents_na <- road_accidents_na %>%
-  mutate_if(is.numeric, tidyr::replace_na(-1))
+  mutate_if(is.numeric, tidyr::replace_na, -1)
   
 
 ```
@@ -723,7 +709,7 @@ Rows can be reordered by certain variables using the {dplyr} arrange function wi
 
 ```{r}
 # Order data by date and number of casualties
-road_accidents_ordered_desc <- road_acc_7 %>%
+road_accidents_ordered_desc <- road_accidents %>%
   dplyr::select(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) %>%
   dplyr::arrange(desc(Date), Number_of_Casualties)
 ```
@@ -760,15 +746,16 @@ The {dplyr} mutate function can be used to create new variables based on current
 For example, to create a new variable which is speed limit in km:
 
 ```{r}
-road_acc_km <- road_acc_7 %>%
-  dplyr::mutate(speed_km = Speed_limit * 1.6)
+road_acc_km <- road_accidents %>%
+  dplyr::mutate(speed_km = Speed_limit * 1.6) %>%
+  dplyr::select(acc_index, Police_Force, Speed_limit, speed_km)
 
 ```
 
 
 ```{r, echo = FALSE, results='asis'}
 
-knitr::kable(head(road_acc_km <- dplyr::select(road_acc_km, acc_index, Police_Force, Speed_limit, speed_km)),
+knitr::kable(head(road_acc_km),
 caption = "Road accidents by km/h")
 ```
 
