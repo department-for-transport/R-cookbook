@@ -588,15 +588,16 @@ knitr::kable(road_acc_3, caption = "Police force and Date information for specif
 ```
 
 ## Sum rows or columns
-These solutions use the base R functions rather than {dplyr}.
 
 ### Sum rows
 
-To sum across a row:
+Summing across a row can be done using tidyverse formatting; you just need to specify that any grouping should be ignored before performing the calculation:
 
 ```{r}
 # sum across a row 
-road_accidents_weekdays$rowsum <- rowSums(road_accidents_weekdays, na.rm = TRUE) 
+road_accidents_weekdays <- road_accidents_weekdays %>% 
+  dplyr::ungroup() %>%
+  dplyr::mutate(rowsum = rowSums(., na.rm = TRUE)) 
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -664,8 +665,8 @@ To replace all NAs in one column (Junction Control column) with a specific value
 ```{r}
 library (tidyr)
 # replace all NAs with value -1
-road_accidents_na$Junction_Control <- road_accidents_na$Junction_Control %>%
-  tidyr::replace_na(-1)
+road_accidents_na <- road_accidents_na %>%
+  dplyr::mutate(Junction_Control = tidyr::replace_na(Junction_Control, -1))
 
 ```
 
@@ -677,7 +678,7 @@ To replace all NAs in a data frame or tibble:
 
 # replace all NAs with value -1
 road_accidents_na <- road_accidents_na %>%
-  replace(is.na(.), -1)
+  mutate_if(is.numeric, tidyr::replace_na(-1))
   
 
 ```
