@@ -142,7 +142,17 @@ road_accidents_gather <- road_accidents_weekdays %>%
   
 ```
 
-To use pivot_longer, specify which columns you want to be gathered into one column (in this case the individual weekday columns). Then specify the column name you'd like to move the *names to* (`weekday`) and the one you'd like to move the *values to* (`n`).
+To use pivot_longer, specify which columns you want to be gathered into one column (in this case the individual weekday columns). Then specify the column name you'd like to move the *names to* (`weekday`) and the one you'd like to move the *values to* (`n`). 
+
+It is also possible to pivot all columns except the ones you choose to exclude by specifying only those you **do not** want to pivot, using `-` to indicate this. In the example below, this is done by excluding the Accident_Severity column and pivoting all other columns by specifying `cols = -Accident_Severity`. This is useful when you may have a large number of columns or columns with unknown names that you want to turn into tidy data.
+
+```{r}
+# Pivot by excluding the accident severity column 
+road_accidents_gather <- road_accidents_weekdays %>%
+  tidyr::pivot_longer(cols = -Accident_Severity, names_to = "weekday", values_to = "n")
+
+```
+  
 
 ```{r, echo = FALSE, results='asis'}
 
@@ -157,33 +167,24 @@ This section shows how to transpose data using the **pivot_wider** and **pivot_l
 
 <p style="background-color: #D9D9D9"><br>The aim is to take a published table of reported road accidents in which each row contains the data for one year with the severity of accident recorded in the columns. The tranposition will enable the calculation of the percentage increases for each of the last two years.<br><br></p>
 
-Firstly, the **current year** is specified and the rounding function declared. This function is used because the default round function in R rounds upwards only if the number is even. 
+Firstly, the **current year** is specified. 
 
 ```{r DeclareYear, include=TRUE}
 Yr <- 2018   ## select for the latest of the three years you require 
 
-RoundC <- function(x, digits = 0) {
-  posneg <- sign(x)
-  z <- abs(x) * 10 ^ digits
-  z <- z + 0.5
-  z <- trunc(z)
-  z <- z / 10 ^ digits
-  z * posneg
-} 
 ```
 
 This example uses data from RAS30013 *"Reported casualty rates by road user type and severty: Great Britain"*. https://www.gov.uk/government/statistical-data-sets/ras30-reported-casualties-in-road-accidents#casualty-rates-and-risk
 
-The contents of the published table is read in (the last 10 years only), The adjusted data is rounded to the nearest whole number. The year field is changed to a character format so that it is displayed without the thousand separator comma.
+The contents of the published table is read in (the last 10 years only), and the adjusted data is rounded to the nearest whole number. 
 
 ```{r PublishedTable, include=TRUE}
 Accidents <- readxl::read_excel("data/ras10013.xlsx") %>%
-  dplyr::filter(Year>=2009) %>%
-  dplyr::mutate(SeriousAdjusted=RoundC(SeriousAdjusted,0),
-                FatalSeriousAdjusted=RoundC(FatalSeriousAdjusted,0),
-                SlightAdjusted=RoundC(SlightAdjusted,0))
+  dplyr::filter(Year >= 2009) %>%
+  dplyr::mutate(SeriousAdjusted = round(SeriousAdjusted),
+                FatalSeriousAdjusted = round(FatalSeriousAdjusted),
+                SlightAdjusted = round(SlightAdjusted))
 
-Accidents$Year <-as.character(as.numeric(Accidents$Year))
 ```
 
 ```{r Table1, echo = FALSE, results = 'asis'}
@@ -194,16 +195,16 @@ knitr::kable(Accidents, format.args = list(big.mark = ",")) %>%
 
 The data is now filtered to keep only the last three years of data. 
 
-We could have hard coded the year in the filter below e.g. **Year %in% c(2017,2018,2019)**. To save having to change the code every time we wish to run for different years,we can use the **glue** function to derive the required years from a previously defined variable. This picks up the most recent year from **yr** defined above and calculates the other years as 1 and 2 years before **yr** as **yr-1** and **yr-2**. 
+We could have hard coded the year in the filter below e.g. **Year %in% c(2017,2018,2019)**. To save having to change the code every time we wish to run for different years, we can derive the required years from a previously defined variable. This picks up the most recent year from **yr** defined above and calculates the other years as 1 and 2 years before **yr** as **yr-1** and **yr-2**. 
 
 A new variable **YearLab** with the respective text ThisYear, LastYear and YearBefore is created to automate calculations below. 
 
 ``` {r Last3Years, include=TRUE}
 Last3Years <- dplyr::filter(Accidents,
-                Year %in% c(glue::glue({Yr}),glue::glue({Yr-1}),glue::glue({Yr-2}))) %>%
+                Year %in% c(Yr, Yr-1, Yr-2)) %>%
   dplyr::mutate(YearLab = dplyr::case_when(
-    Year == glue::glue({Yr}) ~ "ThisYear",
-    Year == glue::glue({Yr-1}) ~ "LastYear",
+    Year == Yr ~ "ThisYear",
+    Year == Yr-1 ~ "LastYear",
     TRUE ~ "YearBefore" # else option 
   )) %>%
   dplyr::select(-Year)
@@ -214,24 +215,24 @@ knitr::kable(Last3Years, format.args = list(big.mark = ",")) %>%
   kableExtra::kable_styling(latex_options="scale_down")
 ```
 
-The table above holds the number of accidents for each severity (in columns) with a row for each of the last three years. We wish to calculate the annual growth in accidents by severity. To achieve this we need to transpose the table. This can be achieved using the **gather** function within the **tidyr** package which allows us to put data into a tidy format which makes it easier to manipulate.
+The table above holds the number of accidents for each severity (in columns) with a row for each of the last three years. We wish to calculate the annual growth in accidents by severity. To achieve this we need to transpose the table. This can be achieved using the **pivot_longer** function within the **tidyr** package which allows us to put data into a tidy format which makes it easier to manipulate.
 
-The template of the **gather** function is:
+The template of the **pivot_longer** function is:
     
-    tidyr::Gather(variables_to_input_into_one_column, 
-          key = “name_of_column_creating”, 
-          value = “name_of_value_column”)
+    tidyr::pivot_longer(
+          cols = variables_to_input_into_one_column, 
+          names_to = column to move data names to, 
+          values_to = column to move data values to)
 
-The variables We want to input into one column are the accident severities (*Fatal, SeriousUnadjusted, ..., AllAccidents*). The **key** parameter we will call *SeverityType*.  The **value** parameter is the name of the column holding the number of accidents (*n*). The variable **YearLabel** will remain in one column so does not need to be mentioned in the **gather** statement.
+The variables we want to input into one column are the accident severities (*Fatal, SeriousUnadjusted, ..., AllAccidents*); every column except for the **YearLab**. The **names_to** parameter we will call *SeverityType*.  The **values_to** parameter is the name of the column holding the number of accidents (*n*). The variable **YearLabel** is the only one that will be unchanged, so can be specifically excluded from the **pivot_longer** call.
 
 A new field **SeverityNum** is created so that the severity types can be sorted in a logical order in the final output.
 
 ```{r Gather, include=TRUE}
-Severity <- Last3Years %>% tidyr::gather(Fatal,SeriousUnadjusted,SeriousAdjusted,
-                          FatalSeriousUnadjusted,FatalSeriousAdjusted,SlightUnadjusted,
-                          SlightAdjusted,AllAccidents,
-                          key = "SeverityType", 
-                          value = "n") %>%
+Severity <- Last3Years %>% 
+  tidyr::pivot_longer(cols = -YearLab,
+                names_to = "SeverityType",
+                values_to = "n") %>%
   dplyr::mutate(SeverityNum = dplyr::case_when(
   SeverityType=='Fatal' ~ 1,
   SeverityType=='SeriousUnadjusted' ~ 2,
@@ -250,27 +251,30 @@ knitr::kable(Severity, format.args = list(big.mark = ",")) %>%
   kableExtra::kable_styling(latex_options="scale_down")
 ```
 
-We now wish to transpose this table so that the three years (*ThisYear, LastYear and YearBefore*) will be in seperate columns rather than one.
+We now wish to transpose this table so that the three years (*ThisYear, LastYear and YearBefore*) will be in separate columns rather than one.
 
-To do this, we use the **spread** function within the **tidyr** package.
+To do this, we use the **pivot_wider** function within the **tidyr** package.
 
-The template of the **spread** function is:
+The template of the **pivot_wider** function is:
     
-    tidyr::Spread(variables_to_change_from rows_into_columns,
-          value = “name_of_value_column”)
+    tidyr::pivot_wider(cols = variables_to_change_from rows_into_columns,
+          names_from = column_containing_variable_names,
+          values_form = column_containing_values)
 
-Here the row to be transposed is *YearLab*. The value is the number of accidents *n*. The names of the new columns are derived from the values of **YearLab**. The variables **SeverityType** and **SeverityNum** will each remain in one column so are not listed in the **spread** function.
+Here the column containing the names is *YearLab*, and the column containing the values is the number of accidents *n*. The variables **SeverityType** and **SeverityNum** will each remain in one column so are not listed in the **pivot_wider** function.
 
 By default, the data would be sorted in alphabetical order of **SeverityType**. Instead the data is sorted in a pre-defined logical order using the **SeverityNum** variable defined above. The **SeverityNum**, having done its job, is then dropped from the final output.
 
 Now that the number of accidents for each year are in a separate column, the percentage growth for one year to the next can be calculated using the **mutate** function.
 
 ``` {r Spread, include=TRUE}
-Transposed <- Severity %>% tidyr::spread(YearLab, n) %>%
+Transposed <- Severity %>% 
+  tidyr::pivot_wider(names_from = YearLab, 
+                     values_from = n) %>%
   dplyr::arrange(SeverityNum) %>%
   dplyr::select(-SeverityNum) %>%
-  dplyr::mutate(PerGrowthThisYear=RoundC(ThisYear/LastYear *100-100,1),
-                              PerGrowthLastYear=RoundC(LastYear/YearBefore *100-100,1))
+  dplyr::mutate(PerGrowthThisYear = round(ThisYear/LastYear *100-100,1),
+                PerGrowthLastYear=round(LastYear/YearBefore *100-100,1))
 ```
 
 ```{r Table4, echo = FALSE, results = 'asis'}
@@ -297,7 +301,7 @@ caption = "Four columns from road accidents 2017")
 
 **Drop columns**
 
- Note that to drop columns the difference is putting a "-" in front of the variable name.
+As for pivoting, to drop columns the difference is putting a "-" in front of the variable name.
  
 ```{r}
 road_accidents_3_cols <- road_accidents_4_cols %>%
@@ -363,7 +367,7 @@ road_accidents_filter3 <- road_accidents %>%
 dplyr::filter(`Local_Authority_(Highway)` == "E09000010")
 
 ```
-Also note that in the above example the variable is quoted in back ticks (`). This is because some variable names confuse R due to brackets and numbers and need to be wrapped in back ticks so R knows that everything inside the back ticks is a variable name.
+Also note that in the above example the variable is quoted in back ticks (`). This is necessary when a column or variable name contains non-standard characters (anything other than alphanumerics, and selected punctuation marks: _, - or .) or start with numbers; they need to be wrapped in back ticks so R knows that everything inside the back ticks is a variable name.
 
 ## Group data 
 
@@ -389,16 +393,11 @@ Use the {dplyr} arrange function to order data. This works in a similar manner t
 
 This example orders the data by date and number of casualties.
 
-```{r include=FALSE}
-road_acc_7 <- road_accidents %>%
-  dplyr::sample_n(7)
-
-```
-
 
 ```{r}
 # Order data by date and number of casualties
-road_accidents_ordered <- road_acc_7 %>%
+road_accidents_ordered <- road_accidents %>%
+  dplyr::sample_n(7) %>%
   dplyr::select(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) %>%
   dplyr::arrange(Date, Number_of_Casualties)
   
