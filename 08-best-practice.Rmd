@@ -1,14 +1,74 @@
-# DfT RAP guidance {#RAP}
+# Writing good quality code {#best-practice}
 
-This section provides a condensed version of the DfT RAP guidance written and amended by the DfT RAP committee.
-
-A more in-depth guide is available internally, please ask the DfT RAP committee for the file path.
+This section provides standards for best practice in writing R code. This is one of the most important aspects of coding; it allows you to write code which is easy to use, develop or maintain, simple for other people to read and less prone to errors and bugs.
 
 
-## What
+## Code Layout
 
-This sub-chapter explains what a RAP project is using RAP levels amended from NHS Scotland RAP levels.
+Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.
 
-Use the DfT RAP levels to ensure your DfT RAP project includes everything it should. A project is considered a RAP project at level 4a and above. 
+### Use of pipes
 
-These RAP levels have been amended from the original [NHS Scotland RAP levels](https://www.isdscotland.org/About-ISD/Methodologies/_docs/Reproducible_Analytical_Pipelines_paper_v1.4.pdf) to reflect DfT processes and software capabilities. There is guidance for the descriptors below the RAP levels.
+The "pipe" function `%>%` is taken from the {magrittr} package and is extensively used throughout the tidyverse (and this book!). It takes the object before the pipe and applies it as the first argument in the process after the pipe. Whenever you see a pipe within code, you can therefore read it as an *and then* statement. For example, the code below can be read as "take mtcars *and then* filter on the mpg column, *and then* select the disp and cyl columns.
+
+```{r, eval=FALSE}
+mtcars %>% ##and then
+  dplyr::filter(mpg > 20) %>% ##and then
+  dplyr::select(disp, cyl)
+```
+
+Piped code therefore works in exactly the same way as standard nested code, but is significantly easier to read, particularly as you do multiple operations on the same dataset. Below is an example of the same operations carried out using nested code and also piped code:
+
+```{r, eval=FALSE}
+#This code is nested and difficult to read and understand
+ dplyr::summarise(dplyr::group_by(dplyr::filter(mtcars, am == 1), gear, carb, vs), disp = mean(disp, na.rm = TRUE)) 
+
+#This code is piped and easy to read
+mtcars %>% 
+  dplyr::filter(am == 1) %>% 
+  dplyr::group_by(gear, carb, vs) %>%
+  dplyr::summarise(disp = mean(disp, na.rm = TRUE)) 
+```
+
+Piping also works on many non-tidyverse functions; for those which do not take the dataset as the first option, you will need to name the other arguments in the function, e.g:
+
+```{r, eval=FALSE}
+mtcars %>% 
+#In this openxlsx function, the first argument is the workbook name and the second is the data frame
+#The data can be piped in as long as the first argument is named, meaning the piped data is passed to the second argument
+openxlsx::writeData(wb = test1) 
+
+```
+
+
+The most common example of code which does not work with piping is from the {ggplot2} package. Here, ggproto objects are added to the original ggplot call using `+`, which cannot be substituted for a pipe. You can however still pipe data objects into a ggplot:
+
+```{r, eval=FALSE}
+mtcars %>%
+  dplyr::filter(mpg > 20) %>%
+  dplyr::select(disp, cyl) %>%
+  
+  #Data can be piped into the ggplot call
+  ggplot2::ggplot(aes(x = disp, y = cyl))+
+  
+  #Subsequent ggproto objects must be added, not piped
+    geom_point()
+```
+
+
+
+-Horizontal and vertical length of code
+-Sourcing files to reduce file length
+-Pipes to improve readability
+-Sectioning code
+-Writing nice in-line comments
+-Use of linters
+
+## Project structure
+
+-One purpose per file
+-README files
+-Single central file to call all other files
+-Folders for raw data, clean data, outputs
+-Save clean data as hard copy for QA/multiple outputs as well
+-Github for version control
