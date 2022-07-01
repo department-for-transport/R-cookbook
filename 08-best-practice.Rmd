@@ -3,9 +3,8 @@
 This section provides standards for best practice in writing R code. This is one of the most important aspects of coding; it allows you to write code which is easy to use, develop or maintain, simple for other people to read and less prone to errors and bugs.
 
 
-## Code Layout
+## Best practice in code
 
-Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.
 
 ### Assigning variables
 
@@ -36,52 +35,6 @@ seq(from = 1, to = 10, by = 2) -> vector
 vector <- seq(from = 1, to = 10, by = 2)
 
 ```
-
-### Code spacing
-
-Adding line breaks and spaces into your code makes it more human readable. As a general rule, you should aim to space out code as you would normal text. Add a space either side of mathematical symbols such as `=`, `+`, or `-` and assignment arrows `<-`. Add a space after commas but not before, as you would naturally.
-
-
-```{r, eval=FALSE}
-
-##Bad; code is squished up and difficult to read
-vector<-seq(from=1,to=10,by=2) 
-
-#Good; clearly spaced
-vector <- seq(from = 1, to = 10, by = 2)
-
-```
-
-Spacing around brackets is different to normal use:
-
-* When round brackets `()` are used in a function call, don't add a space between the function name and the bracket
-
-```{r, eval=FALSE}
-dplyr::filter (mtcars, mpg > 20) #Bad
-dplyr::filter(mtcars, mpg > 20) #Good
-
-```
-
-* Curly brackets should start on the same line as the previous function call, and their contents should start on a new line.
-
-```{r, eval=FALSE}
-#Bad
-function(x){x+1} 
-
-#Good
-function(x){
-  x+1
-} 
-
-```
-
-* Spaces should never be used in colon notation (e.g. `:`, `::`)
-```{r, eval = FALSE}
-dplyr :: select() #Bad
-dplyr::select() #Good
-
-```
-
 
 
 ### Using package functions
@@ -146,6 +99,56 @@ mtcars %>%
     geom_point()
 ```
 
+## Code Layout
+
+Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.
+
+### Code spacing
+
+Adding line breaks and spaces into your code makes it more human readable. As a general rule, you should aim to space out code as you would normal text. Add a space either side of mathematical symbols such as `=`, `+`, or `-` and assignment arrows `<-`. Add a space after commas but not before, as you would naturally.
+
+
+```{r, eval=FALSE}
+
+##Bad; code is squished up and difficult to read
+vector<-seq(from=1,to=10,by=2) 
+
+#Good; clearly spaced
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+Spacing around brackets is different to normal use:
+
+* When round brackets `()` are used in a function call, don't add a space between the function name and the bracket
+
+```{r, eval=FALSE}
+dplyr::filter (mtcars, mpg > 20) #Bad
+dplyr::filter(mtcars, mpg > 20) #Good
+
+```
+
+* Curly brackets should start on the same line as the previous function call, and their contents should start on a new line.
+
+```{r, eval=FALSE}
+#Bad
+function(x){x+1} 
+
+#Good
+function(x){
+  x+1
+} 
+
+```
+
+* Spaces should never be used in colon notation (e.g. `:`, `::`)
+```{r, eval = FALSE}
+dplyr :: select() #Bad
+dplyr::select() #Good
+
+```
+
+
 ### Code width
 
 The width of each line of code on the screen has a big impact on how easy it is to read. It's easy to miss content which goes off the end of the screen, and annoying to keep scrolling horizontally.
@@ -192,9 +195,39 @@ RStudio comes with an inbuilt code length guide on the script window; this grey 
 
 ### Code length
 
--Horizontal and vertical length of code
+Similar to taking into account the width of your code in files, it's also sensible to consider how long your code files are. Excessively long code files make it difficult to find what you're looking for, and also increase the risk of merge conflicts when using Github.
 
--Sourcing files to reduce file length
+* Your code should be split across multiple files as often as possible, while retaining code logic and flow.
+* A good general rule is that each code file should perform a single clearly defined purpose.
+* If an individual file gets over a few hundred lines of code, think about whether it would be better split into smaller sections?
+* Individual functions shouldn't exceed more than 1-2 screen lengths of code; if your code goes beyond that, it would likely work better as multiple utility functions.
+
+Splitting code across multiple files can make it more difficult to run in the correct order. You can avoid this by *sourcing* code files. The `source()` function takes the filepath of an R code file as its argument, and runs all of the code in that file, at the point you place it in your code e.g.
+
+```{r, eval = FALSE}
+
+#Run a file of functions associated with my project
+source("functions.R")
+#Read in and process data for the project, using these functions
+source("read_data.R")
+#Produce a chart visualising the processed data
+source("chart_code.R")
+
+```
+
+
+This allows you to maintain a logical running order of your code, while keeping code files a manageable length.
+
+You can also split code within a file into individual named sections using section indicators. To do this, write the section name as a normal comment, followed by four or more `#` or `-`. These sections can then be easily navigated between, and sections expanded and collapsed if required.
+
+```{r, eval = FALSE}
+##This is section 1 ----
+Code goes here
+
+#This is section 2 ####
+More code
+
+```
 
 
 ### Linters 
