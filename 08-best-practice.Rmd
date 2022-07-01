@@ -39,7 +39,64 @@ vector <- seq(from = 1, to = 10, by = 2)
 
 ### Code spacing
 
+Adding line breaks and spaces into your code makes it more human readable. As a general rule, you should aim to space out code as you would normal text. Add a space either side of mathematical symbols such as `=`, `+`, or `-` and assignment arrows `<-`. Add a space after commas but not before, as you would naturally.
+
+
+```{r, eval=FALSE}
+
+##Bad; code is squished up and difficult to read
+vector<-seq(from=1,to=10,by=2) 
+
+#Good; clearly spaced
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+Spacing around brackets is different to normal use:
+
+* When round brackets `()` are used in a function call, don't add a space between the function name and the bracket
+
+```{r, eval=FALSE}
+dplyr::filter (mtcars, mpg > 20) #Bad
+dplyr::filter(mtcars, mpg > 20) #Good
+
+```
+
+* Curly brackets should start on the same line as the previous function call, and their contents should start on a new line.
+
+```{r, eval=FALSE}
+#Bad
+function(x){x+1} 
+
+#Good
+function(x){
+  x+1
+} 
+
+```
+
+* Spaces should never be used in colon notation (e.g. `:`, `::`)
+```{r, eval = FALSE}
+dplyr :: select() #Bad
+dplyr::select() #Good
+
+```
+
+
+
 ### Using package functions
+
+It's good practice to always specify the package associated with a function using the double colon notation:
+
+```{r, eval = FALSE}
+select() #Bad
+dplyr::select() #Good
+
+pivot_longer() #Bad
+tidyr::pivot_longer() #Good
+```
+
+This allows a user to understand the origin of each function at a glance, makes debugging easier and also prevents package conflicts. 
 
 ### Use of pipes
 
@@ -136,11 +193,25 @@ RStudio comes with an inbuilt code length guide on the script window; this grey 
 ### Code length
 
 -Horizontal and vertical length of code
+
 -Sourcing files to reduce file length
 
--Writing nice in-line comments
 
-## Linters 
+### Linters 
+
+If it seems a bit daunting to implement coding best practice, don't panic! There are tools available, known as linters, which will check your code for you and point out the areas where you can improve.
+
+The easiest one to use in R is the {lintr} library. You can use the `lint()` and `lint_dir()` functions to check your code, with the functions returning a line-by-line breakdown of issues it has spotted in your code.
+
+```{r, eval=FALSE}
+library(lintr)
+
+#Check the code in a single file
+lintr::lint(your_file_name)
+
+#Check all the code in a whole directory
+lintr::lint_dir(your_directory)
+```
 
 ## Project structure
 
