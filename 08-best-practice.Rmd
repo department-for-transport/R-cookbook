@@ -1,0 +1,14 @@
+# DfT RAP guidance {#RAP}
+
+This section provides a condensed version of the DfT RAP guidance written and amended by the DfT RAP committee.
+
+A more in-depth guide is available internally, please ask the DfT RAP committee for the file path.
+
+
+## What
+
+This sub-chapter explains what a RAP project is using RAP levels amended from NHS Scotland RAP levels.
+
+Use the DfT RAP levels to ensure your DfT RAP project includes everything it should. A project is considered a RAP project at level 4a and above. 
+
+These RAP levels have been amended from the original [NHS Scotland RAP levels](https://www.isdscotland.org/About-ISD/Methodologies/_docs/Reproducible_Analytical_Pipelines_paper_v1.4.pdf) to reflect DfT processes and software capabilities. There is guidance for the descriptors below the RAP levels.
