@@ -7,6 +7,12 @@ This section provides standards for best practice in writing R code. This is one
 
 Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.
 
+### Assigning variables
+
+### Code spacing
+
+### Using package functions
+
 ### Use of pipes
 
 The "pipe" function `%>%` is taken from the {magrittr} package and is extensively used throughout the tidyverse (and this book!). It takes the object before the pipe and applies it as the first argument in the process after the pipe. Whenever you see a pipe within code, you can therefore read it as an *and then* statement. For example, the code below can be read as "take mtcars *and then* filter on the mpg column, *and then* select the disp and cyl columns.
@@ -55,14 +61,58 @@ mtcars %>%
     geom_point()
 ```
 
+### Code width
 
+The width of each line of code on the screen has a big impact on how easy it is to read. It's easy to miss content which goes off the end of the screen, and annoying to keep scrolling horizontally.
+
+Older style guides recommend that each line of code should be no more than 80 characters, whereas more modern guides designed for larger screens suggest 120 characters. Either way, you should ensure that your code always fits comfortably on the screen when using a laptop.
+
+Any single line of code which goes over this limit should be broken up using line breaks, and the subsequent lines should be indented (RStudio does this automatically for you).
+
+When adding line breaks to piped code, a new line should be started *after* each pipe, not before.
+
+```{r, eval=FALSE}
+##Bad; a very long single line of code:
+mtcars %>% dplyr::filter(mpg > 20) %>% dplyr::select(disp, cyl) %>% dplyr::arrange(cyl)
+
+#Good; code with line breaks after each pipe and indentation of subsequent lines
+mtcars %>% 
+  dplyr::filter(mpg > 20) %>% 
+  dplyr::select(disp, cyl) %>% 
+  dplyr::arrange(cyl)
+  
+
+```
+
+When adding line breaks to a single long function, it's good practice to add one after each argument:
+
+```{r, eval=FALSE}
+##Bad; a very long single line of code:
+dplyr::mutate(mtcars, mpg_grouped = dplyr::case_when(mpg <= 15 ~ "Poor", mpg > 15 & mpg <= 25 ~ "Average", mpg > 25 ~ "Good"))
+
+#Good; code with line breaks after each argument and indentation of subsequent lines
+dplyr::mutate(mtcars, 
+              mpg_grouped = dplyr::case_when(
+                mpg <= 15 ~ "Poor", 
+                mpg > 15 & mpg <= 25 ~ "Average", 
+                mpg > 25 ~ "Good")
+              )
+  
+
+```
+
+
+RStudio comes with an inbuilt code length guide on the script window; this grey line shows you how wide 80 characters is. You can adjust this to 120 characters by going to **Tools -> Global Options… -> Code -> Display**.
+
+
+### Code length
 
 -Horizontal and vertical length of code
 -Sourcing files to reduce file length
--Pipes to improve readability
--Sectioning code
+
 -Writing nice in-line comments
--Use of linters
+
+## Linters 
 
 ## Project structure
 
