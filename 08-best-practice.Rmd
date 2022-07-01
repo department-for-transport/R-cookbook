@@ -263,8 +263,10 @@ Running code files in the wrong order, or forgetting to run parts of code is the
 See [here](https://github.com/department-for-transport/transport_modes_table) for an example of a large code project which runs from a single central file.
 
 ### Data storage
--Folders for raw data, clean data, outputs
--Save clean data as hard copy for QA/multiple outputs as well
+
+When creating a project, give some thought to how you want to organise data used in the project, and outputs produced by it. Good practice is to have separate folders for raw data, clean data following processing, and publication-ready outputs. 
+
+It is always sensible to save a hard copy (e.g. CSV) version of clean data prior to outputting in tables, charts, etc. Having this data stored centrally allows for multiple outputs to be created from the same processing code, as well as automated QA to be performed directly on the clean data.
 
 ### Project management
 
