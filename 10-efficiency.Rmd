@@ -1,0 +1,10 @@
+# Code efficiency and speed {#efficiency}
+
+This chapter discusses the basics of how to optimise your R code so that it runs efficiently and quickly. Some of the major drawbacks of coding in R are the slow speed of the code, and its heavy use of RAM, but writing appropriate code can mitigate these drawbacks for all but the most complex processes.
+
+## Checking code speed
+## Storing data in efficient files; CSV, rda, etc
+## Sensible package selection e.g. data.table for >100,000 rows
+## Limiting number of large objects created
+## Storing files in hard memory, not RAM
+## Improving processing efficiency with functions

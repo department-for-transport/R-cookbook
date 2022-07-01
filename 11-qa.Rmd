@@ -1,0 +1,11 @@
+# Quality assurance in code {#qa}
+
+This chapter includes best practice advice for quality assurance and code, including both using R to carry out QA checks, and quality assurance of code itself.
+
+## QA of data
+### Inline checks
+### Reports for you to check; visualisation or yes/no checks
+### Adding warnings/error points
+## QA of code itself
+### Code reviews
+### Testing code
