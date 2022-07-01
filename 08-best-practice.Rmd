@@ -218,7 +218,7 @@ source("chart_code.R")
 
 This allows you to maintain a logical running order of your code, while keeping code files a manageable length.
 
-You can also split code within a file into individual named sections using section indicators. To do this, write the section name as a normal comment, followed by four or more `#` or `-`. These sections can then be easily navigated between, and sections expanded and collapsed if required.
+You can also split code within a file into individual named sections using section indicators. To do this, write the section name as a normal comment, followed by four or more `#` or `-`. These sections can then be easily navigated between using the "jump to" menu at the bottom of the script window, and sections expanded and collapsed if required.
 
 ```{r, eval = FALSE}
 ##This is section 1 ----
@@ -248,9 +248,29 @@ lintr::lint_dir(your_directory)
 
 ## Project structure
 
--One purpose per file
--README files
--Single central file to call all other files
+Having a consistent and logical structure across all coding projects makes it easy for others to understand how your code works, make use of documentation, and run and develop your code. A good R coding project makes use of the following:
+
+### Documentation
+
+All projects should have a README file associated with them. README files are stored in the root folder of a project, and as a minimum should contain essential instructions for an experienced coder using this project for the first time. It can include far more detailed documentation of the code, processes and usage if you want.
+
+README files can either be .md (markdown) or .html files. You can write a .md file directly in Markdown, or use an RMarkdown document to generate one in either format. Check [here](https://www.makeareadme.com/) for more advice on README content and structure.
+
+### Centralised code structure
+
+Running code files in the wrong order, or forgetting to run parts of code is the most likely point of failure for a project. You can ensure that code across multiple files is always run in the correct order by using the `source()` function to call all code in order. You should aim to do this from a single central file, and store all your other code files in a *source code* or *R* folder. You can also use the `markdown::render()` function to knit rmarkdown documents from this central file.
+
+See [here](https://github.com/department-for-transport/transport_modes_table) for an example of a large code project which runs from a single central file.
+
+### Data storage
 -Folders for raw data, clean data, outputs
 -Save clean data as hard copy for QA/multiple outputs as well
--Github for version control
+
+### Project management
+
+Part of managing coding projects is ensuring that the code is accessible and works for everyone working on the project (or who may be working on it in future). This should be managed using both **version control** and **package management**.
+
+Version control should be carried out using a linked Github repository. This allows you to carry out development work safely, ensure people are using the correct version of code, audit and monitor changes made, and roll back code to fix bugs. Check out the Github Coffee and Coding channel for advice and support getting started with this.
+
+Package management ensures that everyone running the project has all of the necessary packages they need, and that everyone is using the same versions. Differing versions of the same package is one of the most common sources of bugs, so this is an important aspect of reproducible code. {renv} is the recommended package management approach for R, see Chapter \@ref(packages) for more details on using this.
+
