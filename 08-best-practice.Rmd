@@ -9,6 +9,34 @@ Having a clean and consistent layout to every code makes it easy to read and und
 
 ### Assigning variables
 
+Variables can be assigned in multiple different ways in R, the most common using `=` or `<-`. Good practice is to only ever use the arrow when assigning variables, leaving `=` for assigning arguments in functions only.
+
+```{r, eval=FALSE}
+
+##Bad; assigning using =
+a = 4
+vector = seq(from = 1, to = 10, by = 2)
+
+##Good; assigning using <-, using = for function arguments only
+a <- 4
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+You can use the RStudio shortcut **alt + -** to insert an arrow in your code.
+
+Assignment should only ever happen on the left (beginning) of any code, as assignment at the end is unexpected and easy to miss in code.
+
+```{r, eval=FALSE}
+
+##Bad; assigning at the end
+seq(from = 1, to = 10, by = 2) -> vector
+
+##Good; assigning at the start
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
 ### Code spacing
 
 ### Using package functions
