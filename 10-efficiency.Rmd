@@ -3,7 +3,54 @@
 This chapter discusses the basics of how to optimise your R code so that it runs efficiently and quickly. Some of the major drawbacks of coding in R are the slow speed of the code, and its heavy use of RAM, but writing appropriate code can mitigate these drawbacks for all but the most complex processes.
 
 ## Checking code speed
+
+If you are finding that code is running slowly, you can use *benchmarking* to identify bottlenecks which are causing your code to run slowly.
+
+Wrapping any part of your code in `system.time()` is a good basic check of how long it takes to run. The drawback of this is that when code is already fast, the most significant impact will be from background processes on your computer, and results will vary.
+
+For a more detailed check, you can use the *profvis* library. Wrapping your whole code in the `profvis()` function provides a graphical breakdown of how long individual lines take to run, allowing you to pick the points you want to optimise.
+
+```{r, echo=FALSE, message=FALSE}
+library(profvis) 
+
+profvis({   
+  library(dplyr)   
+  library(ggplot2)      
+  # Simulate data   
+  n <- 5000000   
+  dat <- data.frame(norm = rnorm(n),
+                    unif = runif(n),
+                    poisson = rpois(n, lambda = 5))      
+  # Compute more variables   
+  dat <- dat %>%     
+    mutate(var1 = norm + unif,            
+           var2 = poisson - unif + min(poisson - unif),            
+           var3 = 3 * unif - 0.5 * norm)      
+  # Plots   
+  ggplot(dat, aes(x = var1, y = var3)) +
+    geom_point() +     
+    geom_smooth(method = lm)   
+  
+  ggplot(dat, aes(var1)) + 
+    geom_histogram() +
+    geom_vline(xintercept = 0, color = "red")      
+  
+  # Models   
+  modLm <- lm(var1 ~ var2 + var3, data = dat)   
+  summary(modLm)   
+  modGlm <- glm(var1 ~ var2 + var3, data = dat,                 
+                family = gaussian(link = "identity"))   
+  summary(modGlm) })
+```
+
+
 ## Storing data in efficient files; CSV, rda, etc
+
+While R is capable of reading data in from a large variety of file types, some of these are more complex than others to read from and as a result, have higher processing overheads.
+
+
+Tidy data (long) is faster to read too
+
 ## Sensible package selection e.g. data.table for >100,000 rows
 ## Limiting number of large objects created
 ## Storing files in hard memory, not RAM
