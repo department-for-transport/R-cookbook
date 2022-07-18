@@ -136,7 +136,7 @@ ggplot(data = name_of_dataset) +
   geom_function(mapping = aes())
 
 
-You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf).
+You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf).
 
 Let's create the same the line chart we created with base R, showing total road accidents against year:
 

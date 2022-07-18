@@ -164,7 +164,9 @@ readxl::read_excel(
 
 For example, you collect pokemon go capture data from many different players, the data all has the same structure and you want to read it in and row bind into a single dataframe in R. 
 
-![](image/pokemon_player.png, alt = "Pokemon player data")
+```{r, fig.alt="Pokemon player data"}
+knitr::include_graphics("image/pokemon_player.png")
+```
 
 <br/>
 The code below collects the names of the 3 excel workbooks using `fs::dir_ls`, and, as these are not the only files in that folder, I've specified them using regular expressions (regex). Then we use `purrr::map_dfr` to iterate and rowbind over this list of files, applying the function we supply, that is `readxl::read_excel`. Since we are only reading a single worksheet per workbook we don't need to supply any arguments to `readxl:read_excel`, the defaults will work fine, each workbook path is piped in, in turn. The `.id` argument in `purrr:map_dfr` adds the file path into a new column, which we have named "player" in this instance. The "dfr" in `map_dfr` refers to the output "data-frame-rowbound".
@@ -210,7 +212,9 @@ DT::datatable(data = pokemon_collections)
 
 Now we can use the above two solutions to combine data from many worksheets spread across many workbooks. As before, the data is rectangular and has the same structure. For example, you receive a workbook every month, containing pokemon go captures data, and each data collection point has its own sheet. 
 
-![](image/pokemon_collection_point.png)
+```{r, fig.alt="Pokemon collection point"}
+knitr::include_graphics("image/pokemon_collection_point.png")
+```
 
 
 We create a function to import and combine the sheets from a single workbook, and then iterate this function over all the workbooks using `purrr::map_df`.
@@ -241,7 +245,9 @@ You have received some kind of data entry form that has been done in excel in a 
 
 Here's an image of what the data looks like.
 
-![](image/pet_form.png, alt = "Pet form")
+```{r, fig.alt="Pet form"}
+knitr::include_graphics("image/pet_form.png")
+```
 
 Let's see what we get if we naively try to read it in.
 ```{r message=FALSE}
@@ -332,7 +338,10 @@ pet_details_2 %>%
 
 Having solved for one workbook and worksheet, we can functionalise and iterate to gather the data from every workbook, two of which are shown below.
 
-![](image/pet_forms.png)
+```{r, fig.alt="Pet forms"}
+knitr::include_graphics("image/pet_forms.png")
+```
+
 
 <br/>
 The function `cells_to_rows` below iterates over `read_excel` reading each of the three cells from the worksheet, applying the corresponding column name as it goes. It takes three character or character vector inputs, `path`, `cells`, and `col_names`.
@@ -394,7 +403,9 @@ all_pet_forms %>%
 
 Now we have more than one worksheet in a single workbook, and the data looks like this, the workbook is from a "pet house" and each worksheet is pet details.
 
-![](image/pet_house.png)
+```{r, fig.alt="Pet house"}
+knitr::include_graphics("image/pet_house.png")
+```
 <br/>
 
 To incorporate the worksheets element we rejig the `cells_to_rows` function from above and give it a "sheet" argument, so it can be passed a specific sheet.
@@ -443,7 +454,9 @@ pet_house_1 %>%
 
 Finally we have many workbooks each containing many worksheets, each containing many cells, as before we want to read them in and combine.
 
-![](image/pet_houses.png)
+```{r, fig.alt="Pet houses"}
+knitr::include_graphics("image/pet_houses.png")
+```
 <br/>
 
 We could functionalise the code above that reads and combines the cells in many worksheets from a single workbook, but an alternative approach is used below. We create an anonymous function and use that on the fly. This is useful if the function is a one off, and not too complicated. The anonymous function below still depends on the `sheet_cells_to_rows` we created earlier though.
@@ -500,9 +513,9 @@ Use {haven} to import SPSS, Stata and SAS files.
 
 Below are links to DfT Coffee and Coding materials on the subject of connecting R to SQL
 
-[20181114_Connecting_R_to_SQL](https://github.com/department-for-transport/coffee-and-coding/tree/master/20181114_Connecting_R_to_SQL)
+[20181114_Connecting_R_to_SQL](https://github.com/department-for-transport/coffee-and-coding/tree/master/All_materials/20181114_Connecting_R_to_SQL)
 
-[20190130_SQL_and_Excel_to_R](https://github.com/department-for-transport/coffee-and-coding/tree/master/20190130_SQL_and_Excel_to_R)
+[20190130_SQL_and_Excel_to_R](https://github.com/department-for-transport/coffee-and-coding/tree/master/All_materials/20190130_SQL_and_Excel_to_R)
 
 
 ## GCP
@@ -511,7 +524,7 @@ Below are links to DfT Coffee and Coding materials on the subject of connecting 
 
 Link below to DfT Coffee and Coding materials on how to use {bigrquery} to interact with GCP's BigQuery
 
-[20190403_bigrquery](https://github.com/department-for-transport/coffee-and-coding/tree/master/20190403_bigrquery)
+[20190403_bigrquery](https://github.com/department-for-transport/coffee-and-coding/tree/master/All_materials/20190403_bigrquery)
 
 
 ## Copy data to clipboard

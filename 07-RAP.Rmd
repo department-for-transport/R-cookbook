@@ -13,10 +13,15 @@ Use the DfT RAP levels to ensure your DfT RAP project includes everything it sho
 
 These RAP levels have been amended from the original [NHS Scotland RAP levels](https://www.isdscotland.org/About-ISD/Methodologies/_docs/Reproducible_Analytical_Pipelines_paper_v1.4.pdf) to reflect DfT processes and software capabilities. There is guidance for the descriptors below the RAP levels.
 
-![RAP levels key](image/levels_key.png, alt = "Key for RAP levels")
+```{r, fig.alt="Key for RAP levels"}
+knitr::include_graphics("image/levels_key.png")
+```
 
-![RAP levels](image/rap_levels.png, alt = "RAP levels")
-DfT RAP levels guidance
+```{r, fig.alt="RAP levels"}
+knitr::include_graphics("image/rap_levels.png")
+```
+
+## DfT RAP levels guidance
 
 **Data file produced by code**
 Your code will produce the required data. This may involve some or all of cleaning, tidying, wrangling, analysing.
