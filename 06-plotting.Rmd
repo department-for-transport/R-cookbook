@@ -125,7 +125,7 @@ One method is not necessarily better than the other, but at DfT we advocate usin
 
 When plotting with {ggplot2}, we start with the ggplot() function which creates a blank canvas, then the next layer we add is the plot type. For line charts, this would be ggplot() + geom_line(). Within these functions, we specify our data and our aesthetic mappings i.e. what variables to map to the x and y axes from the specified data. If we were create a simple line chart for total accidents against year, the code would read as follows:
 
-```{r}
+```{r, fig.alt="ggplot plot"}
 ggplot(data = road_acc_total) +
   geom_line(mapping = aes(x = accident_year, y = total))
 ```
