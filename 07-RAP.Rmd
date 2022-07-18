@@ -66,7 +66,9 @@ Whilst incredibly powerful, RAP should not be seen as a solution for all the dif
 
 Sometimes it is difficult to decide if you should a RAP project or not. The following table should help you identify the benefits and risks for your individual problem:
 
-![advantages and disadvantages of RAP](image/adv_disadv.png)
+```{r, fig.alt="Advantages and disadvantages"}
+knitr::include_graphics("image/adv_disadv.png")
+```
 
 
 ## Additional resources

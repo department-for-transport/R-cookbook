@@ -28,14 +28,14 @@ head(road_acc)
 ### Line charts in base R ###
 
 We want to plot a line chart of total road accidents against year. First we need to group our data by accident year and summarise to get a total sum of accidents for each year:
-```{r}
+```{r, fig.alt="Base R plot"}
 road_acc_total <- road_acc %>%
   dplyr::group_by(accident_year) %>%
   dplyr::summarise(total = sum(total))
 ```
 
 We'll now use the base R function 'plot', specifying the x and y axis and well as the plot type 'l' for line charts:
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -44,7 +44,7 @@ plot(
 ```
 
 We can make our plot look better by specifying a colour, labelling the axes and giving our plot a title:
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -58,7 +58,7 @@ plot(
 
 We can also force our plot to start at 0:
 
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -88,13 +88,13 @@ options(scipen=999)
 ```
 
 
-```{r, message=FALSE}
+```{r, message=FALSE, fig.alt="Base R plot"}
 barplot(height = road_acc_2017$total)
 ```
 
 This isn't very useful as we can't see what the different severity types are. So we can specify these in the names.arg argument, as well as add a few extra features to make the plot look better:
 
-```{r}
+```{r, fig.alt="Base R plot"}
 barplot(height = road_acc_2017$total,
         names.arg = c("Fatal", "Serious", "Slight"),
         width = 2, #width of the bars
