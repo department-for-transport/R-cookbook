@@ -71,7 +71,21 @@ R -e "install.packages('bookdown', dependencies=NA, repos='http://cran.rstudio.c
 && \
 R -e "install.packages('tidyverse',dependencies=NA, repos='http://cran.rstudio.com/')" \
 && \
-R -e "install.packages('cowplot',dependencies=NA, repos='http://cran.rstudio.com/')" \
+R -e "install.packages('forcats',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('DT',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('fs',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('haven',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('kableExtra',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('ggplot2',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('purrr',dependencies=NA, repos='http://cran.rstudio.com/')" \
+&& \
+R -e "install.packages('stringr',dependencies=NA, repos='http://cran.rstudio.com/')" \
 && \
 echo "installed r and configured r environment"
 
@@ -84,4 +98,4 @@ cd /opt/auto-deploying-bookdown-example \
 && \
 ./build_book.sh \
 && \
-echo "compiled bookdown ebook
+echo "compiled bookdown ebook"
