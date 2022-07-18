@@ -13,9 +13,9 @@ Use the DfT RAP levels to ensure your DfT RAP project includes everything it sho
 
 These RAP levels have been amended from the original [NHS Scotland RAP levels](https://www.isdscotland.org/About-ISD/Methodologies/_docs/Reproducible_Analytical_Pipelines_paper_v1.4.pdf) to reflect DfT processes and software capabilities. There is guidance for the descriptors below the RAP levels.
 
-![RAP levels key](image/levels_key.png)
+![RAP levels key](image/levels_key.png, alt = "Key for RAP levels")
 
-![RAP levels](image/rap_levels.png)
+![RAP levels](image/rap_levels.png, alt = "RAP levels")
 DfT RAP levels guidance
 
 **Data file produced by code**
@@ -68,7 +68,7 @@ Sometimes it is difficult to decide if you should a RAP project or not. The foll
 
 There is are also quite a few links and resources which can help with a RAP project:
 
-[RAP govdown website](https://ukgovdatascience.github.io/rap-website/resource-nhs-nss-transforming-publications-toolkit.html) is a central repository for all things RAP across government, including lots of links.
+[RAP govdown website](https://github.com/Public-Health-Scotland/Toolkit) is a central repository for all things RAP across government, including lots of links.
 
 [RAP companion](https://ukgovdatascience.github.io/rap_companion/) comprehensive RAP guide.
 

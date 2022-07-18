@@ -164,7 +164,7 @@ readxl::read_excel(
 
 For example, you collect pokemon go capture data from many different players, the data all has the same structure and you want to read it in and row bind into a single dataframe in R. 
 
-![](image/pokemon_player.png)
+![](image/pokemon_player.png, alt = "Pokemon player data")
 
 <br/>
 The code below collects the names of the 3 excel workbooks using `fs::dir_ls`, and, as these are not the only files in that folder, I've specified them using regular expressions (regex). Then we use `purrr::map_dfr` to iterate and rowbind over this list of files, applying the function we supply, that is `readxl::read_excel`. Since we are only reading a single worksheet per workbook we don't need to supply any arguments to `readxl:read_excel`, the defaults will work fine, each workbook path is piped in, in turn. The `.id` argument in `purrr:map_dfr` adds the file path into a new column, which we have named "player" in this instance. The "dfr" in `map_dfr` refers to the output "data-frame-rowbound".
@@ -241,7 +241,7 @@ You have received some kind of data entry form that has been done in excel in a 
 
 Here's an image of what the data looks like.
 
-![](image/pet_form.png)
+![](image/pet_form.png, alt = "Pet form")
 
 Let's see what we get if we naively try to read it in.
 ```{r message=FALSE}
@@ -486,8 +486,6 @@ We recommend {openxlsx} and {xltabr} for writing and formatting tables to MS Exc
 
 [openxlsx manual](https://cran.r-project.org/web/packages/openxlsx/openxlsx.pdf)
 
-[xltabr manual](https://cran.r-project.org/web/packages/xltabr/xltabr.pdf)
-
 So you can see an example of the formatting available, here is a link to DfT's Search and Rescue Helicopter (SARH) statistics tables that are produced in R using {xltabr}.
 
 [SARH tables](https://www.gov.uk/government/statistical-data-sets/search-and-rescue-helicopter-sarh01)
@@ -502,9 +500,9 @@ Use {haven} to import SPSS, Stata and SAS files.
 
 Below are links to DfT Coffee and Coding materials on the subject of connecting R to SQL
 
-[20181114_Connecting_R_to_SQL](https://github.com/departmentfortransport/coffee-and-coding/tree/master/20181114_Connecting_R_to_SQL)
+[20181114_Connecting_R_to_SQL](https://github.com/department-for-transport/coffee-and-coding/tree/master/20181114_Connecting_R_to_SQL)
 
-[20190130_SQL_and_Excel_to_R](https://github.com/departmentfortransport/coffee-and-coding/tree/master/20190130_SQL_and_Excel_to_R)
+[20190130_SQL_and_Excel_to_R](https://github.com/department-for-transport/coffee-and-coding/tree/master/20190130_SQL_and_Excel_to_R)
 
 
 ## GCP
@@ -513,7 +511,7 @@ Below are links to DfT Coffee and Coding materials on the subject of connecting 
 
 Link below to DfT Coffee and Coding materials on how to use {bigrquery} to interact with GCP's BigQuery
 
-[20190403_bigrquery](https://github.com/departmentfortransport/coffee-and-coding/tree/master/20190403_bigrquery)
+[20190403_bigrquery](https://github.com/department-for-transport/coffee-and-coding/tree/master/20190403_bigrquery)
 
 
 ## Copy data to clipboard
