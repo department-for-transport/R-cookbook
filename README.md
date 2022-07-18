@@ -2,9 +2,6 @@
   <!-- badges: start -->
   [![CI-CD](https://github.com/department-for-transport/R-cookbook/actions/workflows/deploy-bookdown.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/deploy-bookdown.yaml)
     <!-- badges: end -->
-      <!-- badges: start -->
-  [![pages-build-deployment](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment)
-  <!-- badges: end -->
 
 # R-cookbook
 https://department-for-transport.github.io/R-cookbook/index.html
