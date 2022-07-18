@@ -94,6 +94,7 @@ echo "installed r and configured r environment"
 # build supplemental material (will also run data analyses)
 ########################################################
 RUN chmod +x\
+&& \
 cd /opt/R-cookbook \
 && \
 ./build_book.sh \
