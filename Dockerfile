@@ -64,39 +64,15 @@ libfontconfig1-dev \
 cargo \
 && \
 R -e "install.packages('rmarkdown', dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('knitr', dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('bookdown', dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('tidyverse',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('forcats',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('DT',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('fs',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('haven',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('kableExtra',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('ggplot2',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('purrr',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
-R -e "install.packages('stringr',dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
 echo "installed r and configured r environment"
 
 
 ########################################################
 # build supplemental material (will also run data analyses)
 ########################################################
-RUN chmod +x\
-&& \
+RUN 
 cd /opt/R-cookbook \
 && \
-./build_book.sh \
+chmod +x\ ./build_book.sh \
 && \
 echo "compiled bookdown ebook"
