@@ -273,7 +273,7 @@ tm_shape() +
             )
 ```
 ``` {r 6, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive1.html")
+#knitr::include_url("image/interactive1.html")
 ```
 
 It's worth noting that some arguments in {tmap} are only availble in static plots, and some only available in interactive maps. However, R will just skip the arguments that don't apply, so it wont break your code to leave them in. Here, the "legend.outside" argument is meaningless in an interactive plot, so is skipped by R when creating this interactive plot.
@@ -301,7 +301,7 @@ tm_shape() + # defining what shapefile to use
               ) 
 ```
 ``` {r 4, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive2.html")
+#knitr::include_url("image/interactive2.html")
 ```
 
 There are myriad aesthetic possibilities in {tmap} and related packages. It's not uncommon for a map to be built first in {tmap}, before exported as {leaflet} map and further edited in the {leaflet} package, though we wont cover that here. It's also possible to plot more than one spatial object at the same time. For example, layering polygons, points and lines from various shapefiles. Simply define the new spatial object with **tm_shape** and add aesthetics as before.
@@ -330,7 +330,7 @@ tm_shape() + # defining our second shapefile to use and plot in the same output 
   ) 
 ```
 ``` {r 2, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive3.html")
+#knitr::include_url("image/interactive3.html")
 ```
 
 ## Other Spatial Types
