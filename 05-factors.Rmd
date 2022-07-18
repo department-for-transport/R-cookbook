@@ -29,7 +29,7 @@ table(vehicles_observed)
 ```
 
 ### Ordering of data for output
-```{r}
+```{r, fig.alt="Ordered ggplot"}
 # example 1
 vehicles_observed <- c("car", "car", "bus", "car")
 possible_vehicles <- c("car", "bus", "motorbike", "bicycle")
