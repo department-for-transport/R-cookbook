@@ -71,7 +71,7 @@ echo "installed r and configured r environment"
 ########################################################
 # build supplemental material (will also run data analyses)
 ########################################################
-RUN \
-chmod +x ./opt/R-cookbook/build_book.sh \
-&& \
-echo "compiled bookdown ebook"
+#RUN \
+#chmod +x ./opt/R-cookbook/build_book.sh \
+#&& \
+#echo "compiled bookdown ebook"
