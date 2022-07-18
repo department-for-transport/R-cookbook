@@ -36,7 +36,7 @@ mtcars <- tibble::as.tibble(mtcars) %>%
 # {-}
 
 ```{r echo=FALSE, fig.alt="Title page"}
-knitr::include_graphics(path = "image/book_image_short.png", alt)
+knitr::include_graphics(path = "image/book_image_short.png")
 ```
 
 
