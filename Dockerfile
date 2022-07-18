@@ -64,7 +64,7 @@ libfontconfig1-dev \
 cargo \
 && \
 R -e "install.packages('rmarkdown', dependencies=NA, repos='http://cran.rstudio.com/')" \
-&& \
+
 echo "installed r and configured r environment"
 
 
@@ -72,8 +72,6 @@ echo "installed r and configured r environment"
 # build supplemental material (will also run data analyses)
 ########################################################
 RUN \
-cd /opt/R-cookbook \
-&& \
-chmod +x ./build_book.sh \
+chmod +x ./opt/R-cookbook/build_book.sh \
 && \
 echo "compiled bookdown ebook"
