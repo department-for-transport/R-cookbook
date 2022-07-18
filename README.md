@@ -1,7 +1,7 @@
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
   <!-- badges: start -->
-  [![CI-CD](https://github.com/department-for-transport/R-cookbook/actions/workflows/CI-CD.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/CI-CD.yaml)
-    [![pages-build-deployment](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment.yaml)
+  [![CI-CD](https://github.com/department-for-transport/R-cookbook/actions/workflows/CI-CD.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/deploy-bookdown.yaml)
+    [![pages-build-deployment](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/pages-build-deployment)
   <!-- badges: end -->
 
 # R-cookbook
