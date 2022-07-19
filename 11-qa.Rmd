@@ -3,9 +3,141 @@
 This chapter includes best practice advice for quality assurance and code, including both using R to carry out QA checks, and quality assurance of code itself.
 
 ## QA of data
-### Inline checks
-### Reports for you to check; visualisation or yes/no checks
-### Adding warnings/error points
-## QA of code itself
+
+Quality assurance of data is an obvious choice for something that can be partially automated as part of your coding. Basic checks of aspects such as data size and structure, totals of data matching and consistency of figures across multiple outputs are time consuming to check manually but require little analytical insight, so can generally be fully automated. In contrast, checks requiring a more in-depth knowledge such as ensuring changing figures and trends are feasible are often better partially automated; producing charts or other visualisations to allow an analyst to assure the data using their own knowledge. 
+
+### Adding clear messages to functions
+
+While good code makes use of functions, when complex data manipulation is performed inside a function it can often be difficult to see when or how errors arise. To make this easier, you should make use of errors, warnings and messages inside of functions, which provide the user information when something goes wrong. 
+
+Error messages will stop the function from running and produce an error as its only output. This is particularly useful when you are checking something that you know will completely break the functionality of the function; e.g. a file is not found, and you want it to stop running completely.
+
+```{r, eval = FALSE}
+#Example of code which generates an error when a file is not found
+safe_read <- function(filepath){
+  
+  #Check that the provided filepath exists
+  if(!file.exists(filepath)){
+    #Stop function returns the error text provided if the filepath fails the check
+    stop("File not found!")
+  }
+  
+  #This code is not executed if the filepath is not found
+  read.csv(filepath)
+}
+
+```
+
+In contrast, warning messages do not stop the function from running, but will produce a warning alongside the result, indicating to the user that there may be a problem. This is particularly useful when you know that failing a check is likely to result in data you can't use, but you still want the option to run the code inside the function.
+
+```{r, eval = FALSE}
+#Example of code which generates a warning when a file is of a specific type
+safe_read <- function(filepath){
+  
+  #Check that the provided filepath exists
+  if(grepl("xls$", filepath)){
+    #warning function returns the text provided if the filepath fails the check
+    warning("File is an old Excel type and may fail to read correctly")
+  }
+  
+  #This code is still executed even if the filepath fails the check
+  read.excel(filepath)
+}
+
+```
+
+Finally, messages can be used to provide the user information only. This is useful when you want to provide information about what is going on in the function, even when this is not associated with a negative check.
+
+```{r, eval = FALSE}
+#Example of code which generates a message about the file size
+safe_read <- function(filepath){
+  
+  #Message returns the text provided every time
+    message(paste("Reading in file of size:", file.size(filepath))
+  
+  #This code is always executed
+  read.csv(filepath)
+}
+
+```
+
+These should not be the only checks you rely on for quality assurance however. As they only produce a message in the console, it is possible to miss these messages, and there is no long term storage of any error messages which arise. This makes it difficult to audit errors or discover when they first started as there is no record of quality checks performed.
+
+### Generating QA reports 
+
+A clear and auditable way to carry out QA checks on data is to produce simple QA reports in RMarkdown. These reports can include:
+
+* Simple yes/no checks with verbal responses:
+
+```{r}
+#Example of a yes/no check on the structure of data
+if(ncol(mtcars) != 11){
+  paste("Unexpected number of columns in mtcars:", ncol(mtcars))
+} else{
+  paste("Expected number of columns (11) found in mtcars")
+}
+```
+
+* Returning only specific (e.g. unexpected or unusual) values in a dataset for further checking
+
+* Returning charts of data to visually inspect for anomalies
+
+Rendering in HTML format also produces a report which is easy to read in multiple formats and cannot be modified.
+
+Reports can be rendered as part of a larger automated project by using the `rmarkdown::render()` function. This function offers two advantages over using the *knit* button:
+
+* Doesn't require manual intervention to produce the report
+* Using the *output_file* argument in the render call allows you to specify a dynamic file name for the output report. This allows you to produce a unique report named for the date or time it was run, producing an auditable trail of QA reporting.
+
+```{r, eval=FALSE}
+#Example of code that will render a QA report with a dynamic name
+rmarkdown::render("qa_report.Rmd",
+                  output_file = paste0("qa_report", Sys.Date(), ".Rmd")
+
+```
+
+Additional arguments within the render call also allow you to specify:
+
+* The output directory, allowing you to output to a different folder
+* Output format; can specify different and multiple output types
+* Pass parameters to the knitted rmarkdown; this is ideal to run the same report multiple times with only small changes (e.g. filename of data to check, quarter of data to check)
+
+
+
+## QA of code
+
+In addition to using code to perform quality checks on data sources, it's important that code itself is quality assured. As automated steps will be repeated frequently, they can be a source of significant errors if it hasn't been checked that the code is fit for purpose and robust.
+
+### Code commenting
+
+Adding clear code comments is one of the easiest ways to ensure that your code remains fit for purpose. Comments should explain the *why* of your code; i.e. what it is doing in plain language and why you are doing this.
+
+```{r, eval = FALSE}
+#Good comment; explains what the aim of the code is
+mtcars %>%
+  #Calculate average horsepower by number of cylinders
+  dplyr::group_by(cyl) %>%
+  dplyr::summarise(hp = mean(hp))
+
+#Bad comment; gives no additional information about the code
+mtcars %>%
+  #Group and summarise
+  dplyr::group_by(cyl) %>%
+  dplyr::summarise(hp = mean(hp))
+```
+
+Clear code comments allow reviewers to check that the code is doing what it is supposed to do, and to suggest better options to achieve that aim, even if they are not familiar with the project itself.
+
 ### Code reviews
+
+You should get into the habit of your code being regularly reviewed by your peers, to ensure that it is good quality, efficient and robust. The easiest way to build this into your workflow is to make use of the code reviewing tools in Github. As well as allowing you to leave line-by-line comments on code, Github also makes it easy to request review on every pull request by default, and keeps an auditable record of all your code reviews alongside your code.
+
+Further information about [how code reviews on Github work](https://github.com/features/code-review) and [how to perform a good code review](https://blog.palantir.com/code-review-best-practices-19e02780015f).
+
 ### Testing code
+
+Unit testing ensures that functions in your code still work as expected every time you run them. This is ideal for code which you know may be updated in future, but also any code which is essential for the running of your project.
+
+You probably run unofficial unit tests every time you write new code; steps such as running code and then examining the output to check the data type, number of columns or data structure are examples of unit tests. Writing tests using a package such as `testthat` formalises that process and allows those tests to be run repeatedly to spot problems before they occur.
+
+Read more about [unit testing in R](https://r-pkgs.org/testing-basics.html) and [the testthat package](https://www.r-bloggers.com/2019/11/automated-testing-with-testthat-in-practice/)
