@@ -61,55 +61,6 @@ age_list = c(12, 7, 42)
 purrr::map2(.x = animal_list, .y = age_list, .f = state_animal_age)
 ```
 
-## Function to produce multiple graphs
-
-A generic function to create multiple graphs based on a list e.g. a graph for each local authority.
-
-The function creates a list to iterate over to produce multiple graphs, in this case a list of local authorities.
-
-The function then uses a loop to basically create a graph for each value in the list. 
-
-The graphs are created using ggplot, where the data being used to create the graphs is subset based on the value it is currently using from the list. So, in this case the data is subset based on each local authority in the list and a graph is created using this subset of data. This is then looped for each local authority in the list.
-
-The function saves each graph as a png file in the working directory.
-
-
-```{r, eval = FALSE, echo = TRUE}
-
-# create graphing function
-    multiple.graph <- function(df, na.rm = TRUE, ...){
-      
-      # create list of local authorities in data to loop over 
-      la_list <- unique(df$local_authority)
-      
-      # create for loop to produce ggplot2 graphs 
-      for (i in seq_along(la_list)) { 
-        
-        # create plot for each LA in df 
-        plot <- 
-          ggplot(subset(df, df$local_authority==la_list[i]),
-                 aes(x = year)) +
-          geom_line(aes(y = serious_accidents), colour = "blue", size = 2) +
-          ylab("serious accident count") +
-          xlab("Year") +
-          theme_bw() +
-          ggtitle(paste(la_list[i], "comparison chart"))    # this produces a dynamic title which is updated based on the local authority currently being used from the list
-
-        
-         # save plots as .png
-        ggsave(plot, file=paste(la_list[i], ".png", sep=''), scale=2)
-        
-         # print plots to screen
-    print(plot)
-  }
-    }
-
-## run function
-multiple.graph(dataframe3)
-
-```
-
-
 ## Further reading
 
 [Functions chapter of R for Data Science by Hadley Wickham](https://r4ds.had.co.nz/functions.html)
