@@ -65,5 +65,3 @@ purrr::map2(.x = animal_list, .y = age_list, .f = state_animal_age)
 
 [Functions chapter of R for Data Science by Hadley Wickham](https://r4ds.had.co.nz/functions.html)
 
-## Function to create folder structure for R project
-
