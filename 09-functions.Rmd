@@ -8,7 +8,7 @@ This chapter contains the basics of how to write a function, links to more compl
 
 ## User defined functions (UDFs)
 
-A non-exhaustive list of possible reasons for writing your own UDF,
+A non-exhaustive list of possible reasons for writing your own functions;
 
 * you are repeating some code chunk changing only a few variables each time.
 * you want to apply the same set of commands to multiple instances of some object: it might be a dataframe, a text string, a document, an image etc.
@@ -60,6 +60,19 @@ age_list = c(12, 7, 42)
 
 purrr::map2(.x = animal_list, .y = age_list, .f = state_animal_age)
 ```
+
+## Packages within DfT
+
+In addition to writing your own functions, there are a number of packages available for you to use in DfT. As good practice, you should always aim to use an existing package when one is available rather than writing your own functions, as this ensures your code remains maintained and consistent.
+
+DfT packages currently available include:
+
+- **[dftplotR](https://github.com/department-for-transport/dftplotr)** Create charts with accessible DfT-themed formatting and colour palettes
+- **[slidepackR](https://github.com/department-for-transport-public/slidepackr)** Create DfT-themed HTML slidepacks in R
+- **[tableformatR](https://github.com/department-for-transport-public/tableformatr)** Format openxlsx tables to make them accessible for publication
+- **[dftutils](https://github.com/department-for-transport/dftutils)** Utility package for small reusable functions
+- **[mojspeakr](https://github.com/moj-analytical-services/mojspeakr)** Technically not a DfT package, but widely used here! Helps to convert Rmarkdown to a format suitable for publication on gov.uk
+
 
 ## Further reading
 
