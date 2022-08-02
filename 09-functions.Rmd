@@ -70,7 +70,6 @@ DfT packages currently available include:
 - **[dftplotR](https://github.com/department-for-transport/dftplotr)** Create charts with accessible DfT-themed formatting and colour palettes
 - **[slidepackR](https://github.com/department-for-transport-public/slidepackr)** Create DfT-themed HTML slidepacks in R
 - **[tableformatR](https://github.com/department-for-transport-public/tableformatr)** Format openxlsx tables to make them accessible for publication
-- **[dftutils](https://github.com/department-for-transport/dftutils)** Utility package for small reusable functions
 - **[mojspeakr](https://github.com/moj-analytical-services/mojspeakr)** Technically not a DfT package, but widely used here! Helps to convert Rmarkdown to a format suitable for publication on gov.uk
 
 
