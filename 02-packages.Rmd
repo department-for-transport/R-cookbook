@@ -151,8 +151,8 @@ External to the tidyverse there are also a small number of core packages you wil
 
 In addition, there are a growing number of DfT-specific packages which have been released on our organisational Github. These have been designed to address-DfT specific gaps in the packages available, and are safe to download and use on network laptops.
 
-* **dftplotr**: ggplot2 add-on which allows you to create charts with DfT themeing and colour palettes
-* **slidepackr**: create HTML slidepacks using a DfT template
+* [dftplotr](https://github.com/department-for-transport/dftplotr): ggplot2 add-on which allows you to create charts with DfT themeing and colour palettes
+* [slidepackr](https://github.com/department-for-transport-public/slidepackr): create HTML slidepacks using a DfT template
 
 ### Specialist packages
 
