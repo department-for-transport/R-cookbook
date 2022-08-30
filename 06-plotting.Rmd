@@ -28,14 +28,14 @@ head(road_acc)
 ### Line charts in base R ###
 
 We want to plot a line chart of total road accidents against year. First we need to group our data by accident year and summarise to get a total sum of accidents for each year:
-```{r}
+```{r, fig.alt="Base R plot"}
 road_acc_total <- road_acc %>%
   dplyr::group_by(accident_year) %>%
   dplyr::summarise(total = sum(total))
 ```
 
 We'll now use the base R function 'plot', specifying the x and y axis and well as the plot type 'l' for line charts:
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -44,7 +44,7 @@ plot(
 ```
 
 We can make our plot look better by specifying a colour, labelling the axes and giving our plot a title:
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -58,7 +58,7 @@ plot(
 
 We can also force our plot to start at 0:
 
-```{r}
+```{r, fig.alt="Base R plot"}
 plot(
   x = road_acc_total$accident_year,
   y = road_acc_total$total,
@@ -88,13 +88,13 @@ options(scipen=999)
 ```
 
 
-```{r, message=FALSE}
+```{r, message=FALSE, fig.alt="Base R plot"}
 barplot(height = road_acc_2017$total)
 ```
 
 This isn't very useful as we can't see what the different severity types are. So we can specify these in the names.arg argument, as well as add a few extra features to make the plot look better:
 
-```{r}
+```{r, fig.alt="Base R plot"}
 barplot(height = road_acc_2017$total,
         names.arg = c("Fatal", "Serious", "Slight"),
         width = 2, #width of the bars
@@ -125,7 +125,7 @@ One method is not necessarily better than the other, but at DfT we advocate usin
 
 When plotting with {ggplot2}, we start with the ggplot() function which creates a blank canvas, then the next layer we add is the plot type. For line charts, this would be ggplot() + geom_line(). Within these functions, we specify our data and our aesthetic mappings i.e. what variables to map to the x and y axes from the specified data. If we were create a simple line chart for total accidents against year, the code would read as follows:
 
-```{r}
+```{r, fig.alt="ggplot plot"}
 ggplot(data = road_acc_total) +
   geom_line(mapping = aes(x = accident_year, y = total))
 ```
@@ -136,11 +136,11 @@ ggplot(data = name_of_dataset) +
   geom_function(mapping = aes())
 
 
-You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf).
+You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf).
 
 Let's create the same the line chart we created with base R, showing total road accidents against year:
 
-```{r}
+```{r, fig.alt="plot1"}
 ggplot(data = road_acc_total) +
   geom_line(aes(x = accident_year, y = total), col = "red") +
   xlab("Year") +
@@ -158,7 +158,7 @@ We have used scale_x_continuous() function to specify the intervals in the year 
 
 To get more insight into our data, we can add a third variable to our plot by mapping it to an aesthetic. This is a visual property of the objects in our plot such as the size, the shape or the colour of our points. For example, if we want to see the total number of road accidents by severity type against year, we can map the 'name' variable to the colour aesthetic:
 
-```{r}
+```{r, fig.alt="plot2"}
 ggplot(data = road_acc) +
   geom_line(mapping = aes(x = accident_year, y = total, colour = name)) +
   scale_x_continuous(breaks = seq(2000, 2017, 2))
@@ -170,7 +170,7 @@ So unlike before, we specify the colour within the aes() function, rather than o
 
 When creating bar charts with {ggplot2}, we can use geom_bar() or geom_col(). geom_bar() makes the height of the bar proportional to the number of cases in each group while geom_col() enables the heights of the bars to represent values in the data. So if your data is not already grouped you can use geom_bar() like so:
 
-```{r, message=FALSE}
+```{r, message=FALSE, , fig.alt="plot3"}
 messy_pokemon <- readr::read_csv(
   file = "data/messy_pokemon_data.csv")
 head(messy_pokemon)
@@ -182,7 +182,7 @@ This has grouped our data by weight_bin with the height of the bars representing
 
 Let's recreate the total accidents by severity chart, now using {ggplot2} instead:
 
-```{r}
+```{r, fig.alt="plot4"}
 ggplot(data = road_acc_2017) +
   geom_col(mapping = aes(x = name, y = total), fill = "lightblue", col = "black")+
   xlab("Severity") +
@@ -196,7 +196,7 @@ Here we have used geom_col() instead but our data is already grouped so we simpl
 You could also use geom_bar() in this situation but you would need to add an extra argument: stat = "identity".
 
 
-```{r}
+```{r, fig.alt="plot5"}
 ggplot(data = road_acc_2017) +
   geom_bar(mapping = aes(x = name, y = total),  fill = "lightblue", col = "black", stat = "identity")+
   xlab("Severity") +
@@ -209,7 +209,7 @@ ggplot(data = road_acc_2017) +
 
 So far we've used colours built into R and referred to them by name e.g. red, lightlue etc. In order to make charts using DfT colours, we can specify what colours we want using hexcodes. For example, for the previous bar chart we can set the levels of severity to different DfT colours.
 
-```{r}
+```{r, fig.alt="plot6"}
 ggplot(data = road_acc_2017) +
   geom_col(mapping = aes(x = name, y = total, fill = name))+
   xlab("Severity") +
@@ -229,7 +229,7 @@ We mentioned themes earlier. Themes are used to set the style of your plot and c
 
 You can modify aspects of a theme using the theme() function. For example, for our previous accidents plot, we can remove the legend title and move the position of the plot title.
 
-```{r}
+```{r, fig.alt="plot7"}
 ggplot(data = road_acc_2017) +
   geom_col(mapping = aes(x = name, y = total, fill = name))+
   xlab("Severity") +
@@ -247,7 +247,7 @@ Instead of using the built-in themes, we can create our own theme to apply to ou
 
 You can adjust and tweak this theme and the colours to create plots in the correct style for your own publications. 
 
-```{r}
+```{r, fig.alt="plot8"}
 # set DfT colours
 dft_colour <- c("#006853", # dark green
                     "#66A498", # light green
@@ -309,7 +309,7 @@ Note that to draw out a colour for the points, the code specifies which colour i
 
 Labels are added to the scatter plot using **geom_text**. 
 
-```{r}
+```{r, fig.alt="plot9"}
 # First get total number of accidents for each police force
 accident_pf <- road_acc_data %>%
   dplyr::group_by(Police_Force) %>%
@@ -339,7 +339,7 @@ As this is categorical data, police force is made a factor, with each police for
 
 
 
-```{r}
+```{r, fig.alt="plot10"}
 # Arrange police force data by size
 accident_pf <- arrange(accident_pf, n)
 # take a subset for charting purposes
@@ -369,7 +369,7 @@ This example will create a stacked bar chart showing the percentage of road acci
 
 Creating a **percentage stacked bar** requires using the **geom_bar** command in ggplot2 and setting the position to **fill**.
 
-```{r}
+```{r, fig.alt="plot11"}
 # Make accident year a factor so year on x-axis is labelled individually
 #(otherwise axis will be continuous)
 road_acc_year <- road_acc
@@ -387,7 +387,7 @@ ggplot(data = road_acc_year, aes(fill = name, y=total, x= accident_year)) +
 
 If you want the stacked bar chart to show numbers instead of percentages use **position = "stack"** instead.
 
-```{r}
+```{r, fig.alt="plot12"}
 # use the DfT colours and the DfT theme for the accidents by police force scatter chart
 ggplot(data = road_acc_year, aes(fill = name, y=total, x= accident_year)) +
   geom_bar(position="stack", stat="identity") +
@@ -410,7 +410,7 @@ It can be used in two ways - either with {ggplot2} (easier option) or using the 
 
 Taking our previous accidents by severity plot, we can simply assign this to an object and use the ggplotly() function to make it interactive.
 
-```{r, message=FALSE}
+```{r, message=FALSE, fig.alt="plot13"}
 library(plotly)
 road_acc_chart <- ggplot(data = road_acc) +
   geom_line(mapping = aes(x = accident_year, y = total, colour = name), size = 1.5) +
@@ -428,7 +428,7 @@ Since we set our legend to be horizontal in our DfT theme, we get a warning mess
 
 Using plot_ly() is similar to {ggplot2} in some ways as we build the plot in layers but we use the pipe operator rather than a plus sign, and the ~ sign before the variables in our data:
 
-```{r}
+```{r, fig.alt="plot14"}
 plotly::plot_ly(road_acc, x = ~accident_year, y = ~total) %>% # specify the data and x and y axes
   plotly::add_lines(color = ~name, colors = dft_colour[1:3]) %>% # colour lines by severity
   plotly::layout(title = "Accidents by severity, 2005 to 2017",

@@ -1,0 +1,66 @@
+on: [push, pull_request]
+
+name: CI-CD
+
+jobs:
+  CI-CD:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      # We keep a matrix for convenience, but we would always want to run on one
+      # single OS and R version
+      matrix:
+        config:
+          - {os: ubuntu-latest, r: 'release'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.TOKEN }}
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          use-public-rspm: true
+
+      - name: Install and cache dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Build site
+        run: |
+          bookdown::render_book("index.Rmd", "bookdown::gitbook")
+        shell: Rscript {0}
+
+      - name: Upload built site artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: site
+          path: _book
+
+      - name: Test website
+        uses: docker://klakegg/html-proofer:3.18.8
+        with:
+          args: _book
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/master'
+        # TODO: consider switching to JamesIves/github-pages-deploy-action
+        # uses: JamesIves/github-pages-deploy-action@4.1.4
+        # with:
+        #   branch: gh-pages
+        #   folder: _book
+        uses: crazy-max/ghaction-github-pages@v2.2.0
+        with:
+          target_branch: gh-pages
+          build_dir: _book
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}

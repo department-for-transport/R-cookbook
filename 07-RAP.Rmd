@@ -13,10 +13,15 @@ Use the DfT RAP levels to ensure your DfT RAP project includes everything it sho
 
 These RAP levels have been amended from the original [NHS Scotland RAP levels](https://www.isdscotland.org/About-ISD/Methodologies/_docs/Reproducible_Analytical_Pipelines_paper_v1.4.pdf) to reflect DfT processes and software capabilities. There is guidance for the descriptors below the RAP levels.
 
-![RAP levels key](image/levels_key.png)
+```{r, fig.alt="Key for RAP levels"}
+knitr::include_graphics("image/levels_key.png")
+```
 
-![RAP levels](image/rap_levels.png)
-DfT RAP levels guidance
+```{r, fig.alt="RAP levels"}
+knitr::include_graphics("image/rap_levels.png")
+```
+
+## DfT RAP levels guidance
 
 **Data file produced by code**
 Your code will produce the required data. This may involve some or all of cleaning, tidying, wrangling, analysing.
@@ -61,14 +66,16 @@ Whilst incredibly powerful, RAP should not be seen as a solution for all the dif
 
 Sometimes it is difficult to decide if you should a RAP project or not. The following table should help you identify the benefits and risks for your individual problem:
 
-![advantages and disadvantages of RAP](image/adv_disadv.png)
+```{r, fig.alt="Advantages and disadvantages"}
+knitr::include_graphics("image/adv_disadv.png")
+```
 
 
 ## Additional resources
 
 There is are also quite a few links and resources which can help with a RAP project:
 
-[RAP govdown website](https://ukgovdatascience.github.io/rap-website/resource-nhs-nss-transforming-publications-toolkit.html) is a central repository for all things RAP across government, including lots of links.
+[RAP govdown website](https://github.com/Public-Health-Scotland/Toolkit) is a central repository for all things RAP across government, including lots of links.
 
 [RAP companion](https://ukgovdatascience.github.io/rap_companion/) comprehensive RAP guide.
 
