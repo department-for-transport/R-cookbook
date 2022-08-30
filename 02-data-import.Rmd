@@ -16,29 +16,11 @@ library(haven) #for importing/exporting SPSS, Stata, and SAS files
 library(bigrquery) #connecting to GCP BigQuery
 ```
 
-```{r echo=FALSE, eval=FALSE, message=FALSE}
-#libraries in the next code chunk are not needed to run code in this chapter but are listed as useful libraries
-#this message will not appear in the book
-```
-
-```{r eval=FALSE, message=FALSE}
-library(openxlsx) #formatting xlsx outputs
-library(xltabr) #MoJ RAP enabler built on openxlsx
-```
-
-
-## Star functions
-
-- `readxl::read_excel`
-- `readxl::excel_sheets`
-- `purrr::map_dfr`
-- `purrr::map_dfc`
-- `purrr::map2_dfc`
-- `fs::dir_ls`
 
 ## Navigating folders
 
 A couple of pointers to navigate from your working directory, which, if you're using R projects (it is highly recommended that you do) will be wherever the `.Rproj` file is located 
+
 ### Down
 
 To navigate down folders use `/`. The path given below saves the file **my_df.csv** in the **data** folder, which itself is inside the **monthly_work** folder
@@ -495,13 +477,9 @@ pet_house_all %>%
 
 ## Exporting to .xlsx
 
-We recommend {openxlsx} and {xltabr} for writing and formatting tables to MS Excel. The latter is a wrapper built on {openxlsx} developed by MoJ and is specifically aimed at making it easier to produce publication ready tables. {xltabr} has one known drawback in that it applies the formatting cell by cell, so if your tables are massive (~100,000 rows) it will take too long, in this instance you should resort to {openxlsx}.
+We recommend {openxlsx} for writing and formatting tables to MS Excel. 
 
 [openxlsx manual](https://cran.r-project.org/web/packages/openxlsx/openxlsx.pdf)
-
-So you can see an example of the formatting available, here is a link to DfT's Search and Rescue Helicopter (SARH) statistics tables that are produced in R using {xltabr}.
-
-[SARH tables](https://www.gov.uk/government/statistical-data-sets/search-and-rescue-helicopter-sarh01)
 
 
 
@@ -520,24 +498,11 @@ Below are links to DfT Coffee and Coding materials on the subject of connecting 
 
 ## GCP
 
-### BigQuery
 
-Link below to DfT Coffee and Coding materials on how to use {bigrquery} to interact with GCP's BigQuery
+### BigQuery 
 
-[20190403_bigrquery](https://github.com/department-for-transport/coffee-and-coding/tree/master/All_materials/20190403_bigrquery)
+[Digital guidance](https://departmentfortransportuk.sharepoint.com/:w:/s/RStudioIDERS-GAD-DS/EZ2Fw6A9GvRPibpJVVKj7iABDUtEuY2ITyNwGwWg-XGRQA?e=YeRM1a) on how to use {bigrquery} to interact with GCP's BigQuery
 
+### Google Cloud Storage
 
-## Copy data to clipboard
-
-Normally when you have a table in a data frame in R, if you want to get this into a spreadsheet you will need to use functions like `writexl::write_xlsx` or the base `write.csv` to do so. Wouldn’t it be easier to simply copy the entire data frame to the clipboard, so that you can paste it in the spreadsheet yourself? Well try this:
-
-`write.table(df, "clipboard", sep="\t", col.names=TRUE)`
-
-**df** = data frame you want to copy
-**col.names** = if you want the column headers leave as TRUE. Just the data, change to FALSE
-
-If you get warnings about “too big for clipboard”, you can even specify what size of clipboard you want to copy to, such as:
-
-`write.table(df, "clipboard-16384", sep="\t", col.names=TRUE)`
-
-This tells the write.table to copy df to a clipboard with size 2^14.
+[Digital guidance](https://departmentfortransportuk.sharepoint.com/:w:/s/RStudioIDERS-GAD-DS/EZ2Fw6A9GvRPibpJVVKj7iABDUtEuY2ITyNwGwWg-XGRQA?e=YeRM1a) on how to connect to GCS using R.
