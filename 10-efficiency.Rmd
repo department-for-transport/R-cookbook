@@ -50,13 +50,19 @@ While R is capable of reading data in from a large variety of file types, some o
 
 An example below shows the speed of reading the same data from CSV, xlsx and RDA formats. As you can see, reading in data from an xlsx file vs an efficient CSV read can take around 100 times longer. 
 
-![](image/file_read_speed.png)
+```{r, fig.alt="File reading speed demonstration with different formats"}
+knitr::include_graphics("image/file_read_speed.png")
+```
+
 
 As a result, you should aim to save data as flat files such as CSV or RDA files wherever possible. Data that you will reuse should always be converted to a flat-file format rather than reading in from xlsx tables.
 
 In addition to this, the structure of your data also impacts how fast it is to read. As any data read needs to determine the data type for each column, reading in extra columns is always much slower than reading in extra rows; even if overall the size of the data is the same! 
 
-![](image/long_vs_wide.png)
+```{r, fig.alt="File reading speed demonstration long vs wide format"}
+knitr::include_graphics("image/long_vs_wide.png")
+```
+
 
 This is one of many reasons why tidy (long) data is preferable to wide data; you should always aim to store data in tidy data formats. You can read more about the principles of tidy data [here](https://r4ds.had.co.nz/tidy-data.html) 
 
@@ -84,9 +90,14 @@ As previously discussed, there are a wide range of R packages available. While m
 
 An example of this is use of the package `data.table`. In comparison to both base R and dplyr, data.table offers significant speed benefits while also minimising memory usage. This applies for both reading and more general data manipulation:
 
-![](image/csv_read_speed.png)
+```{r, fig.alt="File reading speed demonstration different CSV reading packages"}
+knitr::include_graphics("image/csv_read_speed.png")
+```
 
-![](image/summarise_speed.png)
+```{r, fig.alt="File reading speed demonstration different CSV reading packages"}
+knitr::include_graphics("image/summarise_speed.png")
+```
+
 
 The real benefits of data.table become evident beyond 100,000 rows of data; below this, the improvements are minimal and generally don't outweigh the benefit of the simpler dplyr syntax.
 
