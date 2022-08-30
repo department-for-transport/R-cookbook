@@ -142,7 +142,10 @@ Let's have a look at the most severe accidents (accidents with 5 or more casualt
 ``` {r 13i, echo = TRUE, eval = FALSE, error = FALSE, warning = FALSE}
 crashes %>% dplyr::filter(Number_of_Casualties >= 5) %>% tmap::qtm()
 ```
-![](image/crashesq.png)
+
+```{r, fig.alt="Crashes Q"}
+knitr::include_graphics("image/crashesq.png")
+```
 
 The **qtm** function is a useful function from {tmap} that let's us quickly create maps with a minimum number of arguments. This is often useful for sense-checking data and can help you spot errors in data manipulation when working with spatial data. Here, for example, we can see that our data largely makes sense, so our conversion to {sf} was likely correct. We can (roughly) make out the shape of Great Britain, and we see some clusters around major cities (London, Birmingham, Manchester etc.). We can also see that we don't appear to have data for Northern Ireland in this dataset (either that or Northern Irish drivers are much safer drivers).
 
@@ -176,7 +179,9 @@ We now have our casualties data joined to our original local authorities shapefi
 
 Let's have a look at one of our Local Authorities in isolation, Cornwall.
 
-![](image/Cornwall1.png)
+```{r, fig.alt="Cornwall map"}
+knitr::include_graphics("image/Cornwall1.png")
+```
 
 We can see that our polygon is quite detailed. While this detail is desirable for when we conduct our spatial analysis, if we want to plot all of our local authorities at the same time, it can be better to plot simplified polygons. This is for 3 reasons. First, simplification means that R can create and output plots quicker; Second, outputs will have a smaller file size (particularly useful for interactive plots or when we share our outputs); and third, sometimes simplified polygons actually look better in plots as too-detailed borders can come out looking murky due to over-plotting, particularly in static plots.
 
@@ -191,7 +196,9 @@ This command creates a new sf data frame called "LAs_simp", which has all the sa
 
 Let's have a look at the difference between our original and our simplified polygon:
 
-![](image/CornwallCompare.png)
+```{r, fig.alt="Cornwall Compare"}
+knitr::include_graphics("image/CornwallCompare.png")
+```
 
 Even with only 5% of the original points, we can see that we've held onto a lot of the information that we'd want if we were plotting these polygons.
 
@@ -227,7 +234,9 @@ tmap::tm_shape(LAs) + # defining what shapefile to use
             )
 ```
 
-![](image/static1.png)
+```{r, fig.alt="Static 1"}
+knitr::include_graphics("image/static1.png")
+```
 
 One problem with this plot is that we still have Northern Ireland in the plot, and we only have NAs for northern Ireland (as our casualties dataset didn't have accidents which happened there). To fix this, we can utilise a simple {dplyr} filter to remove features which have an *NA* value for casualties. We can then pipe a filtered sf dataframe into the **tm_shape** function.
 
@@ -247,7 +256,9 @@ tm_shape() + # defining what shapefile to use
            )
 ```
 
-![](image/static2.png)
+```{r, fig.alt="Static 2"}
+knitr::include_graphics("image/static2.png")
+```
 
 Though this plot is useful, and gives us a sense of the distribution of accidents, it's difficult to make out values of smaller local authorities. What would make this easier is if we changed our map to an interactive map. We can do this very easily, using the same chunk of code, by simply setting the **tmap_mode** to "view".
 
@@ -273,7 +284,7 @@ tm_shape() +
             )
 ```
 ``` {r 6, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive1.html")
+#knitr::include_url("image/interactive1.html")
 ```
 
 It's worth noting that some arguments in {tmap} are only availble in static plots, and some only available in interactive maps. However, R will just skip the arguments that don't apply, so it wont break your code to leave them in. Here, the "legend.outside" argument is meaningless in an interactive plot, so is skipped by R when creating this interactive plot.
@@ -301,7 +312,7 @@ tm_shape() + # defining what shapefile to use
               ) 
 ```
 ``` {r 4, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive2.html")
+#knitr::include_url("image/interactive2.html")
 ```
 
 There are myriad aesthetic possibilities in {tmap} and related packages. It's not uncommon for a map to be built first in {tmap}, before exported as {leaflet} map and further edited in the {leaflet} package, though we wont cover that here. It's also possible to plot more than one spatial object at the same time. For example, layering polygons, points and lines from various shapefiles. Simply define the new spatial object with **tm_shape** and add aesthetics as before.
@@ -330,7 +341,7 @@ tm_shape() + # defining our second shapefile to use and plot in the same output 
   ) 
 ```
 ``` {r 2, echo = FALSE, eval = TRUE, error = FALSE, verbose = TRUE, warning = TRUE}
-knitr::include_url("image/interactive3.html")
+#knitr::include_url("image/interactive3.html")
 ```
 
 ## Other Spatial Types

@@ -1,5 +1,7 @@
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![Build Status](https://travis-ci.org/departmentfortransport/R-cookbook.svg?branch=master)](https://travis-ci.org/departmentfortransport/R-cookbook)
+  <!-- badges: start -->
+  [![CI-CD](https://github.com/department-for-transport/R-cookbook/actions/workflows/deploy-bookdown.yaml/badge.svg)](https://github.com/department-for-transport/R-cookbook/actions/workflows/deploy-bookdown.yaml)
+    <!-- badges: end -->
 
 # R-cookbook
 https://department-for-transport.github.io/R-cookbook/index.html
