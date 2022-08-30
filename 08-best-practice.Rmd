@@ -260,7 +260,7 @@ README files can either be .md (markdown) or .html files. You can write a .md fi
 
 Running code files in the wrong order, or forgetting to run parts of code is the most likely point of failure for a project. You can ensure that code across multiple files is always run in the correct order by using the `source()` function to call all code in order. You should aim to do this from a single central file, and store all your other code files in a *source code* or *R* folder. You can also use the `markdown::render()` function to knit rmarkdown documents from this central file.
 
-See [here](https://github.com/department-for-transport/transport_modes_table) for an example of a large code project which runs from a single central file.
+See [the Department for Transport github](https://github.com/department-for-transport) for many examples of R coding projects which run from a single central file.
 
 ### Data storage
 
