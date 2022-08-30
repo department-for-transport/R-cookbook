@@ -1,0 +1,191 @@
+# R Packages {#packages}
+
+This chapter discusses best practice for using packages in your R code, and gives recommended packages for a range of applications.
+
+## What are packages?
+
+While base R can be used to achieve some impressive results, the vast majority of coding in R is done using one or more *packages*. Packages (often also called libraries) are shareable units of code which are written, published and maintained by other R coders. The scope of each individual package varies massively; some perform a single function, whereas others are large and underpin many core aspects of everyday R usage. The huge variety of packages is one of the reasons that R is so successful: it allows you to benefit from the work of others by downloading their packages.
+
+The most common way to install R packages is using the Comprehensive R Archive Network, or CRAN, which you do via an `install.packages()` call e.g.
+
+```{r, eval=FALSE}
+install.packages("data.table")
+install.packages("dplyr")
+```
+
+
+## Best practice in using packages
+
+While it's very easy to get started with packages, there are a few best practice tips which will make it easier to manage how you use packages in a consistent, replicable and transparent way.
+
+### Calling packages
+
+You can tell your code when you want to make use of the contents of a package by making a `library()` call in your code. This needs to be done before you run any code which references that package e.g.
+
+```{r, eval=FALSE}
+
+## This code will produce an error
+toTitleCase("hello")
+
+library(tools)
+
+## This code will run fine
+library(tools)
+
+toTitleCase("hello")
+
+```
+
+Your code should always call all libraries it uses at the very beginning of the code, even if the package won't be used until much later. This allows users to know what packages they need in any piece of code. 
+
+Your code also shouldn't include any `install.packages()` calls. Forcing code users to install packages will make significant changes to their coding environment, and may even break other code for them. If you need to ensure they have the right packages installed, you should use package version control such as renv.
+
+To ensure you've called all necessary packages in your code, it is helpful run your code in a fresh R instance (CTRL+SHIFT+F10 to refresh your environment) and rerun your code, to check it isn't dependent on any libraries pre-loaded in your environment.
+
+### Core package usage
+
+The large number of R packages available means that it's common for there to be multiple packages which perform essentially the same functions. Use of multiple similar packages in this way makes your code difficult to use for beginners, and is more likely to cause bugs and other errors.
+
+To minimise this, your code should start from a basis of a core group of common packages, and only add additional or different packages where they fulfill functions which can't be met by the core packages. This chapter includes a number of suggestions of core packages which are well-supported and easy to use, and that you should to aim to use where possible.
+
+### Using Github packages
+
+While there are a large number of packages available to download on CRAN, there are many more that people have released on other platforms, particularly Github. This is usually because they don't want to go through the stringent review process which CRAN requires, or their package is still under development.
+
+Packages can be easily downloaded and used from Github using the `remotes::install_github()` function, and this allows you to make use of a wider code base in your work. However, Github packages should be used with caution:
+
+* They have not been peer reviewed like CRAN packages, so are more likely to contain problems, errors or even malicious code.
+* Bugs may not be regularly (or ever) corrected.
+* There is no guarantee the package will be maintained.
+
+You should **always** use a CRAN package in preference to a Github alternative where one is available. You should also be cautious of downloading and using Github packages where the author is not known to you, and you should ensure you have a good understanding of the code in the package and what it does before installing or using it.
+
+### Using packages instead of stand-alone functions
+
+Packages offer a number of benefits over just including stand-alone functions in your code. They increase the consistency of code usage, preventing you from using different iterations of the same function in different situations. They are also regularly tested and checked, and you can be confident they are performing their function as intended.
+
+You should generally always aim to use a function from a common package rather than writing your own where possible.
+
+### Heavy dependency packages
+
+Sometimes when calling libraries, it is easy to accidentally create a lot of **heavy dependencies** for your code. These are packages which in turn are dependent on a large number of other packages, requiring you to install many packages before running the code and increasing the points of failure.
+
+When introducing new packages into your code, it is always worth checking if the function you are calling can be sourced in a more lightweight way, e.g.
+
+```{r, eval = FALSE}
+
+##Tidyverse is an example of a heavy dependency which is not really required for simply using the pipe function
+
+library(tidyverse)
+
+mtcars %>%
+  head()
+
+##A much better alternative if other code from the tidyverse is not required, is to call the package that the pipe originates from instead (magrittr), which has few dependencies
+
+library(magrittr)
+
+mtcars %>%
+  head()
+
+```
+
+
+### Specifying packages when using functions
+
+As well as calling libraries at the start of your code, you can also specify what package a function comes from every time you use it using "double colon" formatting:
+
+```{r, eval=FALSE}
+
+##Calling a function without referencing the package
+str_trim(" test ")
+
+##Calling a function including the package using "double colon" notation.
+stringr::str_trim(" test ")
+
+```
+
+While this format is slightly more time-consuming to write, it has a number of advantages:
+
+* Easy to understand which package each function comes from, particularly useful for unusual functions
+* Greater specificity reduces the risk of function conflicts across packages
+* Individual lines of code will run without needing to make library calls
+* Easy setup of package dependencies by packages such as renv
+* Allows code to be converted to a package easily
+
+## Recommended packages
+
+Due to the diversity of packages available for R, and the range of tasks people successfully complete with them, it is impossible to provide a definitive list of all the packages people should be using. Rather, this section aims to capture a short list of packages which perform functions common to most analytical projects, such as data reading, cleaning and visualisation. You should expect to add more specialist packages to your projects in most cases, but shouldn't aim to substitute the below packages for others without strong rationale.
+
+### Tidyverse
+
+The tidyverse is the most ubiquitous set of packages used in R; to the point that most people will use tidyverse calls more frequently than they use base R. This set of packages is designed to work with tidy data, and perform a wide range of functions around data cleaning and use.
+
+These packages are widely used and supported across DfT, and best practice is to use these packages in preference to either alternatives or base R.
+
+While it is possible to call all of the packages within the tidyverse using `library(tidyverse)`, this is rarely recommended as it is a heavy dependency. Instead, call the individual packages from within the tidyverse that you will use. This includes:
+
+* **ggplot2**: data visualisation in charts and simple maps
+* **dplyr**: data manipulation and processing
+* **tidyr**: data tidying and organisation to produce tidy datasets
+* **purrr**: tools for working with functions and vectors
+* **tibble**: enhanced version of data frames
+
+* **stringr**: manipulation of strings
+* **lubridate**: manipulation of dates
+
+* **DBI** and **odbc**: connecting to SQL databases
+* **httr, rvest, jsonlite** and **xml2**: tools for extracting data from the web.
+
+
+### Non-tidyverse packages 
+
+External to the tidyverse there are also a small number of core packages you will likely want to use when appropriate.
+
+* **openxlsx**: reading and writing Excel files. Although readxl is a tidyverse alternative, openxlsx offers significantly enhanced functionality for changing the format and appearance of Excel documents, and is therefore a preferred alternative within DfT.  
+* **data.table**: fast reading and processing of very large datasets. The style of this package can be hard to pick up, so the tidyverse **dtplyr** may be preferred as it retains the dplyr structure.
+* **shiny**: create HTML dashboards and apps within R
+* **Rmarkdown**: create dynamic reports 
+
+### DfT-specific packages
+
+In addition, there are a growing number of DfT-specific packages which have been released on our organisational Github. These have been designed to address-DfT specific gaps in the packages available, and are safe to download and use on network laptops.
+
+* **dftplotr**: ggplot2 add-on which allows you to create charts with DfT themeing and colour palettes
+* **slidepackr**: create HTML slidepacks using a DfT template
+
+### Specialist packages
+
+As previously mentioned, this isn't intended to be an exhaustive list of packages, and you should expect to supplement it with specialist packages which are required for your work. If you have the choice of multiple packages to complete a goal, you should always aim to select one which meets these criteria where possible:
+
+* Good documentation and community support for use
+* Still maintained
+* Available as a CRAN package
+
+## Package management
+
+As previously mentioned, it is bad practice to include `install.package()` calls in your code. However, it is difficult to ensure that code will be functional for multiple users without controlling the packages and package versions which users have.
+
+The solution to this is use of a **package manager**. These add-ons to R keep a record of the exact version of each package used in the code on a project-basis, and that collection of packages can be easily installed by any new user to the project. The best available package manager for R is **renv**, a marked improvement from packrat.
+
+To get started with renv on any project, you just need to run:
+
+```{r, eval = FALSE}
+renv::init()
+```
+
+This will create all of the files you need to get started with renv, and will also make note of any existing dependencies your project has. Once your renv project is initialised, you can use libraries in it as normal, installing and using them as needed.
+
+To make a record of the package versions you have used, you run:
+
+```{r, eval = FALSE}
+renv::snapshot()
+```
+
+And to retrieve this list of packages and install them in a new instance of the project, use:
+
+```{r, eval = FALSE}
+renv::restore()
+```
+
+Further details on using renv can be found in the [very comprehensive documentation](https://rstudio.github.io/renv/articles/renv.html)
