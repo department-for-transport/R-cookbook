@@ -8,7 +8,7 @@ https://department-for-transport.github.io/R-cookbook/index.html
 
 ## To contribute
 
-If you'd like to make a suggestion on what else should be included, or if you have a better solution to share with us, please raise an issue [here](https://github.com/departmentfortransport/R-cookbook/issues). Alternatively, 
+If you'd like to make a suggestion on what else should be included, or if you have a better solution to share with us, please raise an issue [here](https://github.com/department-for-transport/R-cookbook/issues). Alternatively, 
 
 1. Clone or fork the repository
 2. Make a new branch for your chapter or changes `git checkout -b name_of_branch`
