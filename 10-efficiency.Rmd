@@ -10,7 +10,7 @@ Wrapping any part of your code in `system.time()` is a good basic check of how l
 
 For a more detailed check, you can use the *profvis* library. Wrapping your whole code in the `profvis()` function provides a graphical breakdown of how long individual lines take to run, allowing you to pick the points you want to optimise.
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE, echo=FALSE}
 library(profvis) 
 
 profvis({   
@@ -50,7 +50,7 @@ While R is capable of reading data in from a large variety of file types, some o
 
 An example below shows the speed of reading the same data from CSV, xlsx and RDA formats. As you can see, reading in data from an xlsx file vs an efficient CSV read can take around 100 times longer. 
 
-```{r, fig.alt="File reading speed demonstration with different formats"}
+```{r, fig.alt="File reading speed demonstration with different formats", echo=FALSE, out.height = "400px", out.width="400px"}
 knitr::include_graphics("image/file_read_speed.png")
 ```
 
@@ -59,7 +59,7 @@ As a result, you should aim to save data as flat files such as CSV or RDA files 
 
 In addition to this, the structure of your data also impacts how fast it is to read. As any data read needs to determine the data type for each column, reading in extra columns is always much slower than reading in extra rows; even if overall the size of the data is the same! 
 
-```{r, fig.alt="File reading speed demonstration long vs wide format"}
+```{r, fig.alt="File reading speed demonstration long vs wide format", echo=FALSE, out.height = "400px", out.width="400px"}
 knitr::include_graphics("image/long_vs_wide.png")
 ```
 
@@ -90,11 +90,11 @@ As previously discussed, there are a wide range of R packages available. While m
 
 An example of this is use of the package `data.table`. In comparison to both base R and dplyr, data.table offers significant speed benefits while also minimising memory usage. This applies for both reading and more general data manipulation:
 
-```{r, fig.alt="File reading speed demonstration different CSV reading packages"}
+```{r, fig.alt="File reading speed demonstration different CSV reading packages", echo=FALSE, out.height = "400px", out.width="400px"}
 knitr::include_graphics("image/csv_read_speed.png")
 ```
 
-```{r, fig.alt="File reading speed demonstration different CSV reading packages"}
+```{r, fig.alt="File reading speed demonstration different CSV reading packages", echo=FALSE, out.height = "400px", out.width="400px"}
 knitr::include_graphics("image/summarise_speed.png")
 ```
 
