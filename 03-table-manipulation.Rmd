@@ -58,50 +58,10 @@ The {tidyr} package is a tidyverse package for manipulating data into a tidy for
 
 The functions gather and spread were the tidyr functions used prior to version 1.2 of the package. These verbs are still supported in more recent versions of the package so old code will still work, but you should aim not to use these in new code.
 
-- **gather** makes wide data longer i.e. variables running along the top can be "gathered" into rows running down.
+- **gather** makes wide data longer: equivalent is now pivot_longer()
 
-- **spread** makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.
+- **spread** makes long data wider: equivalent is now pivot_wider()
 
-
-
-```{r}
-# Pivot table using tidyr package
-library(tidyr)
-road_accidents_weekdays <- road_accidents_small %>%
-  tidyr::spread(Day_of_Week, n)
-  
-```
-
-With the spread function above you need to first specify the variable you want to spread, in this case `Day_of_Week`, and then the variable that will be used to populate the columns (`n`).
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(head(road_accidents_weekdays),
-caption = "Number of road accidents by accident severity and weekday, tidyr::spread")
-
-```
-
-
-The opposite can also be done using the gather function: 
-
-```{r}
-# Pivot table using older tidyr package
-library(tidyr)
-road_accidents_gather <- road_accidents_weekdays %>%
-  tidyr::gather(`1`, `2`, `3`, `4`, `5`, `6`, `7`, key = "weekday", value = "n")
-
-
-  
-```
-
-To use gather, specify which columns you want to be gathered into one column (in this case the individual weekday columns). The `key` is the name of the gathered column, and the `value` is the name of the values.
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(head(road_accidents_gather),
-caption = "Number of road accidents by accident severity and weekday, tidyr::gather")
-
-```
 
 **pivot_longer and pivot_wider**
 
@@ -120,7 +80,7 @@ road_accidents_weekdays <- road_accidents_small %>%
   
 ```
 
-The pivot_wider function above works in exactly the same way as the spread function, however the naming of the arguments make it clear how to specify the column you want to take the *names from* and the one you want to take the *values from*, in this case `Day_of_Week` and `n` respectively.
+In the pivot_wider function, you need to specify the dataset you want to transform, as well as the column you want to take the *names from* and the one you want to take the *values from*, in this case `Day_of_Week` and `n` respectively.
 
 ```{r, echo = FALSE, results='asis'}
 
@@ -130,7 +90,7 @@ caption = "Number of road accidents by accident severity and weekday, tidyr::piv
 ```
 
 
-The opposite can also be done using the pivot_longer function: 
+The opposite can also be done using the pivot_longer function:
 
 ```{r}
 # Pivot table using newer tidyr package
