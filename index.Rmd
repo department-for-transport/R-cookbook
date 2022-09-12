@@ -89,7 +89,7 @@ knitr::write_bib(c(
 
 ## Data
 
-The data used in this book is all derived from opensource data. As well as being availble fro the data folder on the github site [here][(https://github.com/departmentfortransport/R-cookbook/tree/master/data) you can also find the larger data sets at the links below.
+The data used in this book is all derived from opensource data. As well as being availble fro the data folder on the github site [here](https://github.com/departmentfortransport/R-cookbook/tree/master/data) you can also find the larger data sets at the links below.
 
 - [Road Safety Data](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data)
 - Search and Rescue Helicopter data; SARH0112 record level data download available under **All data** at the bottom of this [webpage](https://www.gov.uk/government/statistical-data-sets/search-and-rescue-helicopter-sarh01).

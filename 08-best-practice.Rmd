@@ -1,0 +1,278 @@
+# Writing good quality code {#best-practice}
+
+This section provides standards for best practice in writing R code. This is one of the most important aspects of coding; it allows you to write code which is easy to use, develop or maintain, simple for other people to read and less prone to errors and bugs.
+
+
+## Best practice in code
+
+
+### Assigning variables
+
+Variables can be assigned in multiple different ways in R, the most common using `=` or `<-`. Good practice is to only ever use the arrow when assigning variables, leaving `=` for assigning arguments in functions only.
+
+```{r, eval=FALSE}
+
+##Bad; assigning using =
+a = 4
+vector = seq(from = 1, to = 10, by = 2)
+
+##Good; assigning using <-, using = for function arguments only
+a <- 4
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+You can use the RStudio shortcut **alt + -** to insert an arrow in your code.
+
+Assignment should only ever happen on the left (beginning) of any code, as assignment at the end is unexpected and easy to miss in code.
+
+```{r, eval=FALSE}
+
+##Bad; assigning at the end
+seq(from = 1, to = 10, by = 2) -> vector
+
+##Good; assigning at the start
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+
+### Using package functions
+
+It's good practice to always specify the package associated with a function using the double colon notation:
+
+```{r, eval = FALSE}
+select() #Bad
+dplyr::select() #Good
+
+pivot_longer() #Bad
+tidyr::pivot_longer() #Good
+```
+
+This allows a user to understand the origin of each function at a glance, makes debugging easier and also prevents package conflicts. 
+
+### Use of pipes
+
+The "pipe" function `%>%` is taken from the {magrittr} package and is extensively used throughout the tidyverse (and this book!). It takes the object before the pipe and applies it as the first argument in the process after the pipe. Whenever you see a pipe within code, you can therefore read it as an *and then* statement. For example, the code below can be read as "take mtcars *and then* filter on the mpg column, *and then* select the disp and cyl columns.
+
+```{r, eval=FALSE}
+mtcars %>% ##and then
+  dplyr::filter(mpg > 20) %>% ##and then
+  dplyr::select(disp, cyl)
+```
+
+Piped code therefore works in exactly the same way as standard nested code, but is significantly easier to read, particularly as you do multiple operations on the same dataset. Below is an example of the same operations carried out using nested code and also piped code:
+
+```{r, eval=FALSE}
+#This code is nested and difficult to read and understand
+ dplyr::summarise(dplyr::group_by(dplyr::filter(mtcars, am == 1), gear, carb, vs), disp = mean(disp, na.rm = TRUE)) 
+
+#This code is piped and easy to read
+mtcars %>% 
+  dplyr::filter(am == 1) %>% 
+  dplyr::group_by(gear, carb, vs) %>%
+  dplyr::summarise(disp = mean(disp, na.rm = TRUE)) 
+```
+
+Piping also works on many non-tidyverse functions; for those which do not take the dataset as the first option, you will need to name the other arguments in the function, e.g:
+
+```{r, eval=FALSE}
+mtcars %>% 
+#In this openxlsx function, the first argument is the workbook name and the second is the data frame
+#The data can be piped in as long as the first argument is named, meaning the piped data is passed to the second argument
+openxlsx::writeData(wb = test1) 
+
+```
+
+
+The most common example of code which does not work with piping is from the {ggplot2} package. Here, ggproto objects are added to the original ggplot call using `+`, which cannot be substituted for a pipe. You can however still pipe data objects into a ggplot:
+
+```{r, eval=FALSE}
+mtcars %>%
+  dplyr::filter(mpg > 20) %>%
+  dplyr::select(disp, cyl) %>%
+  
+  #Data can be piped into the ggplot call
+  ggplot2::ggplot(aes(x = disp, y = cyl))+
+  
+  #Subsequent ggproto objects must be added, not piped
+    geom_point()
+```
+
+## Code Layout
+
+Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.
+
+### Code spacing
+
+Adding line breaks and spaces into your code makes it more human readable. As a general rule, you should aim to space out code as you would normal text. Add a space either side of mathematical symbols such as `=`, `+`, or `-` and assignment arrows `<-`. Add a space after commas but not before, as you would naturally.
+
+
+```{r, eval=FALSE}
+
+##Bad; code is squished up and difficult to read
+vector<-seq(from=1,to=10,by=2) 
+
+#Good; clearly spaced
+vector <- seq(from = 1, to = 10, by = 2)
+
+```
+
+Spacing around brackets is different to normal use:
+
+* When round brackets `()` are used in a function call, don't add a space between the function name and the bracket
+
+```{r, eval=FALSE}
+dplyr::filter (mtcars, mpg > 20) #Bad
+dplyr::filter(mtcars, mpg > 20) #Good
+
+```
+
+* Curly brackets should start on the same line as the previous function call, and their contents should start on a new line.
+
+```{r, eval=FALSE}
+#Bad
+function(x){x+1} 
+
+#Good
+function(x){
+  x+1
+} 
+
+```
+
+* Spaces should never be used in colon notation (e.g. `:`, `::`)
+```{r, eval = FALSE}
+dplyr :: select() #Bad
+dplyr::select() #Good
+
+```
+
+
+### Code width
+
+The width of each line of code on the screen has a big impact on how easy it is to read. It's easy to miss content which goes off the end of the screen, and annoying to keep scrolling horizontally.
+
+Older style guides recommend that each line of code should be no more than 80 characters, whereas more modern guides designed for larger screens suggest 120 characters. Either way, you should ensure that your code always fits comfortably on the screen when using a laptop.
+
+Any single line of code which goes over this limit should be broken up using line breaks, and the subsequent lines should be indented (RStudio does this automatically for you).
+
+When adding line breaks to piped code, a new line should be started *after* each pipe, not before.
+
+```{r, eval=FALSE}
+##Bad; a very long single line of code:
+mtcars %>% dplyr::filter(mpg > 20) %>% dplyr::select(disp, cyl) %>% dplyr::arrange(cyl)
+
+#Good; code with line breaks after each pipe and indentation of subsequent lines
+mtcars %>% 
+  dplyr::filter(mpg > 20) %>% 
+  dplyr::select(disp, cyl) %>% 
+  dplyr::arrange(cyl)
+  
+
+```
+
+When adding line breaks to a single long function, it's good practice to add one after each argument:
+
+```{r, eval=FALSE}
+##Bad; a very long single line of code:
+dplyr::mutate(mtcars, mpg_grouped = dplyr::case_when(mpg <= 15 ~ "Poor", mpg > 15 & mpg <= 25 ~ "Average", mpg > 25 ~ "Good"))
+
+#Good; code with line breaks after each argument and indentation of subsequent lines
+dplyr::mutate(mtcars, 
+              mpg_grouped = dplyr::case_when(
+                mpg <= 15 ~ "Poor", 
+                mpg > 15 & mpg <= 25 ~ "Average", 
+                mpg > 25 ~ "Good")
+              )
+  
+
+```
+
+
+RStudio comes with an inbuilt code length guide on the script window; this grey line shows you how wide 80 characters is. You can adjust this to 120 characters by going to **Tools -> Global Options… -> Code -> Display**.
+
+
+### Code length
+
+Similar to taking into account the width of your code in files, it's also sensible to consider how long your code files are. Excessively long code files make it difficult to find what you're looking for, and also increase the risk of merge conflicts when using Github.
+
+* Your code should be split across multiple files as often as possible, while retaining code logic and flow.
+* A good general rule is that each code file should perform a single clearly defined purpose.
+* If an individual file gets over a few hundred lines of code, think about whether it would be better split into smaller sections?
+* Individual functions shouldn't exceed more than 1-2 screen lengths of code; if your code goes beyond that, it would likely work better as multiple utility functions.
+
+Splitting code across multiple files can make it more difficult to run in the correct order. You can avoid this by *sourcing* code files. The `source()` function takes the filepath of an R code file as its argument, and runs all of the code in that file, at the point you place it in your code e.g.
+
+```{r, eval = FALSE}
+
+#Run a file of functions associated with my project
+source("functions.R")
+#Read in and process data for the project, using these functions
+source("read_data.R")
+#Produce a chart visualising the processed data
+source("chart_code.R")
+
+```
+
+
+This allows you to maintain a logical running order of your code, while keeping code files a manageable length.
+
+You can also split code within a file into individual named sections using section indicators. To do this, write the section name as a normal comment, followed by four or more `#` or `-`. These sections can then be easily navigated between using the "jump to" menu at the bottom of the script window, and sections expanded and collapsed if required.
+
+```{r, eval = FALSE}
+##This is section 1 ----
+Code goes here
+
+#This is section 2 ####
+More code
+
+```
+
+
+### Linters 
+
+If it seems a bit daunting to implement coding best practice, don't panic! There are tools available, known as linters, which will check your code for you and point out the areas where you can improve.
+
+The easiest one to use in R is the {lintr} library. You can use the `lint()` and `lint_dir()` functions to check your code, with the functions returning a line-by-line breakdown of issues it has spotted in your code.
+
+```{r, eval=FALSE}
+library(lintr)
+
+#Check the code in a single file
+lintr::lint(your_file_name)
+
+#Check all the code in a whole directory
+lintr::lint_dir(your_directory)
+```
+
+## Project structure
+
+Having a consistent and logical structure across all coding projects makes it easy for others to understand how your code works, make use of documentation, and run and develop your code. A good R coding project makes use of the following:
+
+### Documentation
+
+All projects should have a README file associated with them. README files are stored in the root folder of a project, and as a minimum should contain essential instructions for an experienced coder using this project for the first time. It can include far more detailed documentation of the code, processes and usage if you want.
+
+README files can either be .md (markdown) or .html files. You can write a .md file directly in Markdown, or use an RMarkdown document to generate one in either format. Check [here](https://www.makeareadme.com/) for more advice on README content and structure.
+
+### Centralised code structure
+
+Running code files in the wrong order, or forgetting to run parts of code is the most likely point of failure for a project. You can ensure that code across multiple files is always run in the correct order by using the `source()` function to call all code in order. You should aim to do this from a single central file, and store all your other code files in a *source code* or *R* folder. You can also use the `markdown::render()` function to knit rmarkdown documents from this central file.
+
+See [the Department for Transport github](https://github.com/department-for-transport) for many examples of R coding projects which run from a single central file.
+
+### Data storage
+
+When creating a project, give some thought to how you want to organise data used in the project, and outputs produced by it. Good practice is to have separate folders for raw data, clean data following processing, and publication-ready outputs. 
+
+It is always sensible to save a hard copy (e.g. CSV) version of clean data prior to outputting in tables, charts, etc. Having this data stored centrally allows for multiple outputs to be created from the same processing code, as well as automated QA to be performed directly on the clean data.
+
+### Project management
+
+Part of managing coding projects is ensuring that the code is accessible and works for everyone working on the project (or who may be working on it in future). This should be managed using both **version control** and **package management**.
+
+Version control should be carried out using a linked Github repository. This allows you to carry out development work safely, ensure people are using the correct version of code, audit and monitor changes made, and roll back code to fix bugs. Check out the Github Coffee and Coding channel for advice and support getting started with this.
+
+Package management ensures that everyone running the project has all of the necessary packages they need, and that everyone is using the same versions. Differing versions of the same package is one of the most common sources of bugs, so this is an important aspect of reproducible code. {renv} is the recommended package management approach for R, see Chapter \@ref(packages) for more details on using this.
+
