@@ -1,6 +1,6 @@
 --- 
 title: "DfT R Cookbook"
-author: "Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor"
+author: "Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: 

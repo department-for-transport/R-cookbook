@@ -3,9 +3,7 @@
 ```{r include=FALSE}
 library(dplyr)
 library(readr)
-library(reshape2)
 library(tidyr)
-library(janitor)
 
 # Read in required data using public data.gov extract
 road_accidents <- readr::read_rds("data/road_accidents_2017.RDS")
@@ -29,12 +27,12 @@ One of the main packages used to manipulate data is the {dplyr} package which we
 
 
 
-## Pivot and reshape tables
+## Pivoting tables
 
-There will be two examples for pivoting tables provided:
+There are two packages still in common use for pivoting data into tidy format.
 
-* The {tidyr} package uses the gather/spread functions and is often used to create tidy data
-* The {reshape2} package is also a useful package to pivot tables and has added functionality such as providing totals of columns etc.
+* The {tidyr} package is a tidyverse package which contains functions used to create tidy data (among other data cleaning functions)
+* The {reshape2} package is the non-tidyverse equivalent used to pivot tables. No updates have been made to this package in the last few years, and where possible tidyr should always be used in preference to it.
 
 
 We want to have the day of the week variable running along the top so each day of the week is its own column.
@@ -54,86 +52,98 @@ caption = "Number of road accidents by accident severity and weekday")
 
 **{tidyr} package**
 
-Using the {tidyr} package, gather and spread functions can be used  to pivot the table views:
+The {tidyr} package is a tidyverse package for manipulating data into a tidy format, and should be the first choice for gathering and pivoting functions. Use of the tidyr package is made slightly more complicated by the fact that there are both legacy (prior to v1.2) and more recent (v1.2 onwards) pivoting verbs available:
 
-- **gather** makes wide data longer i.e. variables running along the top can be "gathered" into rows running down.
+**gather and spread**
 
-- **spread** makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.
+The functions gather and spread were the tidyr functions used prior to version 1.2 of the package. These verbs are still supported in more recent versions of the package so old code will still work, but you should aim not to use these in new code.
 
-**Note: Hadley Wickham is bringing out new versions of these packages called pivot_longer and pivot_wider which are not yet available on DfT laptops.**
+- **gather** makes wide data longer: equivalent is now pivot_longer()
+
+- **spread** makes long data wider: equivalent is now pivot_wider()
+
+
+**pivot_longer and pivot_wider**
+
+The pivot_longer and pivot_wider functions are the updated version of gather and spread, available in newer versions of the tidyr package. These are designed to have more intuative names, and more logical arguments in comparison to the older versions. You should aim to use these in all new code you are writing.
+
+- **pivot_longer** makes wide data longer i.e. variables running along the top can be "gathered" into rows running down.
+
+- **pivot_wider** makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.
+
 
 ```{r}
-# Pivot table using tidyr package
-library(tidyr)
+# Pivot table using newer tidyr package
 road_accidents_weekdays <- road_accidents_small %>%
-  tidyr::spread(Day_of_Week, n)
+  tidyr::pivot_wider(names_from = Day_of_Week,
+                     values_from = n)
   
 ```
 
-With the spread function above you need to first specify the variable you want to spread, in this case `Day_of_Week`, and then the variable that will be used to populate the columns (`n`).
+In the pivot_wider function, you need to specify the dataset you want to transform, as well as the column you want to take the *names from* and the one you want to take the *values from*, in this case `Day_of_Week` and `n` respectively.
 
 ```{r, echo = FALSE, results='asis'}
 
 knitr::kable(head(road_accidents_weekdays),
-caption = "Number of road accidents by accident severity and weekday, tidyr::spread")
+caption = "Number of road accidents by accident severity and weekday, tidyr::pivot_wider")
 
 ```
 
 
-The opposite can also be done using the gather function: 
+The opposite can also be done using the pivot_longer function:
 
 ```{r}
-# Pivot table using tidyr package
-library(tidyr)
+# Pivot table using newer tidyr package
 road_accidents_gather <- road_accidents_weekdays %>%
-  tidyr::gather(`1`, `2`, `3`, `4`, `5`, `6`, `7`, key = "weekday", value = "n")
+  tidyr::pivot_longer(cols = c(`1`, `2`, `3`, `4`, `5`, `6`, `7`), names_to = "weekday", values_to = "n")
 
 
   
 ```
 
-To use gather, specify which columns you want to be gathered into one column (in this case the individual weekday columns). The `key` is the name of the gathered column, and the `value` is the name of the values.
+To use pivot_longer, specify which columns you want to be gathered into one column (in this case the individual weekday columns). Then specify the column name you'd like to move the *names to* (`weekday`) and the one you'd like to move the *values to* (`n`). 
+
+It is also possible to pivot all columns except the ones you choose to exclude by specifying only those you **do not** want to pivot, using `-` to indicate this. In the example below, this is done by excluding the Accident_Severity column and pivoting all other columns by specifying `cols = -Accident_Severity`. This is useful when you may have a large number of columns or columns with unknown names that you want to turn into tidy data.
+
+```{r}
+# Pivot by excluding the accident severity column 
+road_accidents_gather <- road_accidents_weekdays %>%
+  tidyr::pivot_longer(cols = -Accident_Severity, names_to = "weekday", values_to = "n")
+
+```
+  
 
 ```{r, echo = FALSE, results='asis'}
 
 knitr::kable(head(road_accidents_gather),
-caption = "Number of road accidents by accident severity and weekday, tidyr::gather")
+caption = "Number of road accidents by accident severity and weekday, tidyr::pivot_longer")
 
 ```
 
 **Extended data transpose example**
 
-This section shows how to transpose data using the **spread** and **gather** functions with the **tidyr** package.
+This section shows how to transpose data using the **pivot_wider** and **pivot_longer** functions with the **tidyr** package.
 
 <p style="background-color: #D9D9D9"><br>The aim is to take a published table of reported road accidents in which each row contains the data for one year with the severity of accident recorded in the columns. The tranposition will enable the calculation of the percentage increases for each of the last two years.<br><br></p>
 
-Firstly, the **current year** is specified and the rounding function declared. This function is used because the default round function in R rounds upwards only if the number is even. 
+Firstly, the **current year** is specified. 
 
 ```{r DeclareYear, include=TRUE}
 Yr <- 2018   ## select for the latest of the three years you require 
 
-RoundC <- function(x, digits = 0) {
-  posneg <- sign(x)
-  z <- abs(x) * 10 ^ digits
-  z <- z + 0.5
-  z <- trunc(z)
-  z <- z / 10 ^ digits
-  z * posneg
-} 
 ```
 
 This example uses data from RAS30013 *"Reported casualty rates by road user type and severty: Great Britain"*. https://www.gov.uk/government/statistical-data-sets/ras30-reported-casualties-in-road-accidents#casualty-rates-and-risk
 
-The contents of the published table is read in (the last 10 years only), The adjusted data is rounded to the nearest whole number. The year field is changed to a character format so that it is displayed without the thousand separator comma.
+The contents of the published table is read in (the last 10 years only), and the adjusted data is rounded to the nearest whole number. 
 
 ```{r PublishedTable, include=TRUE}
 Accidents <- readxl::read_excel("data/ras10013.xlsx") %>%
-  dplyr::filter(Year>=2009) %>%
-  dplyr::mutate(SeriousAdjusted=RoundC(SeriousAdjusted,0),
-                FatalSeriousAdjusted=RoundC(FatalSeriousAdjusted,0),
-                SlightAdjusted=RoundC(SlightAdjusted,0))
+  dplyr::filter(Year >= 2009) %>%
+  dplyr::mutate(SeriousAdjusted = round(SeriousAdjusted),
+                FatalSeriousAdjusted = round(FatalSeriousAdjusted),
+                SlightAdjusted = round(SlightAdjusted))
 
-Accidents$Year <-as.character(as.numeric(Accidents$Year))
 ```
 
 ```{r Table1, echo = FALSE, results = 'asis'}
@@ -144,16 +154,16 @@ knitr::kable(Accidents, format.args = list(big.mark = ",")) %>%
 
 The data is now filtered to keep only the last three years of data. 
 
-We could have hard coded the year in the filter below e.g. **Year %in% c(2017,2018,2019)**. To save having to change the code every time we wish to run for different years,we can use the **glue** function to derive the required years from a previously defined variable. This picks up the most recent year from **yr** defined above and calculates the other years as 1 and 2 years before **yr** as **yr-1** and **yr-2**. 
+We could have hard coded the year in the filter below e.g. **Year %in% c(2017,2018,2019)**. To save having to change the code every time we wish to run for different years, we can derive the required years from a previously defined variable. This picks up the most recent year from **yr** defined above and calculates the other years as 1 and 2 years before **yr** as **yr-1** and **yr-2**. 
 
 A new variable **YearLab** with the respective text ThisYear, LastYear and YearBefore is created to automate calculations below. 
 
 ``` {r Last3Years, include=TRUE}
 Last3Years <- dplyr::filter(Accidents,
-                Year %in% c(glue::glue({Yr}),glue::glue({Yr-1}),glue::glue({Yr-2}))) %>%
+                Year %in% c(Yr, Yr-1, Yr-2)) %>%
   dplyr::mutate(YearLab = dplyr::case_when(
-    Year == glue::glue({Yr}) ~ "ThisYear",
-    Year == glue::glue({Yr-1}) ~ "LastYear",
+    Year == Yr ~ "ThisYear",
+    Year == Yr-1 ~ "LastYear",
     TRUE ~ "YearBefore" # else option 
   )) %>%
   dplyr::select(-Year)
@@ -164,24 +174,24 @@ knitr::kable(Last3Years, format.args = list(big.mark = ",")) %>%
   kableExtra::kable_styling(latex_options="scale_down")
 ```
 
-The table above holds the number of accidents for each severity (in columns) with a row for each of the last three years. We wish to calculate the annual growth in accidents by severity. To achieve this we need to transpose the table. This can be achieved using the **gather** function within the **tidyr** package which allows us to put data into a tidy format which makes it easier to manipulate.
+The table above holds the number of accidents for each severity (in columns) with a row for each of the last three years. We wish to calculate the annual growth in accidents by severity. To achieve this we need to transpose the table. This can be achieved using the **pivot_longer** function within the **tidyr** package which allows us to put data into a tidy format which makes it easier to manipulate.
 
-The template of the **gather** function is:
+The template of the **pivot_longer** function is:
     
-    tidyr::Gather(variables_to_input_into_one_column, 
-          key = “name_of_column_creating”, 
-          value = “name_of_value_column”)
+    tidyr::pivot_longer(
+          cols = variables_to_input_into_one_column, 
+          names_to = column to move data names to, 
+          values_to = column to move data values to)
 
-The variables We want to input into one column are the accident severities (*Fatal, SeriousUnadjusted, ..., AllAccidents*). The **key** parameter we will call *SeverityType*.  The **value** parameter is the name of the column holding the number of accidents (*n*). The variable **YearLabel** will remain in one column so does not need to be mentioned in the **gather** statement.
+The variables we want to input into one column are the accident severities (*Fatal, SeriousUnadjusted, ..., AllAccidents*); every column except for the **YearLab**. The **names_to** parameter we will call *SeverityType*.  The **values_to** parameter is the name of the column holding the number of accidents (*n*). The variable **YearLabel** is the only one that will be unchanged, so can be specifically excluded from the **pivot_longer** call.
 
 A new field **SeverityNum** is created so that the severity types can be sorted in a logical order in the final output.
 
 ```{r Gather, include=TRUE}
-Severity <- Last3Years %>% tidyr::gather(Fatal,SeriousUnadjusted,SeriousAdjusted,
-                          FatalSeriousUnadjusted,FatalSeriousAdjusted,SlightUnadjusted,
-                          SlightAdjusted,AllAccidents,
-                          key = "SeverityType", 
-                          value = "n") %>%
+Severity <- Last3Years %>% 
+  tidyr::pivot_longer(cols = -YearLab,
+                names_to = "SeverityType",
+                values_to = "n") %>%
   dplyr::mutate(SeverityNum = dplyr::case_when(
   SeverityType=='Fatal' ~ 1,
   SeverityType=='SeriousUnadjusted' ~ 2,
@@ -200,112 +210,36 @@ knitr::kable(Severity, format.args = list(big.mark = ",")) %>%
   kableExtra::kable_styling(latex_options="scale_down")
 ```
 
-We now wish to transpose this table so that the three years (*ThisYear, LastYear and YearBefore*) will be in seperate columns rather than one.
+We now wish to transpose this table so that the three years (*ThisYear, LastYear and YearBefore*) will be in separate columns rather than one.
 
-To do this, we use the **spread** function within the **tidyr** package.
+To do this, we use the **pivot_wider** function within the **tidyr** package.
 
-The template of the **spread** function is:
+The template of the **pivot_wider** function is:
     
-    tidyr::Spread(variables_to_change_from rows_into_columns,
-          value = “name_of_value_column”)
+    tidyr::pivot_wider(cols = variables_to_change_from rows_into_columns,
+          names_from = column_containing_variable_names,
+          values_form = column_containing_values)
 
-Here the row to be transposed is *YearLab*. The value is the number of accidents *n*. The names of the new columns are derived from the values of **YearLab**. The variables **SeverityType** and **SeverityNum** will each remain in one column so are not listed in the **spread** function.
+Here the column containing the names is *YearLab*, and the column containing the values is the number of accidents *n*. The variables **SeverityType** and **SeverityNum** will each remain in one column so are not listed in the **pivot_wider** function.
 
 By default, the data would be sorted in alphabetical order of **SeverityType**. Instead the data is sorted in a pre-defined logical order using the **SeverityNum** variable defined above. The **SeverityNum**, having done its job, is then dropped from the final output.
 
 Now that the number of accidents for each year are in a separate column, the percentage growth for one year to the next can be calculated using the **mutate** function.
 
 ``` {r Spread, include=TRUE}
-Transposed <- Severity %>% tidyr::spread(YearLab, n) %>%
+Transposed <- Severity %>% 
+  tidyr::pivot_wider(names_from = YearLab, 
+                     values_from = n) %>%
   dplyr::arrange(SeverityNum) %>%
   dplyr::select(-SeverityNum) %>%
-  dplyr::mutate(PerGrowthThisYear=RoundC(ThisYear/LastYear *100-100,1),
-                              PerGrowthLastYear=RoundC(LastYear/YearBefore *100-100,1))
+  dplyr::mutate(PerGrowthThisYear = round(ThisYear/LastYear *100-100,1),
+                PerGrowthLastYear=round(LastYear/YearBefore *100-100,1))
 ```
 
 ```{r Table4, echo = FALSE, results = 'asis'}
 knitr::kable(Transposed, format.args = list(big.mark = ",")) %>% 
   kableExtra::kable_styling(latex_options="scale_down")
 ```
-
-**{reshape2} package**
-
-Again, this has two functions which can be used to pivot tables:
-
-- **melt** makes wide data longer 
-
-- **dcast** makes long data wider
-
-
-```{r}
-# Pivot table using reshape2 package
-library(reshape2)
-road_accidents_weekdays2 <- 
-  reshape2::dcast(road_accidents_small, Accident_Severity ~ 
-                    Day_of_Week, value.var = "n")
-  
-```
-
-With the `dcast` function above, after stating the name of the data frame, you need to specify the variable(s) you want in long format (multiple variables seperated by "+"), in this case Accident_Severity, and then the wide format variable(s) are put after the tilda (again multiple seperated by "+"). The `value.var` argument specifies which column will be used to populate the new columns, in this case it is n.
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(head(road_accidents_weekdays2),
-caption = "Number of road accidents by accident severity and weekday, reshape2::dcast")
-
-```
-
-If you want to create sums and totals of the tables this can also be done using {reshape2}. For example, taking the original table, we want to pivot it and sum each severity to get the total number of accidents per day.
-
-```{r}
-# Pivot table using reshape2 package
-library(reshape2)
-road_accidents_weekdays3 <- 
-reshape2::dcast(road_accidents_small, Accident_Severity ~ Day_of_Week,
-value.var = "n", sum, margins = "Accident_Severity")
-  
-```
-
-In this example, we use the `margins` argument to specify what we want to combine to create totals. So we want to add all the accident severity figures up for each weekday. Before using `margins` you need to specify how the margins are calculated, in this case we want a `sum`. Alternative options are to calculate the length, i.e. the number of rows.
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(head(road_accidents_weekdays3),
-caption = "Number of road accidents by accident severity and weekday plus totals, reshape2::dcast")
-
-```
-
-
-
-
-The opposite can also be done using the `melt` function.
-
-```{r}
-# Pivot table using reshape2 package
-library(reshape2)
-road_accidents_melt <- reshape2::melt(road_accidents_weekdays2, id.vars = "Accident_Severity",
-                                      measure.vars = c("1", "2", "3", "4", "5", "6", "7"),
-                                      variable.name = "Day_of_Week", value.name = "n")
-  
-```
-
-For the `melt` function you need to specify:
-
-
-`id.vars` = "variables to be kept as columns"
-
-`measure.vars` = c("variables to be created as one column")
-
-`variable.name` = "name of created column using the measure.vars"
-
-`value.name` = "name of value column"
-
-
-```{r, echo = FALSE, results='asis'}
-knitr::kable(head(road_accidents_melt),
-caption = "Number of road accidents by accident severity and weekday, reshape2::melt")
-```
-
 
 ## Dropping and selecting columns
 
@@ -326,7 +260,7 @@ caption = "Four columns from road accidents 2017")
 
 **Drop columns**
 
- Note that to drop columns the difference is putting a "-" in front of the variable name.
+As for pivoting, to drop columns the difference is putting a "-" in front of the variable name.
  
 ```{r}
 road_accidents_3_cols <- road_accidents_4_cols %>%
@@ -392,7 +326,7 @@ road_accidents_filter3 <- road_accidents %>%
 dplyr::filter(`Local_Authority_(Highway)` == "E09000010")
 
 ```
-Also note that in the above example the variable is quoted in back ticks (`). This is because some variable names confuse R due to brackets and numbers and need to be wrapped in back ticks so R knows that everything inside the back ticks is a variable name.
+Also note that in the above example the variable is quoted in back ticks (`). This is necessary when a column or variable name contains non-standard characters (anything other than alphanumerics, and selected punctuation marks: _, - or .) or start with numbers; they need to be wrapped in back ticks so R knows that everything inside the back ticks is a variable name.
 
 ## Group data 
 
@@ -418,16 +352,11 @@ Use the {dplyr} arrange function to order data. This works in a similar manner t
 
 This example orders the data by date and number of casualties.
 
-```{r include=FALSE}
-road_acc_7 <- road_accidents %>%
-  dplyr::sample_n(7)
-
-```
-
 
 ```{r}
 # Order data by date and number of casualties
-road_accidents_ordered <- road_acc_7 %>%
+road_accidents_ordered <- road_accidents %>%
+  dplyr::sample_n(7) %>%
   dplyr::select(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) %>%
   dplyr::arrange(Date, Number_of_Casualties)
   
@@ -618,15 +547,16 @@ knitr::kable(road_acc_3, caption = "Police force and Date information for specif
 ```
 
 ## Sum rows or columns
-These solutions use the base R functions rather than {dplyr}.
 
 ### Sum rows
 
-To sum across a row:
+Summing across a row can be done using the dplyr function **c_across**; you just need to specify that this should be done row-wise before performing the calculation:
 
 ```{r}
 # sum across a row 
-road_accidents_weekdays$rowsum <- rowSums(road_accidents_weekdays, na.rm = TRUE) 
+road_accidents_weekdays <- road_accidents_weekdays %>% 
+  dplyr::rowwise() %>%
+  dplyr::mutate(rowsum = sum(c_across())) 
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -634,14 +564,14 @@ road_accidents_weekdays$rowsum <- rowSums(road_accidents_weekdays, na.rm = TRUE)
 knitr::kable(road_accidents_weekdays, caption = "Road accidents 2017 by accident severity and weekday")
 ```
 
-To sum across specific rows:
+To sum across specific rows, you can name these within the c_across function:
 
 ```{r}
 # sum across specific rows 
-road_accidents_weekdays$alldays <- road_accidents_weekdays$`1` + road_accidents_weekdays$`2`+
-                                    road_accidents_weekdays$`3`+ road_accidents_weekdays$`4`+
-                                    road_accidents_weekdays$`5`+ road_accidents_weekdays$`6`+
-                                    road_accidents_weekdays$`7`
+road_accidents_weekdays <- road_accidents_weekdays %>% 
+  dplyr::rowwise() %>%
+  dplyr::mutate(alldays = sum(c_across(`1`:`5`))) 
+
 ```
 
 ```{r, echo = FALSE, results='asis'}
@@ -651,29 +581,14 @@ knitr::kable(road_accidents_weekdays[,-9], caption = "Road accidents 2017 by acc
 
 ### Sum columns
  
-To sum columns to get totals of each column, ***note this will appear as a console output not in a data object***:
+Columns can also be summed, although it isn't recommended that these sums are added to a data table:
 
 ```{r, eval = FALSE}
 # sum columns
-colSums(road_accidents_weekdays, na.rm = TRUE) 
+road_accidents_weekdays %>%
+  dplyr::summarise_if(is.numeric, sum)
 ```
 
-
-To get the totals of each column as a row in the data:
-
-```{r}
-# create total column
-road_accidents_weekdays <- road_accidents_weekdays %>%
-  janitor::adorn_totals("row")
-```
-
-```{r, echo = FALSE, results='asis'}
-
-knitr::kable(road_accidents_weekdays[,-9:-10], caption = "Road accidents 2017 by accident severity and weekday")
-```
-
-
-{reshape2} can also be used to get column totals when pivoting a table (See 5.1).
 
 ## Replace NAs or other values
 
@@ -696,8 +611,8 @@ To replace all NAs in one column (Junction Control column) with a specific value
 ```{r}
 library (tidyr)
 # replace all NAs with value -1
-road_accidents_na$Junction_Control <- road_accidents_na$Junction_Control %>%
-  tidyr::replace_na(-1)
+road_accidents_na <- road_accidents_na %>%
+  dplyr::mutate(Junction_Control = tidyr::replace_na(Junction_Control, -1))
 
 ```
 
@@ -709,7 +624,7 @@ To replace all NAs in a data frame or tibble:
 
 # replace all NAs with value -1
 road_accidents_na <- road_accidents_na %>%
-  replace(is.na(.), -1)
+  mutate_if(is.numeric, tidyr::replace_na, -1)
   
 
 ```
@@ -754,7 +669,7 @@ Rows can be reordered by certain variables using the {dplyr} arrange function wi
 
 ```{r}
 # Order data by date and number of casualties
-road_accidents_ordered_desc <- road_acc_7 %>%
+road_accidents_ordered_desc <- road_accidents %>%
   dplyr::select(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) %>%
   dplyr::arrange(desc(Date), Number_of_Casualties)
 ```
@@ -791,15 +706,16 @@ The {dplyr} mutate function can be used to create new variables based on current
 For example, to create a new variable which is speed limit in km:
 
 ```{r}
-road_acc_km <- road_acc_7 %>%
-  dplyr::mutate(speed_km = Speed_limit * 1.6)
+road_acc_km <- road_accidents %>%
+  dplyr::mutate(speed_km = Speed_limit * 1.6) %>%
+  dplyr::select(acc_index, Police_Force, Speed_limit, speed_km)
 
 ```
 
 
 ```{r, echo = FALSE, results='asis'}
 
-knitr::kable(head(road_acc_km <- dplyr::select(road_acc_km, acc_index, Police_Force, Speed_limit, speed_km)),
+knitr::kable(head(road_acc_km),
 caption = "Road accidents by km/h")
 ```
 
