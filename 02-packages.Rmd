@@ -153,6 +153,7 @@ In addition, there are a growing number of DfT-specific packages which have been
 
 * [dftplotr](https://github.com/department-for-transport/dftplotr): ggplot2 add-on which allows you to create charts with DfT themeing and colour palettes
 * [slidepackr](https://github.com/department-for-transport-public/slidepackr): create HTML slidepacks using a DfT template
+* [dftutils](https://github.com/department-for-transport-public/dftutils): utility functions for everyday data processing
 
 ### Specialist packages
 
