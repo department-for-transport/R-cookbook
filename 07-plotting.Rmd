@@ -1,8 +1,6 @@
 # Plotting and Data Visualisations {#plots}
 
-This chapter provides some examples of how to visualise data in R.
-
-For charts, we'll look at a few examples of how to create simple charts in base R but this chapter will focus mainly in using {ggplot2} to plot charts. For maps, we'll look at how to produce static choropleth maps using {ggplot2} and how to produce interactive maps using {leaflet}. 
+This chapter provides some examples of how to visualise data in R, focussing primarily on using {ggplot2} to plot charts. For maps, we'll look at how to produce static choropleth maps using {ggplot2} and how to produce interactive maps using {leaflet}. 
 
 
 ```{r include=FALSE}
@@ -15,7 +13,21 @@ library(leaflet)
 ```
 ## Plotting in base R
 
-Before we look at using {ggplot2}, we'll look at how to plot simple charts using functions in base R. We'll use road accident data from 2005 to 2017 to demonstrate how to create line and bar charts.
+While it is possible to plot charts in base R without using {ggplot2}, this is not recommended. Base R plotting has only limited functionality, and the code looks quite different to the simple syntax of {ggplot2}, so it can make your code hard to write and difficult to read. we'll look at how to plot simple charts using functions in base R. We'll use road accident data from 2005 to 2017 to demonstrate how to create line and bar charts.
+
+## Plotting with {ggplot2}
+
+**What is {ggplot2}?**
+
+The 'gg' in {ggplot2} stands for 'grammar of graphics'. This is a way of thinking about plotting as having grammar elements that can be applied in succession to create a plot. This is the idea that you can build every graph from the same few components: a dataset, geoms (marks representing data points), a co-ordinate system and some other things.
+
+The ggplot() function from the {ggplot2} package is how you create these plots. You build up the graphical elements using the + symbol. Think about it as placing down a canvas and then adding layers on top.
+
+At DfT we advocate using {ggplot2} when plotting charts. There is consistency in the way that {ggplot2} works which makes it easier to get to grips with for beginners. It is also part of the {tidyverse} which we have used earlier on in this cookbook so it shares the underlying design philosophy, grammar, and data structures. 
+
+### Line charts with {ggplot2}
+
+When plotting with {ggplot2}, we start with the ggplot() function which creates a blank canvas describing the data that we're going to use and how that relates to different aspects of charts (x axis, y axis, colour, size, etc). The next layer we add is the plot type using a *geom* function. This specifies what type of chart we'd like to create; a line chart, bar chart, etc. If we were create a simple line chart for total accidents against year, the code would read as follows:
 
 ```{r}
 # read in road accident data
@@ -24,147 +36,62 @@ road_acc <- readr::read_csv(
 head(road_acc)
 ```
 
-
-### Line charts in base R ###
-
-We want to plot a line chart of total road accidents against year. First we need to group our data by accident year and summarise to get a total sum of accidents for each year:
-```{r, fig.alt="Base R plot"}
-road_acc_total <- road_acc %>%
+```{r, fig.alt="ggplot plot"}
+road_total <- road_acc %>%
   dplyr::group_by(accident_year) %>%
   dplyr::summarise(total = sum(total))
+
+ggplot(data = road_total, mapping = aes(x = accident_year, y = total)) +
+  geom_line()
 ```
 
-We'll now use the base R function 'plot', specifying the x and y axis and well as the plot type 'l' for line charts:
-```{r, fig.alt="Base R plot"}
-plot(
-  x = road_acc_total$accident_year,
-  y = road_acc_total$total,
-  type = "l"
-)
-```
+So a reusable template for making graphs would be as below, with the relevant sections in the code replaced with a dataset, a geom function and a collection of mappings:
 
-We can make our plot look better by specifying a colour, labelling the axes and giving our plot a title:
-```{r, fig.alt="Base R plot"}
-plot(
-  x = road_acc_total$accident_year,
-  y = road_acc_total$total,
-  type = "l",
-  col = "red",
-  xlab = "Year",
-  ylab = "Total",
-  main = "Total road accidents per year, 2005 - 2017"
-)
-```
+ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +
+  <GEOM_FUNCTION>()
+  
+A ggplot object must contain
 
-We can also force our plot to start at 0:
+- the data to be plotted as the first argument
+- how that data should be mapped to the different aspects of the plot, defined using `aes()` (short for aesthetics).
+- a geometric to draw the aesthetics with
 
-```{r, fig.alt="Base R plot"}
-plot(
-  x = road_acc_total$accident_year,
-  y = road_acc_total$total,
-  type = "l",
-  col = "red",
-  xlab = "Year",
-  ylab = "Total",
-  main = "Total road accidents per year, 2005 - 2017",
-  ylim=c(0, max(road_acc_total$total))
-)
-```
-
-
-### Bar charts in base R ###
-
-We want to plot a bar chart showing the total number of accidents of each severity in 2017. First let's filter the road accidents data for 2017:
-
-```{r}
-road_acc_2017 <- road_acc %>%
-  dplyr::filter(accident_year == 2017)
-road_acc_2017
-```
-
-To create a bar chart, we use the base R function 'barplot' and then specify the variable we want to plot as the height argument:
-```{r, echo=FALSE}
-options(scipen=999)
-```
-
-
-```{r, message=FALSE, fig.alt="Base R plot"}
-barplot(height = road_acc_2017$total)
-```
-
-This isn't very useful as we can't see what the different severity types are. So we can specify these in the names.arg argument, as well as add a few extra features to make the plot look better:
-
-```{r, fig.alt="Base R plot"}
-barplot(height = road_acc_2017$total,
-        names.arg = c("Fatal", "Serious", "Slight"),
-        width = 2, #width of the bars
-        col = "lightblue",
-        xlab = "Severity",
-        ylab = "Total accidents",
-        main = "Total accidents by severity, 2017")
-```
-
-
-
-## Plotting withh {ggplot2}
-
-**What is {ggplot2}?**
-
-The 'gg' in {ggplot2} stands for 'grammar of graphics'. This is a way of thinking about plotting as having grammar elements that can be applied in succession to create a plot. This is the idea that you can build every graph from the same few components: a dataset, geoms (marks representing data points), a co-ordinate system and some other things.
-
-The ggplot() function from the {ggplot2} package is how you create these plots. You build up the graphical elements using the + symbol. Think about it as placing down a canvas and then adding layers on top.
-
-**Why should I use {ggplot2} instead of the plot functions in base R?**
-
-
-As with most things in R, there are multiple ways to do the same thing. This applies to creating visualisations as well. As will be demonstrated below we can replicate the graphs we have created above using {ggplot2} instead, pretty well. 
-
-One method is not necessarily better than the other, but at DfT we advocate using {ggplot2} when plotting charts. There is consistency in the way that {ggplot2} works which makes it easier to get to grips with for beginners. It is also part of the {tidyverse} which we have used earlier on in this cookbook so it shares the underlying design philosophy, grammar, and data structures. 
-
-### Line charts with {ggplot2}
-
-When plotting with {ggplot2}, we start with the ggplot() function which creates a blank canvas, then the next layer we add is the plot type. For line charts, this would be ggplot() + geom_line(). Within these functions, we specify our data and our aesthetic mappings i.e. what variables to map to the x and y axes from the specified data. If we were create a simple line chart for total accidents against year, the code would read as follows:
-
-```{r, fig.alt="ggplot plot"}
-ggplot(data = road_acc_total) +
-  geom_line(mapping = aes(x = accident_year, y = total))
-```
-
-So a reusuable template for making graphs would be as below, with the bracketed sections in the code replaced with a dataset, a geom function and a collection of mappings:
-
-ggplot(data = name_of_dataset) +
-  geom_function(mapping = aes())
+- ggplot works with layers, each added with the `+` operator.
+- Mappings are always added using the `aes()` command, which can be inside the `ggplot()` or `geom`.
 
 
 You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf).
 
-Let's create the same the line chart we created with base R, showing total road accidents against year:
+Let's create a line chart showing total road accidents against year:
 
 ```{r, fig.alt="plot1"}
-ggplot(data = road_acc_total) +
-  geom_line(aes(x = accident_year, y = total), col = "red") +
-  xlab("Year") +
-  ylab("Total") +
-  ggtitle("Total road accidents per year, 2005 - 2017") +
-  scale_x_continuous(breaks = seq(2000, 2017, 2)) +
-  expand_limits(y=0) +
-  theme_classic()
-```
+road_total <- road_acc %>%
+  dplyr::group_by(accident_year) %>%
+  dplyr::summarise(total = sum(total))
 
-Here we have specified the colour of the line (notice this is outside of the aes() function). We have also labelled the x and y axes and given the plot a title.
-We have used scale_x_continuous() function to specify the intervals in the year variable and have used a theme to set the style of our plot (more on this later).
+ggplot(data = road_total, aes(x = accident_year, y = total)) +
+  geom_line() 
+```
 
 ### Aesthetic mappings
 
-To get more insight into our data, we can add a third variable to our plot by mapping it to an aesthetic. This is a visual property of the objects in our plot such as the size, the shape or the colour of our points. For example, if we want to see the total number of road accidents by severity type against year, we can map the 'name' variable to the colour aesthetic:
+It's normal that you will want to explore more than two variables within your datasets. You can do this by mapping those variables to different aspects of the chart in ggplot; things like colour, point shape, or line type. This is done by mapping a column to an aesthetic. For example, if we want to see the total number of road accidents by severity type against year, we can map the 'name' variable to the colour aesthetic:
 
 ```{r, fig.alt="plot2"}
-ggplot(data = road_acc) +
-  geom_line(mapping = aes(x = accident_year, y = total, colour = name)) +
+ggplot(data = road_acc, mapping = aes(x = accident_year, y = total, colour = name)) +
+  geom_line() +
   scale_x_continuous(breaks = seq(2000, 2017, 2))
 ```
 
-So unlike before, we specify the colour within the aes() function, rather than outside of it.
+You also don't *have* to map aesthetics onto variables; you can specify them manually if you don't want them to be related to a variable. To do this, you need to specify the colour, shape, linetype, etc **outside** of the aesthetic call. Here we have specified the colour of the line (notice this is outside of the aes() function) as red. We have also labelled the x and y axes and given the plot a title.
+
+```{r, fig.alt="plot1a"}
+ggplot(data = road_total, aes(x = accident_year, y = total)) +
+  geom_line( colour = "red") +
+  xlab("Year") +
+  ylab("Total") +
+  ggtitle("Total road accidents per year, 2005 - 2017") 
+```
 
 ### Bar charts with {ggplot2}
 
@@ -174,116 +101,81 @@ When creating bar charts with {ggplot2}, we can use geom_bar() or geom_col(). ge
 messy_pokemon <- readr::read_csv(
   file = "data/messy_pokemon_data.csv")
 head(messy_pokemon)
-ggplot(data = messy_pokemon) +
-  geom_bar(mapping = aes(x = weight_bin))
+ggplot(data = messy_pokemon, mapping = aes(x = weight_bin)) +
+  geom_bar()
 ```
 
 This has grouped our data by weight_bin with the height of the bars representing the number of pokemon in each weight bin.
 
-Let's recreate the total accidents by severity chart, now using {ggplot2} instead:
-
-```{r, fig.alt="plot4"}
-ggplot(data = road_acc_2017) +
-  geom_col(mapping = aes(x = name, y = total), fill = "lightblue", col = "black")+
-  xlab("Severity") +
-  ylab("Total accidents") +
-  ggtitle("Total accidents by severity, 2017")+
-  theme_classic()
-```
-
-Here we have used geom_col() instead but our data is already grouped so we simply want the height of the bars to represent the values in the data i.e. the number of accidents of each type of severity.
-
-You could also use geom_bar() in this situation but you would need to add an extra argument: stat = "identity".
-
+You can also use geom_bar() to create a similar type of chart using the road accident data. Note that by default geom_bar() doesn't take a y variable, so in this situation you would need to add an extra argument into the geom_bar call: stat = "identity".
 
 ```{r, fig.alt="plot5"}
-ggplot(data = road_acc_2017) +
-  geom_bar(mapping = aes(x = name, y = total),  fill = "lightblue", col = "black", stat = "identity")+
+road_acc_2017 <- road_acc %>%
+  dplyr::filter(accident_year == 2017)
+
+ggplot(data = road_acc_2017, mapping = aes(x = name, y = total),  fill = "lightblue", col = "black", stat = "identity") +
+  geom_bar(stat = "identity")+
   xlab("Severity") +
   ylab("Total accidents") +
-  ggtitle("Total accidents by severity, 2017") +
-  theme_classic()
+  ggtitle("Total accidents by severity, 2017") 
 ```
 
-## DfT colours
+## DfT colours and themes: the dftplotr package
 
-So far we've used colours built into R and referred to them by name e.g. red, lightlue etc. In order to make charts using DfT colours, we can specify what colours we want using hexcodes. For example, for the previous bar chart we can set the levels of severity to different DfT colours.
+So far we've used colours built into R and referred to them by name e.g. red, lightblue etc. In order to make charts using DfT colours, we can make use of the [dftplotr package](https://github.com/department-for-transport/dftplotr). This is a Github package with pre-loaded colour palettes and theming to produce publication-quality charts.
+
+Installation of the {dftplotr} package is via the {remotes} package:
+
+```{r, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("department-for-transport/dftplotr")
+```
+
+
+For example, for the previous bar chart we can set the levels of severity to different DfT colours easily using the `scale_fill_dft()` function
 
 ```{r, fig.alt="plot6"}
-ggplot(data = road_acc_2017) +
-  geom_col(mapping = aes(x = name, y = total, fill = name))+
+ggplot(data = road_acc_2017, mapping = aes(x = name, y = total, fill = name)) +
+  geom_bar(stat = "identity")+
   xlab("Severity") +
   ylab("Total accidents") +
   ggtitle("Total accidents by severity, 2017") +
   theme_classic() +
-  scale_fill_manual(values = c("#C99212", "#D25F15", "#006853"))
+  dftplotr::scale_fill_dft()
 ```
 
 Here we map the name variable to the fill argument within the aesthetic.
 
-
-
-## DfT Theme
-
-We mentioned themes earlier. Themes are used to set the style of your plot and can give your plots a consistent customized look. You can customise things such as titles, labels, fonts, background, gridlines, and legends. We have been using theme_classic() so far but {ggplot2} has a number of built-in themes that you can use for your plots available here: [https://ggplot2.tidyverse.org/reference/ggtheme.html](https://ggplot2.tidyverse.org/reference/ggtheme.html)
-
-You can modify aspects of a theme using the theme() function. For example, for our previous accidents plot, we can remove the legend title and move the position of the plot title.
-
-```{r, fig.alt="plot7"}
-ggplot(data = road_acc_2017) +
-  geom_col(mapping = aes(x = name, y = total, fill = name))+
-  xlab("Severity") +
-  ylab("Total accidents") +
-  ggtitle("Total accidents by severity, 2017") +
-  theme_classic() +
-  scale_fill_manual(values = c("#C99212", "#D25F15", "#006853"))+
-  theme(legend.title = element_blank(),
-        plot.title = element_text(hjust = 0.5))
-```
+Similarly, you can use the present DfT themes in the package to set the appearance of your plots. Themes are used to set the style of your plot and can give your plots a consistent customized look, setting the appearance of features such as titles, labels, fonts, background, gridlines, and legends. 
 
 ### Custom DfT Theme
 
-Instead of using the built-in themes, we can create our own theme to apply to our plots. Below I have created a 'DfT theme' for line charts which sets things such as the font types, sizes, axes lines and title positions to make the plot consistent with what we might put in a DfT publication.
-
-You can adjust and tweak this theme and the colours to create plots in the correct style for your own publications. 
+The dftplotr package comes with several inbuilt themes for both line and bar charts, that are easy to apply:
 
 ```{r, fig.alt="plot8"}
-# set DfT colours
-dft_colour <- c("#006853", # dark green
-                    "#66A498", # light green
-                    "#D25F15", # orange
-                    "#E49F73", # light orange
-                    "#C99212", # yellow
-                    "#E9D3A0", # pale yellow
-                    "#0099A9", # blue
-                    "#99D6DD") # light blue
-# create theme
-# note: 'sans' in R refers to the font 'Arial' in Windows
-theme_dft <- ggplot2::theme(axis.text = element_text(family = "sans", size = 10, colour = "black"), # axis text
-                            axis.title.x = element_text(family = "sans", size = 13, colour = "black", # x axis title
-                                                        margin = margin(t = 10)),
-                            axis.title.y = element_blank(),
-                            plot.title = element_text(size = 16, family = "sans", hjust = 0.5),
-                            plot.subtitle = element_text(size = 13, colour = "black", hjust = -0.05,
-                                                         margin = margin(t = 10)),
-                            legend.key = element_blank(), # make the legend background blank
-                            legend.position = "bottom", # legend at the bottom
-                            legend.direction = "horizontal", # legend horizontal
-                            legend.title = element_blank(), # remove legend title
-                            legend.text = element_text(size = 9, family = "sans"),
-                            axis.ticks = element_blank(), # remove tick marks
-                            panel.grid = element_blank(), # remove grid lines
-                            panel.background = element_blank(), # remove background
-                            axis.line.x = element_line(size = 0.5, colour = "black"))  
 # use the DfT colours and the DfT theme for the accidents by severity line chart
-ggplot(data = road_acc) +
-  geom_line(mapping = aes(x = accident_year, y = total, colour = name), size = 1.5) +
+ggplot(data = road_acc, mapping = aes(x = accident_year, y = total, colour = name, label = name), size = 1.5) +
+  geom_line() +
   labs(title = "Accidents by severity, 2005 to 2017", 
        x = "Accident Year", 
        y = "")+
   scale_x_continuous(breaks = seq(2005, 2017, 2))+
-  scale_colour_manual(values = dft_colour) + #here is where you apply the dft colours
-  theme_dft #here we specify our custom theme
+  dftplotr::theme_line_dft() #here we specify our custom theme
+```
+
+You can also modify aspects of a theme using the theme() function. For example, for our previous accidents plot, we can remove the legend title and move the position of the plot title.
+
+```{r, fig.alt="plot7"}
+# use the DfT colours and the DfT theme for the accidents by severity line chart
+ggplot(data = road_acc, mapping = aes(x = accident_year, y = total, colour = name, label = name), size = 1.5) +
+  geom_line() +
+  labs(title = "Accidents by severity, 2005 to 2017", 
+       x = "Accident Year", 
+       y = "")+
+  scale_x_continuous(breaks = seq(2005, 2017, 2))+
+  dftplotr::theme_line_dft()+ #here we specify our custom theme
+  theme(legend.title = element_blank(),
+        plot.title = element_text(hjust = 0.5))
 ```
 
 
@@ -291,7 +183,7 @@ ggplot(data = road_acc) +
 
 This section provides more code examples for creating {ggplot2} themes, including the DfT theme code.
 
-First, some more record-level road accident data is read in which can be used with the charts. Note that the data is being read in as a .rds object. A .rds object is an R data object which can be read in as a data frame:
+First, some more record-level road accident data is read in which can be used with the charts:
 
 ```{r}
 # read in road accident data
@@ -316,13 +208,13 @@ accident_pf <- road_acc_data %>%
   dplyr::tally()
 # use the DfT colours and the DfT theme for the accidents by police force scatter chart
 ggplot(data = accident_pf, aes(x = Police_Force, y = n)) +
-  geom_point(color = dft_colour[3], size = 1.5) +
+  geom_point() +
   labs(title = "Reported Road Accidents by Police Force", 
        x = "Police Force", 
        y = "Number of Accidents")+ 
   scale_y_continuous(breaks = seq(0, 30000, 2000)) +     # set y axis to go from 0 to 30,000
   geom_text(aes(label=Police_Force), size=3, hjust = 0, vjust = 0) +   # amend hjust and vjust to change position
-  theme_dft #here we specify our custom theme
+ dftplotr::theme_general_dft() #here we specify our custom theme
 ```
 
 The police forces are labelled with numbers, but the chart shows that police force 1 (Metropolitan Police) has the highest number of road accidents in 2017.
@@ -348,15 +240,15 @@ accident_pf_small <- dplyr::filter(accident_pf, n < 600)
 accident_pf_small$Police_Force <- 
   factor(accident_pf_small$Police_Force, levels = accident_pf_small$Police_Force)
 # use the DfT colours and the DfT theme for the accidents by police force scatter chart
-ggplot(data = accident_pf_small) +
-  geom_col(mapping = aes(x = Police_Force, y = n, fill = Police_Force)) +
+ggplot(data = accident_pf_small, mapping = aes(x = Police_Force, y = n, fill = Police_Force)) +
+  geom_col() +
   coord_flip() +         # make bar chart horizontal
   labs(title = "Reported Road Accidents by Police Force, 2017", 
        x = "Police Force", 
        y = "Number of Accidents")+ 
   scale_y_continuous(breaks = seq(0, 500, 50)) + # set y axis running from 0 to 500
-   scale_fill_manual(values = dft_colour) +
-  theme_dft +  #here we specify our custom theme
+  dftplotr::scale_fill_dft(gradient = TRUE, n = 7) +
+  theme_minimal() +  #here we specify our custom theme
   theme(legend.position = "none") # command to remove legends
 ```
 
@@ -370,41 +262,36 @@ This example will create a stacked bar chart showing the percentage of road acci
 Creating a **percentage stacked bar** requires using the **geom_bar** command in ggplot2 and setting the position to **fill**.
 
 ```{r, fig.alt="plot11"}
-# Make accident year a factor so year on x-axis is labelled individually
-#(otherwise axis will be continuous)
-road_acc_year <- road_acc
-# make year a factor
-road_acc_year$accident_year <- as.factor(road_acc_year$accident_year)
+
 # use the DfT colours and the DfT theme for the accidents by police force scatter chart
-ggplot(data = road_acc_year, aes(fill = name, y=total, x= accident_year)) +
+ggplot(data = road_acc, aes(fill = name, y=total, x= accident_year)) +
   geom_bar(position="fill", stat="identity") +  # geom bar with position fill makes stacked bar
   labs(title = "Percentage Accident Severity, by Year", 
        x = "Accident Year", 
        y = "% Accident Severity")+ 
-   scale_fill_manual(values = dft_colour) +
-  theme_dft 
+  dftplotr::theme_bar_dft()+
+  scale_y_continuous(labels = scales::percent)
 ```
 
 If you want the stacked bar chart to show numbers instead of percentages use **position = "stack"** instead.
 
 ```{r, fig.alt="plot12"}
 # use the DfT colours and the DfT theme for the accidents by police force scatter chart
-ggplot(data = road_acc_year, aes(fill = name, y=total, x= accident_year)) +
+ggplot(data = road_acc, aes(fill = name, y=total, x= accident_year)) +
   geom_bar(position="stack", stat="identity") +
   labs(title = "Number of accidents by severity, by Year", 
        x = "Accident Year", 
        y = "% Accident Severity")+ 
-   scale_fill_manual(values = dft_colour) +
-  theme_dft 
+  dftplotr::theme_bar_dft()
 ```
 
 ## Interactive charts with {plotly}
 
-{plotly} is a graphing library which makes interactive html graphs. It uses the open source JavaScript graphing library plotly.js. It is great for building dashboards or allowing the user to interact with the data themselves.
+{plotly} is a graphing library which makes interactive html graphs. It uses the open source JavaScript graphing library plotly.js. It is great for building dashboards or allowing the user to interact with the data themselves. Plotly charts have a high level of interactivity out of the box, and allow you to zoom in, select different series of interest, and export .png images of the customised charts.
 
-{plotly} is not necessarily good for publications as the charts are html but can be useful for exploratory analysis or QA notes. It allows you to zoom into certain parts of the chart and toggle between different categories.
+{plotly} is not useful for official stats publications as they cannot be uploaded to the gov.uk platform. They are however really useful for other applications; they can be easily built into HTML outputs from Rmarkdown, including reports, slidepacks and static web pages. They can also be used for exploratory analysis and QA notes. 
 
-It can be used in two ways - either with {ggplot2} (easier option) or using the plot_ly() wrapper directly which gives you more control.
+It can be used in two ways - either creating charts directly in plotly (which is difficult as the syntax is very different to ggplot2), or by using the `ggplotly()` wrapper in combination with {ggplot2}.
 
 ### {plotly} with {ggplot2}
 
@@ -412,28 +299,14 @@ Taking our previous accidents by severity plot, we can simply assign this to an 
 
 ```{r, message=FALSE, fig.alt="plot13"}
 library(plotly)
-road_acc_chart <- ggplot(data = road_acc) +
-  geom_line(mapping = aes(x = accident_year, y = total, colour = name), size = 1.5) +
+road_acc_chart <- ggplot(data = road_acc, mapping = aes(x = accident_year, y = total, colour = name)) +
+  geom_line() +
   labs(title = "Accidents by severity, 2005 to 2017", 
        x = "Accident Year", 
        y = "")+
   scale_x_continuous(breaks = seq(2005, 2017, 2))+
-  scale_colour_manual(values = dft_colour) + 
-  theme_dft 
+  theme_minimal()
 plotly::ggplotly(road_acc_chart)
-```
-Since we set our legend to be horizontal in our DfT theme, we get a warning message as plotly.js does not support horizontal legend items yet.
-
-### plot_ly()
-
-Using plot_ly() is similar to {ggplot2} in some ways as we build the plot in layers but we use the pipe operator rather than a plus sign, and the ~ sign before the variables in our data:
-
-```{r, fig.alt="plot14"}
-plotly::plot_ly(road_acc, x = ~accident_year, y = ~total) %>% # specify the data and x and y axes
-  plotly::add_lines(color = ~name, colors = dft_colour[1:3]) %>% # colour lines by severity
-  plotly::layout(title = "Accidents by severity, 2005 to 2017",
-         xaxis = list(title = "Accident Year"),
-         yaxis = list(title = ""))
 ```
 
 
@@ -445,30 +318,5 @@ You can find more information about using {plotly} in R from the following websi
 
 * E-book: [https://plotly-r.com/index.html](https://plotly-r.com/index.html)
 
-## Mapping in R
 
-There are a wide range of packages you can use to produce maps in R. For static choropleth maps, we're going to focus on using {ggplot2} which we are now familiar with.
 
-### Mapping with {ggplot2}
-
-To complete.
-
-### Mapping with {leaflet}
-
-The {leaflet} package can be used to create interactive maps in R. Similar to {ggplot2}, you start with a base map and then add layers (i.e. features). We're going to map some search and rescue helicopter data, using the longitude and latitude.
-
-```{r}
-library(leaflet)
-sarh <- readr::read_csv(file = "data/SARH_spatial.csv")
-head(sarh)
-#plot the interactive map using leaflet
-leaflet::leaflet(data = sarh) %>% 
-  leaflet::addProviderTiles(provider = providers$Esri.NatGeoWorldMap) %>%  #select the type of map you want to plot
-  leaflet::addMarkers(lng = ~longitude_new, 
-                      lat = ~ latitude_new, 
-                      popup = ~ htmltools::htmlEscape(Base), # what appears when you click on a data point
-                      label = ~ htmltools::htmlEscape(Domain) # what appears when you hover over a data point
-  )
-```
-
-If you want to save this as a static map, you could simply export is an image. More information on using {leaflet} in R can be found here: [https://rstudio.github.io/leaflet/](https://rstudio.github.io/leaflet/)
