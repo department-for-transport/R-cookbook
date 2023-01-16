@@ -344,6 +344,27 @@ tm_shape() + # defining our second shapefile to use and plot in the same output 
 #knitr::include_url("image/interactive3.html")
 ```
 
+
+## Mapping with {leaflet}
+
+The {leaflet} package can be used to create interactive maps in R. Similar to {ggplot2}, you start with a base map and then add layers (i.e. features). We're going to map some search and rescue helicopter data, using the longitude and latitude.
+
+```{r}
+library(leaflet)
+sarh <- readr::read_csv(file = "data/SARH_spatial.csv")
+head(sarh)
+#plot the interactive map using leaflet
+leaflet::leaflet(data = sarh) %>% 
+  leaflet::addProviderTiles(provider = providers$Esri.NatGeoWorldMap) %>%  #select the type of map you want to plot
+  leaflet::addMarkers(lng = ~longitude_new, 
+                      lat = ~ latitude_new, 
+                      popup = ~ htmltools::htmlEscape(Base), # what appears when you click on a data point
+                      label = ~ htmltools::htmlEscape(Domain) # what appears when you hover over a data point
+  )
+```
+
+More information on using {leaflet} in R can be found here: [https://rstudio.github.io/leaflet/](https://rstudio.github.io/leaflet/)
+
 ## Other Spatial Types
 We have worked only with the {sf} package here, but it's important to be aware of different types of spatial data formats that exist in R.
 

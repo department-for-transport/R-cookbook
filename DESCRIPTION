@@ -18,4 +18,7 @@ Imports: rmarkdown,
   haven,
   plotly,
   leaflet,
-  sf
+  sf, 
+  dftplotr
+Remotes:
+  department-for-transport/dftplotr
