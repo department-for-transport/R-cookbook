@@ -82,5 +82,5 @@ There is are also quite a few links and resources which can help with a RAP proj
 [RAP collaboration slack channel](https://govdatascience.slack.com/messages/C6H22U3H9/convo/C17V1PCCX-1560436755.005800/)
 Contact the wider RAP community for help on more complex issues through the GovDataScience slack domain (you need to be signed in for this link to work).
 
-[GSS RAP champions page](https://gss.civilservice.gov.uk/about-us/champion-networks/reproducible-analytical-pipeline-rap-champions/). Get in contact with RAP champions from DfT and across government.
+[GSS RAP champions page](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/reproducible-analytical-pipeline-rap-champions/). Get in contact with RAP champions from DfT and across government.
 
