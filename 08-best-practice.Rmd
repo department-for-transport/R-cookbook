@@ -5,6 +5,7 @@ This section provides standards for best practice in writing R code. This is one
 
 ## Best practice in code
 
+Unlike Python, R does not have a single "best practice standard" for writing code. The below is not intended to be an exhaustive list, and merely highlights the most common and/or problematic issues that learning R coders are likely to encounter, and the best practice alternatives to them. For a full list of commonly accepted best practice, see the [Tidyverse Style Guide](https://style.tidyverse.org/).
 
 ### Assigning variables
 
