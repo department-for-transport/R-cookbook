@@ -38,8 +38,8 @@ Your code should be documented so that someone else can independently run the co
 **Well-structured data storage**
 Your project should have an organised hierarchy of files and folders (we recommend using an R project), with data and outputs stored appropriately. 
 
-**Create versions of code when milestones reached**
-You should create versions of your code whenever key milestones or sections have been completed. This will allow you to find previous versions of code if something goes wrong, or the code breaks. If version control is available (e.g. Github) then this could be implemented for more advanced version control.
+**Version control**
+You should use Git and Github to keep track of different versions of your code. This allows you to look back and see how and when key changes were made to your code, as well as allowing you to roll back to a previous version if something goes wrong, or the code breaks.
 
 **R packages and versions documented**
 R packages and the versions used should be documented so that if other people use your code they can ensure they have the right packages and versions to run your code. Running sessionInfo() and RStudio.Version() after loading all libraries at the start of your code will output information about the packages and RStudio versions used. See the R-Cookbook for how to capture and print this information to a file.
