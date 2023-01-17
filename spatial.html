@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Spatial Analysis in R | DfT R Cookbook</title>
+  <meta name="description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Spatial Analysis in R | DfT R Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="github-repo" content="departmentfortransport/R-cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Spatial Analysis in R | DfT R Cookbook" />
+  
+  <meta name="twitter:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  
+
+<meta name="author" content="Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden" />
+
+
+<meta name="date" content="2023-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="efficiency.html"/>
+<link rel="next" href="functions.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/d3-3.5.6/d3.min.js"></script>
+<link href="libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet" />
+<script src="libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="libs/highlight-6.2.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlight-6.2.0/highlight.js"></script>
+<script src="libs/profvis-binding-0.3.7/profvis.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html"><i class="fa fa-check"></i><b>1</b> Why do we need <em>another</em> book?</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#coding-standards"><i class="fa fa-check"></i><b>1.1</b> Coding standards</a></li>
+<li class="chapter" data-level="1.2" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#data"><i class="fa fa-check"></i><b>1.2</b> Data</a></li>
+<li class="chapter" data-level="1.3" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#work-in-progress"><i class="fa fa-check"></i><b>1.3</b> Work in progress</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>2</b> The R basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basics.html"><a href="basics.html#r-family"><i class="fa fa-check"></i><b>2.1</b> R family</a></li>
+<li class="chapter" data-level="2.2" data-path="basics.html"><a href="basics.html#dft-rrstudio---subject-to-change"><i class="fa fa-check"></i><b>2.2</b> DfT R/RStudio - subject to change</a></li>
+<li class="chapter" data-level="2.3" data-path="basics.html"><a href="basics.html#rstudio-ide"><i class="fa fa-check"></i><b>2.3</b> RStudio IDE</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="basics.html"><a href="basics.html#left-bottom-left-if-you-have-scripts-open"><i class="fa fa-check"></i><b>2.3.1</b> Left (bottom left if you have scripts open)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="basics.html"><a href="basics.html#top-right-environment-and-other-tabs"><i class="fa fa-check"></i><b>2.3.2</b> Top right; <strong>Environment</strong>, and other tabs</a></li>
+<li class="chapter" data-level="2.3.3" data-path="basics.html"><a href="basics.html#bottom-right"><i class="fa fa-check"></i><b>2.3.3</b> Bottom right</a></li>
+<li class="chapter" data-level="2.3.4" data-path="basics.html"><a href="basics.html#other-handy-buttons-in-rstudio-ide"><i class="fa fa-check"></i><b>2.3.4</b> Other handy buttons in RStudio IDE</a></li>
+<li class="chapter" data-level="2.3.5" data-path="basics.html"><a href="basics.html#rstudio-menu-bar-a-few-pointers"><i class="fa fa-check"></i><b>2.3.5</b> RStudio menu bar a few pointers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="basics.html"><a href="basics.html#projects"><i class="fa fa-check"></i><b>2.4</b> Projects</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="basics.html"><a href="basics.html#folders"><i class="fa fa-check"></i><b>2.4.1</b> Folders</a></li>
+<li class="chapter" data-level="2.4.2" data-path="basics.html"><a href="basics.html#sessioninfo"><i class="fa fa-check"></i><b>2.4.2</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="basics.html"><a href="basics.html#r-memory"><i class="fa fa-check"></i><b>2.5</b> R memory</a></li>
+<li class="chapter" data-level="2.6" data-path="basics.html"><a href="basics.html#a-note-on-rounding"><i class="fa fa-check"></i><b>2.6</b> A note on rounding</a></li>
+<li class="chapter" data-level="2.7" data-path="basics.html"><a href="basics.html#assignment-operators---vs"><i class="fa fa-check"></i><b>2.7</b> Assignment operators <code>&lt;-</code> vs <code>=</code></a></li>
+<li class="chapter" data-level="2.8" data-path="basics.html"><a href="basics.html#arithmetic-operators"><i class="fa fa-check"></i><b>2.8</b> Arithmetic operators</a></li>
+<li class="chapter" data-level="2.9" data-path="basics.html"><a href="basics.html#relational-operators"><i class="fa fa-check"></i><b>2.9</b> Relational operators</a></li>
+<li class="chapter" data-level="2.10" data-path="basics.html"><a href="basics.html#logical-operators"><i class="fa fa-check"></i><b>2.10</b> Logical operators</a></li>
+<li class="chapter" data-level="2.11" data-path="basics.html"><a href="basics.html#vectors"><i class="fa fa-check"></i><b>2.11</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="basics.html"><a href="basics.html#vector-types"><i class="fa fa-check"></i><b>2.11.1</b> Types</a></li>
+<li class="chapter" data-level="2.11.2" data-path="basics.html"><a href="basics.html#conversion-between-atomic-vector-types"><i class="fa fa-check"></i><b>2.11.2</b> Conversion between atomic vector types</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="packages.html"><a href="packages.html#what-are-packages"><i class="fa fa-check"></i><b>3.1</b> What are packages?</a></li>
+<li class="chapter" data-level="3.2" data-path="packages.html"><a href="packages.html#best-practice-in-using-packages"><i class="fa fa-check"></i><b>3.2</b> Best practice in using packages</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="packages.html"><a href="packages.html#calling-packages"><i class="fa fa-check"></i><b>3.2.1</b> Calling packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="packages.html"><a href="packages.html#core-package-usage"><i class="fa fa-check"></i><b>3.2.2</b> Core package usage</a></li>
+<li class="chapter" data-level="3.2.3" data-path="packages.html"><a href="packages.html#using-github-packages"><i class="fa fa-check"></i><b>3.2.3</b> Using Github packages</a></li>
+<li class="chapter" data-level="3.2.4" data-path="packages.html"><a href="packages.html#using-packages-instead-of-stand-alone-functions"><i class="fa fa-check"></i><b>3.2.4</b> Using packages instead of stand-alone functions</a></li>
+<li class="chapter" data-level="3.2.5" data-path="packages.html"><a href="packages.html#heavy-dependency-packages"><i class="fa fa-check"></i><b>3.2.5</b> Heavy dependency packages</a></li>
+<li class="chapter" data-level="3.2.6" data-path="packages.html"><a href="packages.html#specifying-packages-when-using-functions"><i class="fa fa-check"></i><b>3.2.6</b> Specifying packages when using functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="packages.html"><a href="packages.html#recommended-packages"><i class="fa fa-check"></i><b>3.3</b> Recommended packages</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="packages.html"><a href="packages.html#tidyverse"><i class="fa fa-check"></i><b>3.3.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.3.2" data-path="packages.html"><a href="packages.html#non-tidyverse-packages"><i class="fa fa-check"></i><b>3.3.2</b> Non-tidyverse packages</a></li>
+<li class="chapter" data-level="3.3.3" data-path="packages.html"><a href="packages.html#dft-specific-packages"><i class="fa fa-check"></i><b>3.3.3</b> DfT-specific packages</a></li>
+<li class="chapter" data-level="3.3.4" data-path="packages.html"><a href="packages.html#specialist-packages"><i class="fa fa-check"></i><b>3.3.4</b> Specialist packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="packages.html"><a href="packages.html#package-management"><i class="fa fa-check"></i><b>3.4</b> Package management</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>4</b> Data Importing/Exporting and interaction with other programmes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-import.html"><a href="data-import.html#libraries"><i class="fa fa-check"></i><b>4.1</b> Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-import.html"><a href="data-import.html#navigating-folders"><i class="fa fa-check"></i><b>4.2</b> Navigating folders</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-import.html"><a href="data-import.html#down"><i class="fa fa-check"></i><b>4.2.1</b> Down</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-import.html"><a href="data-import.html#up"><i class="fa fa-check"></i><b>4.2.2</b> Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-import.html"><a href="data-import.html#rds"><i class="fa fa-check"></i><b>4.3</b> .rds</a></li>
+<li class="chapter" data-level="4.4" data-path="data-import.html"><a href="data-import.html#csv"><i class="fa fa-check"></i><b>4.4</b> .csv</a></li>
+<li class="chapter" data-level="4.5" data-path="data-import.html"><a href="data-import.html#xlsx-and-.xls"><i class="fa fa-check"></i><b>4.5</b> .xlsx and .xls</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="data-import.html"><a href="data-import.html#single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.1</b> Single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.2" data-path="data-import.html"><a href="data-import.html#single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.2</b> Single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.3" data-path="data-import.html"><a href="data-import.html#many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.3</b> Many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.4" data-path="data-import.html"><a href="data-import.html#many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.4</b> Many worksheets - many workbooks</a></li>
+<li class="chapter" data-level="4.5.5" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.5</b> Non-rectangular data - single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.6" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.6</b> Non-rectangular data - single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.7" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.7</b> Non-rectangular data - many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.8" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.8</b> Non-rectangular data - many worksheets - many workbooks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="data-import.html"><a href="data-import.html#exporting-to-.xlsx"><i class="fa fa-check"></i><b>4.6</b> Exporting to .xlsx</a></li>
+<li class="chapter" data-level="4.7" data-path="data-import.html"><a href="data-import.html#sav"><i class="fa fa-check"></i><b>4.7</b> .sav</a></li>
+<li class="chapter" data-level="4.8" data-path="data-import.html"><a href="data-import.html#sql"><i class="fa fa-check"></i><b>4.8</b> SQL</a></li>
+<li class="chapter" data-level="4.9" data-path="data-import.html"><a href="data-import.html#gcp"><i class="fa fa-check"></i><b>4.9</b> GCP</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="data-import.html"><a href="data-import.html#bigquery"><i class="fa fa-check"></i><b>4.9.1</b> BigQuery</a></li>
+<li class="chapter" data-level="4.9.2" data-path="data-import.html"><a href="data-import.html#google-cloud-storage"><i class="fa fa-check"></i><b>4.9.2</b> Google Cloud Storage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tables.html"><a href="tables.html"><i class="fa fa-check"></i><b>5</b> Table/Data Frame manipulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tables.html"><a href="tables.html#pivoting-tables"><i class="fa fa-check"></i><b>5.1</b> Pivoting tables</a></li>
+<li class="chapter" data-level="5.2" data-path="tables.html"><a href="tables.html#dropping-and-selecting-columns"><i class="fa fa-check"></i><b>5.2</b> Dropping and selecting columns</a></li>
+<li class="chapter" data-level="5.3" data-path="tables.html"><a href="tables.html#rename-variables"><i class="fa fa-check"></i><b>5.3</b> Rename variables</a></li>
+<li class="chapter" data-level="5.4" data-path="tables.html"><a href="tables.html#filtering-data"><i class="fa fa-check"></i><b>5.4</b> Filtering data</a></li>
+<li class="chapter" data-level="5.5" data-path="tables.html"><a href="tables.html#group-data"><i class="fa fa-check"></i><b>5.5</b> Group data</a></li>
+<li class="chapter" data-level="5.6" data-path="tables.html"><a href="tables.html#order-data"><i class="fa fa-check"></i><b>5.6</b> Order data</a></li>
+<li class="chapter" data-level="5.7" data-path="tables.html"><a href="tables.html#get-counts-of-data"><i class="fa fa-check"></i><b>5.7</b> Get counts of data</a></li>
+<li class="chapter" data-level="5.8" data-path="tables.html"><a href="tables.html#combine-tables"><i class="fa fa-check"></i><b>5.8</b> Combine tables</a></li>
+<li class="chapter" data-level="5.9" data-path="tables.html"><a href="tables.html#joining-tables"><i class="fa fa-check"></i><b>5.9</b> Joining tables</a></li>
+<li class="chapter" data-level="5.10" data-path="tables.html"><a href="tables.html#select-specific-columns-in-a-join"><i class="fa fa-check"></i><b>5.10</b> Select specific columns in a join</a></li>
+<li class="chapter" data-level="5.11" data-path="tables.html"><a href="tables.html#sum-rows-or-columns"><i class="fa fa-check"></i><b>5.11</b> Sum rows or columns</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="tables.html"><a href="tables.html#sum-rows"><i class="fa fa-check"></i><b>5.11.1</b> Sum rows</a></li>
+<li class="chapter" data-level="5.11.2" data-path="tables.html"><a href="tables.html#sum-columns"><i class="fa fa-check"></i><b>5.11.2</b> Sum columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="tables.html"><a href="tables.html#replace-nas-or-other-values"><i class="fa fa-check"></i><b>5.12</b> Replace NAs or other values</a></li>
+<li class="chapter" data-level="5.13" data-path="tables.html"><a href="tables.html#reordering-rowscolumns"><i class="fa fa-check"></i><b>5.13</b> Reordering rows/columns</a>
+<ul>
+<li class="chapter" data-level="5.13.1" data-path="tables.html"><a href="tables.html#reordering-rows"><i class="fa fa-check"></i><b>5.13.1</b> Reordering rows</a></li>
+<li class="chapter" data-level="5.13.2" data-path="tables.html"><a href="tables.html#reordering-columns"><i class="fa fa-check"></i><b>5.13.2</b> Reordering columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.14" data-path="tables.html"><a href="tables.html#creating-new-variables"><i class="fa fa-check"></i><b>5.14</b> Creating new variables</a></li>
+<li class="chapter" data-level="5.15" data-path="tables.html"><a href="tables.html#summarising-data"><i class="fa fa-check"></i><b>5.15</b> Summarising data</a></li>
+<li class="chapter" data-level="5.16" data-path="tables.html"><a href="tables.html#look-up-tables"><i class="fa fa-check"></i><b>5.16</b> Look up tables</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dates-times.html"><a href="dates-times.html"><i class="fa fa-check"></i><b>6</b> Working with dates and times</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dates-times.html"><a href="dates-times.html#working-with-dates"><i class="fa fa-check"></i><b>6.1</b> Working with dates</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date"><i class="fa fa-check"></i><b>6.1.1</b> Converting a character to a date</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dates-times.html"><a href="dates-times.html#get-year-from-date"><i class="fa fa-check"></i><b>6.1.2</b> Get year from date</a></li>
+<li class="chapter" data-level="6.1.3" data-path="dates-times.html"><a href="dates-times.html#get-month-from-date"><i class="fa fa-check"></i><b>6.1.3</b> Get month from date</a></li>
+<li class="chapter" data-level="6.1.4" data-path="dates-times.html"><a href="dates-times.html#get-day-from-date"><i class="fa fa-check"></i><b>6.1.4</b> Get day from date</a></li>
+<li class="chapter" data-level="6.1.5" data-path="dates-times.html"><a href="dates-times.html#get-weekday-from-date"><i class="fa fa-check"></i><b>6.1.5</b> Get weekday from date</a></li>
+<li class="chapter" data-level="6.1.6" data-path="dates-times.html"><a href="dates-times.html#get-quarter-from-date"><i class="fa fa-check"></i><b>6.1.6</b> Get quarter from date</a></li>
+<li class="chapter" data-level="6.1.7" data-path="dates-times.html"><a href="dates-times.html#find-difference-between-two-dates"><i class="fa fa-check"></i><b>6.1.7</b> Find difference between two dates</a></li>
+<li class="chapter" data-level="6.1.8" data-path="dates-times.html"><a href="dates-times.html#convert-month-integer-to-character"><i class="fa fa-check"></i><b>6.1.8</b> Convert month (integer to character)</a></li>
+<li class="chapter" data-level="6.1.9" data-path="dates-times.html"><a href="dates-times.html#convert-month-character-to-integer"><i class="fa fa-check"></i><b>6.1.9</b> Convert month (character to integer)</a></li>
+<li class="chapter" data-level="6.1.10" data-path="dates-times.html"><a href="dates-times.html#merge-separate-date-information-into-a-date"><i class="fa fa-check"></i><b>6.1.10</b> Merge separate date information into a date</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dates-times.html"><a href="dates-times.html#working-with-date-times"><i class="fa fa-check"></i><b>6.2</b> Working with date-times</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date-time"><i class="fa fa-check"></i><b>6.2.1</b> Converting a character to a date-time</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dates-times.html"><a href="dates-times.html#extract-date-from-date-time-variable"><i class="fa fa-check"></i><b>6.2.2</b> Extract date from date time variable</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dates-times.html"><a href="dates-times.html#convert-character-to-hms-time-variable"><i class="fa fa-check"></i><b>6.2.3</b> Convert character to hms (time) variable</a></li>
+<li class="chapter" data-level="6.2.4" data-path="dates-times.html"><a href="dates-times.html#extract-hour-from-time"><i class="fa fa-check"></i><b>6.2.4</b> Extract hour from time</a></li>
+<li class="chapter" data-level="6.2.5" data-path="dates-times.html"><a href="dates-times.html#extract-minute-from-time"><i class="fa fa-check"></i><b>6.2.5</b> Extract minute from time</a></li>
+<li class="chapter" data-level="6.2.6" data-path="dates-times.html"><a href="dates-times.html#extract-second-from-time"><i class="fa fa-check"></i><b>6.2.6</b> Extract second from time</a></li>
+<li class="chapter" data-level="6.2.7" data-path="dates-times.html"><a href="dates-times.html#merge-separate-time-information-into-one-variable"><i class="fa fa-check"></i><b>6.2.7</b> Merge separate time information into one variable</a></li>
+<li class="chapter" data-level="6.2.8" data-path="dates-times.html"><a href="dates-times.html#find-the-difference-between-two-times"><i class="fa fa-check"></i><b>6.2.8</b> find the difference between two times</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>7</b> Working with factors</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factors.html"><a href="factors.html#common-uses"><i class="fa fa-check"></i><b>7.1</b> Common uses</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="factors.html"><a href="factors.html#tabulation-of-data"><i class="fa fa-check"></i><b>7.1.1</b> Tabulation of data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="factors.html"><a href="factors.html#ordering-of-data-for-output"><i class="fa fa-check"></i><b>7.1.2</b> Ordering of data for output</a></li>
+<li class="chapter" data-level="7.1.3" data-path="factors.html"><a href="factors.html#statistical-models"><i class="fa fa-check"></i><b>7.1.3</b> Statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="factors.html"><a href="factors.html#other-things-to-know-about-factors"><i class="fa fa-check"></i><b>7.2</b> Other things to know about factors</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factors.html"><a href="factors.html#renaming-factor-levels"><i class="fa fa-check"></i><b>7.2.1</b> Renaming factor levels</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factors.html"><a href="factors.html#combining-factors-does-not-result-in-a-factor"><i class="fa fa-check"></i><b>7.2.2</b> Combining factors does not result in a factor</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factors.html"><a href="factors.html#numeric-vectors-that-have-been-read-as-factors"><i class="fa fa-check"></i><b>7.2.3</b> Numeric vectors that have been read as factors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factors.html"><a href="factors.html#helpful-packages"><i class="fa fa-check"></i><b>7.3</b> Helpful packages</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="plots.html"><a href="plots.html"><i class="fa fa-check"></i><b>8</b> Plotting and Data Visualisations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="plots.html"><a href="plots.html#plotting-in-base-r"><i class="fa fa-check"></i><b>8.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="8.2" data-path="plots.html"><a href="plots.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>8.2</b> Plotting with {ggplot2}</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="plots.html"><a href="plots.html#line-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.1</b> Line charts with {ggplot2}</a></li>
+<li class="chapter" data-level="8.2.2" data-path="plots.html"><a href="plots.html#aesthetic-mappings"><i class="fa fa-check"></i><b>8.2.2</b> Aesthetic mappings</a></li>
+<li class="chapter" data-level="8.2.3" data-path="plots.html"><a href="plots.html#bar-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.3</b> Bar charts with {ggplot2}</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="plots.html"><a href="plots.html#dft-colours-and-themes-the-dftplotr-package"><i class="fa fa-check"></i><b>8.3</b> DfT colours and themes: the dftplotr package</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="plots.html"><a href="plots.html#custom-dft-theme"><i class="fa fa-check"></i><b>8.3.1</b> Custom DfT Theme</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="plots.html"><a href="plots.html#more-ggplot2-charts"><i class="fa fa-check"></i><b>8.4</b> More {ggplot2} charts</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="plots.html"><a href="plots.html#scatter-plots"><i class="fa fa-check"></i><b>8.4.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="8.4.2" data-path="plots.html"><a href="plots.html#horizontal-bar-chart"><i class="fa fa-check"></i><b>8.4.2</b> Horizontal bar chart</a></li>
+<li class="chapter" data-level="8.4.3" data-path="plots.html"><a href="plots.html#stacked-bar-chart"><i class="fa fa-check"></i><b>8.4.3</b> Stacked bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="plots.html"><a href="plots.html#interactive-charts-with-plotly"><i class="fa fa-check"></i><b>8.5</b> Interactive charts with {plotly}</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="plots.html"><a href="plots.html#plotly-with-ggplot2"><i class="fa fa-check"></i><b>8.5.1</b> {plotly} with {ggplot2}</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="best-practice.html"><a href="best-practice.html"><i class="fa fa-check"></i><b>9</b> Writing good quality code</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-practice.html"><a href="best-practice.html#best-practice-in-code"><i class="fa fa-check"></i><b>9.1</b> Best practice in code</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="best-practice.html"><a href="best-practice.html#assigning-variables"><i class="fa fa-check"></i><b>9.1.1</b> Assigning variables</a></li>
+<li class="chapter" data-level="9.1.2" data-path="best-practice.html"><a href="best-practice.html#using-package-functions"><i class="fa fa-check"></i><b>9.1.2</b> Using package functions</a></li>
+<li class="chapter" data-level="9.1.3" data-path="best-practice.html"><a href="best-practice.html#use-of-pipes"><i class="fa fa-check"></i><b>9.1.3</b> Use of pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="best-practice.html"><a href="best-practice.html#code-layout"><i class="fa fa-check"></i><b>9.2</b> Code Layout</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="best-practice.html"><a href="best-practice.html#code-spacing"><i class="fa fa-check"></i><b>9.2.1</b> Code spacing</a></li>
+<li class="chapter" data-level="9.2.2" data-path="best-practice.html"><a href="best-practice.html#code-width"><i class="fa fa-check"></i><b>9.2.2</b> Code width</a></li>
+<li class="chapter" data-level="9.2.3" data-path="best-practice.html"><a href="best-practice.html#code-length"><i class="fa fa-check"></i><b>9.2.3</b> Code length</a></li>
+<li class="chapter" data-level="9.2.4" data-path="best-practice.html"><a href="best-practice.html#linters"><i class="fa fa-check"></i><b>9.2.4</b> Linters</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="best-practice.html"><a href="best-practice.html#project-structure"><i class="fa fa-check"></i><b>9.3</b> Project structure</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="best-practice.html"><a href="best-practice.html#documentation"><i class="fa fa-check"></i><b>9.3.1</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="best-practice.html"><a href="best-practice.html#centralised-code-structure"><i class="fa fa-check"></i><b>9.3.2</b> Centralised code structure</a></li>
+<li class="chapter" data-level="9.3.3" data-path="best-practice.html"><a href="best-practice.html#data-storage"><i class="fa fa-check"></i><b>9.3.3</b> Data storage</a></li>
+<li class="chapter" data-level="9.3.4" data-path="best-practice.html"><a href="best-practice.html#project-management"><i class="fa fa-check"></i><b>9.3.4</b> Project management</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="RAP.html"><a href="RAP.html"><i class="fa fa-check"></i><b>10</b> DfT RAP guidance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="RAP.html"><a href="RAP.html#what"><i class="fa fa-check"></i><b>10.1</b> What</a></li>
+<li class="chapter" data-level="10.2" data-path="RAP.html"><a href="RAP.html#dft-rap-levels-guidance"><i class="fa fa-check"></i><b>10.2</b> DfT RAP levels guidance</a></li>
+<li class="chapter" data-level="10.3" data-path="RAP.html"><a href="RAP.html#when"><i class="fa fa-check"></i><b>10.3</b> When</a></li>
+<li class="chapter" data-level="10.4" data-path="RAP.html"><a href="RAP.html#additional-resources"><i class="fa fa-check"></i><b>10.4</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="efficiency.html"><a href="efficiency.html"><i class="fa fa-check"></i><b>11</b> Code efficiency and speed</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="efficiency.html"><a href="efficiency.html#checking-code-speed"><i class="fa fa-check"></i><b>11.1</b> Checking code speed</a></li>
+<li class="chapter" data-level="11.2" data-path="efficiency.html"><a href="efficiency.html#data-read-efficiency"><i class="fa fa-check"></i><b>11.2</b> Data read efficiency</a></li>
+<li class="chapter" data-level="11.3" data-path="efficiency.html"><a href="efficiency.html#ram-usage"><i class="fa fa-check"></i><b>11.3</b> RAM usage</a></li>
+<li class="chapter" data-level="11.4" data-path="efficiency.html"><a href="efficiency.html#package-selection"><i class="fa fa-check"></i><b>11.4</b> Package selection</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>12</b> Spatial Analysis in R</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="spatial.html"><a href="spatial.html#what-is-spatial-data"><i class="fa fa-check"></i><b>12.1</b> What is Spatial Data?</a></li>
+<li class="chapter" data-level="12.2" data-path="spatial.html"><a href="spatial.html#packages-1"><i class="fa fa-check"></i><b>12.2</b> Packages</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial.html"><a href="spatial.html#reading-in-spatial-data"><i class="fa fa-check"></i><b>12.3</b> Reading in Spatial Data</a></li>
+<li class="chapter" data-level="12.4" data-path="spatial.html"><a href="spatial.html#crs-projections"><i class="fa fa-check"></i><b>12.4</b> CRS Projections</a></li>
+<li class="chapter" data-level="12.5" data-path="spatial.html"><a href="spatial.html#manipulating-spatial-data"><i class="fa fa-check"></i><b>12.5</b> Manipulating Spatial Data</a></li>
+<li class="chapter" data-level="12.6" data-path="spatial.html"><a href="spatial.html#spatial-analysis---joins"><i class="fa fa-check"></i><b>12.6</b> Spatial Analysis - Joins</a></li>
+<li class="chapter" data-level="12.7" data-path="spatial.html"><a href="spatial.html#plotting-and-simplifying"><i class="fa fa-check"></i><b>12.7</b> Plotting and simplifying</a></li>
+<li class="chapter" data-level="12.8" data-path="spatial.html"><a href="spatial.html#mapping-spatial-data"><i class="fa fa-check"></i><b>12.8</b> Mapping Spatial Data</a></li>
+<li class="chapter" data-level="12.9" data-path="spatial.html"><a href="spatial.html#mapping-with-leaflet"><i class="fa fa-check"></i><b>12.9</b> Mapping with {leaflet}</a></li>
+<li class="chapter" data-level="12.10" data-path="spatial.html"><a href="spatial.html#other-spatial-types"><i class="fa fa-check"></i><b>12.10</b> Other Spatial Types</a></li>
+<li class="chapter" data-level="12.11" data-path="spatial.html"><a href="spatial.html#further-resources"><i class="fa fa-check"></i><b>12.11</b> Further Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>13</b> Functions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="functions.html"><a href="functions.html#user-defined-functions-udfs"><i class="fa fa-check"></i><b>13.1</b> User defined functions (UDFs)</a></li>
+<li class="chapter" data-level="13.2" data-path="functions.html"><a href="functions.html#top-tips-for-writing-functions"><i class="fa fa-check"></i><b>13.2</b> Top tips for writing functions</a></li>
+<li class="chapter" data-level="13.3" data-path="functions.html"><a href="functions.html#function-structure"><i class="fa fa-check"></i><b>13.3</b> Function structure</a></li>
+<li class="chapter" data-level="13.4" data-path="functions.html"><a href="functions.html#function-with-purrr-structure"><i class="fa fa-check"></i><b>13.4</b> Function with <code>purrr</code> structure</a></li>
+<li class="chapter" data-level="13.5" data-path="functions.html"><a href="functions.html#packages-within-dft"><i class="fa fa-check"></i><b>13.5</b> Packages within DfT</a></li>
+<li class="chapter" data-level="13.6" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>13.6</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="qa.html"><a href="qa.html"><i class="fa fa-check"></i><b>14</b> Quality assurance in code</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="qa.html"><a href="qa.html#qa-of-data"><i class="fa fa-check"></i><b>14.1</b> QA of data</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="qa.html"><a href="qa.html#adding-clear-messages-to-functions"><i class="fa fa-check"></i><b>14.1.1</b> Adding clear messages to functions</a></li>
+<li class="chapter" data-level="14.1.2" data-path="qa.html"><a href="qa.html#generating-qa-reports"><i class="fa fa-check"></i><b>14.1.2</b> Generating QA reports</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="qa.html"><a href="qa.html#qa-of-code"><i class="fa fa-check"></i><b>14.2</b> QA of code</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="qa.html"><a href="qa.html#code-commenting"><i class="fa fa-check"></i><b>14.2.1</b> Code commenting</a></li>
+<li class="chapter" data-level="14.2.2" data-path="qa.html"><a href="qa.html#code-reviews"><i class="fa fa-check"></i><b>14.2.2</b> Code reviews</a></li>
+<li class="chapter" data-level="14.2.3" data-path="qa.html"><a href="qa.html#testing-code"><i class="fa fa-check"></i><b>14.2.3</b> Testing code</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DfT R Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="spatial" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Spatial Analysis in R<a href="spatial.html#spatial" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="what-is-spatial-data" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> What is Spatial Data?<a href="spatial.html#what-is-spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For most work in R we work with flat data, i.e. data that is only 1 or 2 dimensions. A data frame, for example, has two dimensions (rows representing observations and columns representing variables), and no other information outside of that two dimensional array. Spatial data however needs some extra information for it to accurately represent actual locations on the Earth: the coordinates of the object; and a system of reference for how the coordinates relate to a physical location on Earth.</p>
+</div>
+<div id="packages-1" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Packages<a href="spatial.html#packages-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To hold spatial data, we need to leverage packages which exist outside of Base R. We will be using the {sf} package for these example, but note that it is common to see spatial data held in the {sp}, {geojson}, and {raster} packages as well, all of which have their own advantages and disadvantages (it is not uncommon to have to switch from one to another to leverage these advantages - more on that later).</p>
+<p>The advantage of using the {sf} package is that data is kept in as similar a format to a flat data frame as possible. This makes it easier to work with our data for two reasons. First, it lets us use {dplyr} data manipulations or join our spatial data with non-spatial data (some spatial data formats don’t let you do this). Second, it’s just simplier to wrap your head around.</p>
+</div>
+<div id="reading-in-spatial-data" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Reading in Spatial Data<a href="spatial.html#reading-in-spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s have a look at some data. We can read in our data as a spatial object using the <strong>st_read</strong> funciton from the {sf} package (if it is saved in an .shp format and has necessary metadata). We’ll be working with some shapefiles which represent local authorities which are sourced from the ONS.</p>
+<p><em>Reading in Spatial Data</em></p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="spatial.html#cb251-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">&quot;data/LAs&quot;</span>)</span>
+<span id="cb251-2"><a href="spatial.html#cb251-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Reading layer `LAs&#39; from data source </span></span>
+<span id="cb251-3"><a href="spatial.html#cb251-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `/home/runner/work/R-cookbook/R-cookbook/data/LAs&#39; using driver `ESRI Shapefile&#39;</span></span>
+<span id="cb251-4"><a href="spatial.html#cb251-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 382 features and 2 fields</span></span>
+<span id="cb251-5"><a href="spatial.html#cb251-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span id="cb251-6"><a href="spatial.html#cb251-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb251-7"><a href="spatial.html#cb251-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 364.2663 ymin: 9909.1 xmax: 655599.6 ymax: 1218502</span></span>
+<span id="cb251-8"><a href="spatial.html#cb251-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: Transverse_Mercator</span></span></code></pre></div>
+<p>Looking at the message we get when we load in our data, we can find out some basic information about our sf dataframe:</p>
+<ul>
+<li>It tells us that it is a “Simple feature collection with 391 features and 10 fields”. In other words, this is telling us that it is an sf dataframe of 391 observations (features) and 10 variables (fields).</li>
+<li>The geometry type is “MULTIPOLYGON”. To break this down, the “POLYGON” is telling us we’re dealing with distinct shapes for each observation (as opposed to lines or dots), and the “MULTI” is telling us that one observation can be represented by multiple polygons. An example of this would be the Shetland Islands, a single local authority made up of many small polygons.</li>
+<li>The “bbox”” gives us the coordinates of a bounding box which will contain all the features of the sf data frame.</li>
+<li>The “epsg” and “proj4string” gives us the coordinate reference system. The most common code you will see is 4326 which refers to the “World Geodetic System 1984”. This is the coordinate reference system you are probably most familiar with (without realising it), as it is used in most GPS and mapping software. Points in the WGS system are referred to by their “latitude” and “longitude”. In this case, the epsg code is “NA”, in which case we will have to refer to the documentation to discern the correct epsg code to apply to the data.</li>
+</ul>
+<p>We can also ask R to give us all of this info with the <strong>st_geometry</strong> function.</p>
+<p><em>Inspect spatial data</em></p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="spatial.html#cb252-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_geometry</span>(LAs)</span>
+<span id="cb252-2"><a href="spatial.html#cb252-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry set for 382 features </span></span>
+<span id="cb252-3"><a href="spatial.html#cb252-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span id="cb252-4"><a href="spatial.html#cb252-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb252-5"><a href="spatial.html#cb252-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 364.2663 ymin: 9909.1 xmax: 655599.6 ymax: 1218502</span></span>
+<span id="cb252-6"><a href="spatial.html#cb252-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: Transverse_Mercator</span></span>
+<span id="cb252-7"><a href="spatial.html#cb252-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 5 geometries:</span></span>
+<span id="cb252-8"><a href="spatial.html#cb252-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MULTIPOLYGON (((448874 536622.6, 453089.1 53411...</span></span>
+<span id="cb252-9"><a href="spatial.html#cb252-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MULTIPOLYGON (((451744.3 520566.4, 451788.8 520...</span></span>
+<span id="cb252-10"><a href="spatial.html#cb252-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MULTIPOLYGON (((478094.9 518835.6, 475360.6 516...</span></span>
+<span id="cb252-11"><a href="spatial.html#cb252-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MULTIPOLYGON (((448472.8 525830.1, 448796 52591...</span></span>
+<span id="cb252-12"><a href="spatial.html#cb252-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MULTIPOLYGON (((515719.3 428570.8, 515724.4 428...</span></span></code></pre></div>
+</div>
+<div id="crs-projections" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> CRS Projections<a href="spatial.html#crs-projections" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://www.axismaps.com/guide/general/map-projections/">There’s a lot that can be said</a> about the utlity of different Coordinate Reference Systems, but long-story-short they all have unique advantages and disadvantages as they distort shape, distance, or size in different ways. In our day-to-day work, you’re most likely to encounter two coordinate reference systems: the World Geodatic System (WGS84 - EPSG code: 4326), or the Ordance Survey Great Britain 1936 system (OSGB36 - EPSG code: 27700).</p>
+<p>The WGS84 system is best suited to global data - for example plotting international ports or a world map of countries. It is a geodatic system, which means the points it defines refer to a point on a 3d elipsoid which represents the earth.</p>
+<p>The OSGB1936 system is best suited to mapping the UK or areas within it. It is a projected system, which means it projects the 3d curve of the earth into a 2d object. An advantage of this is that eastings (the x-axis of this projection) remains consistent at all northings (the y-axis). For example, a 1000 unit change in eastings is a 1km change <em>anywhere</em>, whereas a 1 unit change in longitude is a different distance depending on the latitude, as the earth gets narrower the further away you get from the equator.</p>
+<p>Complexities aside, practically what this means is that you will always want <em>all</em> of you’re spatial data to be in the same CRS, otherwise spatial joins and mapping functions will start throwing up errors. We can change the crs projection very easily with the {sf} function <strong>st_transform</strong>.</p>
+<p><em>Changing Coordinate Reference System</em></p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="spatial.html#cb253-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_transform</span>(LAs, <span class="at">crs =</span> <span class="dv">27700</span>)</span>
+<span id="cb253-2"><a href="spatial.html#cb253-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb253-3"><a href="spatial.html#cb253-3" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(LAs)</span>
+<span id="cb253-4"><a href="spatial.html#cb253-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coordinate Reference System:</span></span>
+<span id="cb253-5"><a href="spatial.html#cb253-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   User input: EPSG:27700 </span></span>
+<span id="cb253-6"><a href="spatial.html#cb253-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   wkt:</span></span>
+<span id="cb253-7"><a href="spatial.html#cb253-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PROJCRS[&quot;OSGB36 / British National Grid&quot;,</span></span>
+<span id="cb253-8"><a href="spatial.html#cb253-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     BASEGEOGCRS[&quot;OSGB36&quot;,</span></span>
+<span id="cb253-9"><a href="spatial.html#cb253-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DATUM[&quot;Ordnance Survey of Great Britain 1936&quot;,</span></span>
+<span id="cb253-10"><a href="spatial.html#cb253-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ELLIPSOID[&quot;Airy 1830&quot;,6377563.396,299.3249646,</span></span>
+<span id="cb253-11"><a href="spatial.html#cb253-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 LENGTHUNIT[&quot;metre&quot;,1]]],</span></span>
+<span id="cb253-12"><a href="spatial.html#cb253-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PRIMEM[&quot;Greenwich&quot;,0,</span></span>
+<span id="cb253-13"><a href="spatial.html#cb253-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433]],</span></span>
+<span id="cb253-14"><a href="spatial.html#cb253-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         ID[&quot;EPSG&quot;,4277]],</span></span>
+<span id="cb253-15"><a href="spatial.html#cb253-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CONVERSION[&quot;British National Grid&quot;,</span></span>
+<span id="cb253-16"><a href="spatial.html#cb253-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         METHOD[&quot;Transverse Mercator&quot;,</span></span>
+<span id="cb253-17"><a href="spatial.html#cb253-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,9807]],</span></span>
+<span id="cb253-18"><a href="spatial.html#cb253-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMETER[&quot;Latitude of natural origin&quot;,49,</span></span>
+<span id="cb253-19"><a href="spatial.html#cb253-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],</span></span>
+<span id="cb253-20"><a href="spatial.html#cb253-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,8801]],</span></span>
+<span id="cb253-21"><a href="spatial.html#cb253-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMETER[&quot;Longitude of natural origin&quot;,-2,</span></span>
+<span id="cb253-22"><a href="spatial.html#cb253-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ANGLEUNIT[&quot;degree&quot;,0.0174532925199433],</span></span>
+<span id="cb253-23"><a href="spatial.html#cb253-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,8802]],</span></span>
+<span id="cb253-24"><a href="spatial.html#cb253-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMETER[&quot;Scale factor at natural origin&quot;,0.9996012717,</span></span>
+<span id="cb253-25"><a href="spatial.html#cb253-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             SCALEUNIT[&quot;unity&quot;,1],</span></span>
+<span id="cb253-26"><a href="spatial.html#cb253-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,8805]],</span></span>
+<span id="cb253-27"><a href="spatial.html#cb253-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMETER[&quot;False easting&quot;,400000,</span></span>
+<span id="cb253-28"><a href="spatial.html#cb253-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             LENGTHUNIT[&quot;metre&quot;,1],</span></span>
+<span id="cb253-29"><a href="spatial.html#cb253-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,8806]],</span></span>
+<span id="cb253-30"><a href="spatial.html#cb253-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMETER[&quot;False northing&quot;,-100000,</span></span>
+<span id="cb253-31"><a href="spatial.html#cb253-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             LENGTHUNIT[&quot;metre&quot;,1],</span></span>
+<span id="cb253-32"><a href="spatial.html#cb253-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ID[&quot;EPSG&quot;,8807]]],</span></span>
+<span id="cb253-33"><a href="spatial.html#cb253-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CS[Cartesian,2],</span></span>
+<span id="cb253-34"><a href="spatial.html#cb253-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         AXIS[&quot;(E)&quot;,east,</span></span>
+<span id="cb253-35"><a href="spatial.html#cb253-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ORDER[1],</span></span>
+<span id="cb253-36"><a href="spatial.html#cb253-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             LENGTHUNIT[&quot;metre&quot;,1]],</span></span>
+<span id="cb253-37"><a href="spatial.html#cb253-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         AXIS[&quot;(N)&quot;,north,</span></span>
+<span id="cb253-38"><a href="spatial.html#cb253-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             ORDER[2],</span></span>
+<span id="cb253-39"><a href="spatial.html#cb253-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             LENGTHUNIT[&quot;metre&quot;,1]],</span></span>
+<span id="cb253-40"><a href="spatial.html#cb253-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     USAGE[</span></span>
+<span id="cb253-41"><a href="spatial.html#cb253-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         SCOPE[&quot;Engineering survey, topographic mapping.&quot;],</span></span>
+<span id="cb253-42"><a href="spatial.html#cb253-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         AREA[&quot;United Kingdom (UK) - offshore to boundary of UKCS within 49°45&#39;N to 61°N and 9°W to 2°E; onshore Great Britain (England, Wales and Scotland). Isle of Man onshore.&quot;],</span></span>
+<span id="cb253-43"><a href="spatial.html#cb253-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         BBOX[49.75,-9,61.01,2.01]],</span></span>
+<span id="cb253-44"><a href="spatial.html#cb253-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ID[&quot;EPSG&quot;,27700]]</span></span></code></pre></div>
+<p>This changes the CRS projection from the WGS84 system to the OSGB1936 system, converting all of the coordinates to the new system. We can use the crs argument to change to any number of different projections.
+Note that this only works if the spatial object has data on the coordinate reference system already. If your data is missing <em>all</em> of this information, you will have to set the crs manually (if you know what the CRS projection <em>should be</em>):</p>
+<p><em>Setting Coordinate Reference System</em></p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="spatial.html#cb254-1" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(sf_object) <span class="ot">&lt;-</span> <span class="dv">27700</span></span></code></pre></div>
+</div>
+<div id="manipulating-spatial-data" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> Manipulating Spatial Data<a href="spatial.html#manipulating-spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As mentiond above, one of the key advantages of working with spatial data in {sf} format is that we can use tidyverse functions to manipulate our data. Let’s show this in action by creating a new variable.</p>
+<p>The variable “lad19cd” has a unique code for each local authority. All codes begin with a letter, followed by a numeric series. The letter refers to the country (“E” for England, “W” for Wales, “S” for Scotland, and “N” for Northern Ireland). We can use this to create a new variable called “country” for each feature.</p>
+<p><em>Manipulating {sf} data with dplyr</em></p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="spatial.html#cb255-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> LAs <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">country =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(stringr<span class="sc">::</span><span class="fu">str_detect</span>(lad19cd, <span class="st">&quot;W&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Wales&quot;</span>,</span>
+<span id="cb255-2"><a href="spatial.html#cb255-2" aria-hidden="true" tabindex="-1"></a>                             stringr<span class="sc">::</span><span class="fu">str_detect</span>(lad19cd, <span class="st">&quot;S&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Scotland&quot;</span>,</span>
+<span id="cb255-3"><a href="spatial.html#cb255-3" aria-hidden="true" tabindex="-1"></a>                             stringr<span class="sc">::</span><span class="fu">str_detect</span>(lad19cd, <span class="st">&quot;N&quot;</span>) <span class="sc">~</span> <span class="st">&quot;Northern Ireland&quot;</span>,</span>
+<span id="cb255-4"><a href="spatial.html#cb255-4" aria-hidden="true" tabindex="-1"></a>                             stringr<span class="sc">::</span><span class="fu">str_detect</span>(lad19cd, <span class="st">&quot;E&quot;</span>) <span class="sc">~</span> <span class="st">&quot;England&quot;</span>))</span>
+<span id="cb255-5"><a href="spatial.html#cb255-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb255-6"><a href="spatial.html#cb255-6" aria-hidden="true" tabindex="-1"></a>LAs <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(country) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">tally</span>()</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+England
+</td>
+<td style="text-align:right;">
+317
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Northern Ireland
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Scotland
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wales
+</td>
+<td style="text-align:right;">
+22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>As we can see, we’ve manipulated our data in exactly the same way as we would have with a flat dataframe.We can also join spatial and non-spatial data together in the same way we normally would with dataframes.
+Let’s take some population data and join it to our Local Authorities.</p>
+<p><em>Joining Spatial and non-spatial data</em></p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="spatial.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(LAs_pop)</span>
+<span id="cb256-2"><a href="spatial.html#cb256-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    lad19cd            population      </span></span>
+<span id="cb256-3"><a href="spatial.html#cb256-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Length:437         Min.   :    2242  </span></span>
+<span id="cb256-4"><a href="spatial.html#cb256-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Class :character   1st Qu.:  104503  </span></span>
+<span id="cb256-5"><a href="spatial.html#cb256-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Mode  :character   Median :  147997  </span></span>
+<span id="cb256-6"><a href="spatial.html#cb256-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     Mean   :  960204  </span></span>
+<span id="cb256-7"><a href="spatial.html#cb256-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     3rd Qu.:  276374  </span></span>
+<span id="cb256-8"><a href="spatial.html#cb256-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     Max.   :66435550  </span></span>
+<span id="cb256-9"><a href="spatial.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     NA&#39;s   :7</span></span></code></pre></div>
+<p>This dataframe of local authority populations has 2 variables, local authority code (lad19cd) and population. We can use a {dplyr} <strong>left_join</strong> to join this to our {sf} dataframe as we would with a flat dataframe.</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="spatial.html#cb257-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(LAs, LAs_pop, <span class="at">by =</span> <span class="st">&quot;lad19cd&quot;</span>)</span>
+<span id="cb257-2"><a href="spatial.html#cb257-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-3"><a href="spatial.html#cb257-3" aria-hidden="true" tabindex="-1"></a>LAs<span class="sc">$</span>population <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(LAs<span class="sc">$</span>population)</span></code></pre></div>
+</div>
+<div id="spatial-analysis---joins" class="section level2 hasAnchor" number="12.6">
+<h2><span class="header-section-number">12.6</span> Spatial Analysis - Joins<a href="spatial.html#spatial-analysis---joins" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A common task we might want to conduct is to manipulated a spatial object based on a relationship with another spatial object. To do this, we will use the <strong>st_join</strong> function from the {sf} package. The <strong>st_join</strong> allows us to join data on a number of different relationships, the simplest of which examines whether an object intersects another object - i.e. if there is any point where the geometries of both objects are identical. This could be where two lines cross, where two different spatial points objects have the same gemoetry, or it could be a point falling within the bounds of a polygon.</p>
+<p>Let’s look at some data representing the coordinates of road traffic accidents in Great Britain.</p>
+<p><em>Read in csv</em></p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="spatial.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(crash_data)</span>
+<span id="cb258-2"><a href="spatial.html#cb258-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;data.frame&quot;</span></span>
+<span id="cb258-3"><a href="spatial.html#cb258-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(crash_data)</span>
+<span id="cb258-4"><a href="spatial.html#cb258-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Location_Easting_OSGR&quot;  &quot;Location_Northing_OSGR&quot; &quot;Date&quot;                  </span></span>
+<span id="cb258-5"><a href="spatial.html#cb258-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;Number_of_Casualties&quot;</span></span></code></pre></div>
+<p>Our crash data is in a flat csv format, BUT it has variables representing the easting and northing of where each acccident took place. We can use this to turn our crash data into an sf object with the function <strong>st_as_sf</strong>. We take our dataset, define which variables R should use to define coordinates in the “coords” argument, and define the “crs” that those coordinates are plotted in.</p>
+<p><em>Transforming flat data frames to spatial data</em></p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="spatial.html#cb259-1" aria-hidden="true" tabindex="-1"></a>crashes <span class="ot">&lt;-</span> crash_data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Location_Easting_OSGR) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(Location_Northing_OSGR)) <span class="sc">%&gt;%</span></span>
+<span id="cb259-2"><a href="spatial.html#cb259-2" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;Location_Easting_OSGR&quot;</span>,<span class="st">&quot;Location_Northing_OSGR&quot;</span>), <span class="at">crs =</span> <span class="dv">27700</span>)</span>
+<span id="cb259-3"><a href="spatial.html#cb259-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-4"><a href="spatial.html#cb259-4" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_geometry</span>(crashes)</span>
+<span id="cb259-5"><a href="spatial.html#cb259-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry set for 122580 features </span></span>
+<span id="cb259-6"><a href="spatial.html#cb259-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Geometry type: POINT</span></span>
+<span id="cb259-7"><a href="spatial.html#cb259-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb259-8"><a href="spatial.html#cb259-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: 84654 ymin: 10235 xmax: 655275 ymax: 1209512</span></span>
+<span id="cb259-9"><a href="spatial.html#cb259-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Projected CRS: OSGB36 / British National Grid</span></span>
+<span id="cb259-10"><a href="spatial.html#cb259-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; First 5 geometries:</span></span>
+<span id="cb259-11"><a href="spatial.html#cb259-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; POINT (529150 182270)</span></span>
+<span id="cb259-12"><a href="spatial.html#cb259-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; POINT (542020 184290)</span></span>
+<span id="cb259-13"><a href="spatial.html#cb259-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; POINT (531720 182910)</span></span>
+<span id="cb259-14"><a href="spatial.html#cb259-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; POINT (541450 183220)</span></span>
+<span id="cb259-15"><a href="spatial.html#cb259-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; POINT (543580 176500)</span></span></code></pre></div>
+<p>The crashes sf dataframe holds information on all reported road traffic accidents in the UK since 2005. It has a number of variables for each accident, such as the accident severity, number of vehicles, number of casualties, time of day, and road and weather conditions.</p>
+<p>Let’s have a look at the most severe accidents (accidents with 5 or more casualties).</p>
+<p><em>Quick map of spatial data</em></p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="spatial.html#cb260-1" aria-hidden="true" tabindex="-1"></a>crashes <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Number_of_Casualties <span class="sc">&gt;=</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> tmap<span class="sc">::</span><span class="fu">qtm</span>()</span></code></pre></div>
+<p><img src="image/crashesq.png" alt="Crashes Q" width="842" /></p>
+<p>The <strong>qtm</strong> function is a useful function from {tmap} that let’s us quickly create maps with a minimum number of arguments. This is often useful for sense-checking data and can help you spot errors in data manipulation when working with spatial data. Here, for example, we can see that our data largely makes sense, so our conversion to {sf} was likely correct. We can (roughly) make out the shape of Great Britain, and we see some clusters around major cities (London, Birmingham, Manchester etc.). We can also see that we don’t appear to have data for Northern Ireland in this dataset (either that or Northern Irish drivers are much safer drivers).</p>
+<p>Let’s see can we work out which Local Authority has had the most road traffic casualties in this period.
+We can use a <strong>spatial join</strong> to assign a local authority to each road traffic accident. This works similarly to a {dplyr} left_join, with all of the variables from the <strong>y</strong> table being added to each observation of the <strong>x</strong> table which match eachother by a defined variable. The difference here is that the two tables are joined based on a shared <strong>geometry</strong>, rather than a shared value of a variable. The shared geometry here being whether a point intersects with a polygon (in other words, whether the point falls within a polygon).</p>
+<p><em>Joining spatial data</em></p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="spatial.html#cb261-1" aria-hidden="true" tabindex="-1"></a>crashes_join <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_join</span>(crashes, LAs, <span class="at">join =</span> st_intersects) <span class="co"># essentially a left_join of LAs to crashes</span></span>
+<span id="cb261-2"><a href="spatial.html#cb261-2" aria-hidden="true" tabindex="-1"></a>crashes_join<span class="sc">$</span>LA_name <span class="ot">&lt;-</span> <span class="fu">as.character</span>(crashes_join<span class="sc">$</span>LA_name)</span>
+<span id="cb261-3"><a href="spatial.html#cb261-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-4"><a href="spatial.html#cb261-4" aria-hidden="true" tabindex="-1"></a>LAs_casualties <span class="ot">&lt;-</span> crashes_join <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(LA_name) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">casualties =</span> <span class="fu">sum</span>(Number_of_Casualties)) <span class="co"># making an sf data frame called LAs_casualties which is the result of a simple group_by and summarise.</span></span>
+<span id="cb261-5"><a href="spatial.html#cb261-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-6"><a href="spatial.html#cb261-6" aria-hidden="true" tabindex="-1"></a>LAs_casualties <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(casualties)) <span class="sc">%&gt;%</span> <span class="fu">select</span>(LA_name, casualties) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+LA_name
+</th>
+<th style="text-align:right;">
+casualties
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Birmingham
+</td>
+<td style="text-align:right;">
+3592
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leeds
+</td>
+<td style="text-align:right;">
+1980
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Westminster
+</td>
+<td style="text-align:right;">
+1883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cornwall
+</td>
+<td style="text-align:right;">
+1663
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lambeth
+</td>
+<td style="text-align:right;">
+1402
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+1340
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can see that Birmingham has had more casualties in this period than any other local authority.</p>
+<p>The <em>LAs_casualties</em> dataset that we created above has the same local authorities names as our original <em>LAs</em> sf dataframe, meaning we can easily left_join this table to our original LAs_shapefile. But first, we will turn it into a flat dataframe (ie, with no geographic information) with the <strong>st_set_geometry</strong> function. If we did not get rid of the geometry before left_joining, we would create a “geometry_collection” object for each local authority, which would be a mess of polygons and points within those polygons for each feature. This is because our <strong>group_by</strong> function above also grouped together the geometries of the observations it was grouping together. If we look at the outout above, we can see that the geometry type of LAs_casualties is “MULTIPOINT”, so the “Birmingham” observation has 3,532 points representing where each road accident happened, rather than outlining the polygon of Birmingham in any meaningful way.</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="spatial.html#cb262-1" aria-hidden="true" tabindex="-1"></a>LAs_casualties <span class="ot">&lt;-</span> LAs_casualties <span class="sc">%&gt;%</span> sf<span class="sc">::</span><span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>)</span>
+<span id="cb262-2"><a href="spatial.html#cb262-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-3"><a href="spatial.html#cb262-3" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(LAs, LAs_casualties, <span class="at">by =</span> <span class="st">&quot;LA_name&quot;</span>)</span></code></pre></div>
+<p>We now have our casualties data joined to our original local authorities shapefile. We can now use this to make graphical representations of our data.</p>
+</div>
+<div id="plotting-and-simplifying" class="section level2 hasAnchor" number="12.7">
+<h2><span class="header-section-number">12.7</span> Plotting and simplifying<a href="spatial.html#plotting-and-simplifying" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s have a look at one of our Local Authorities in isolation, Cornwall.</p>
+<p><img src="image/Cornwall1.png" alt="Cornwall map" width="842" /></p>
+<p>We can see that our polygon is quite detailed. While this detail is desirable for when we conduct our spatial analysis, if we want to plot all of our local authorities at the same time, it can be better to plot simplified polygons. This is for 3 reasons. First, simplification means that R can create and output plots quicker; Second, outputs will have a smaller file size (particularly useful for interactive plots or when we share our outputs); and third, sometimes simplified polygons actually look better in plots as too-detailed borders can come out looking murky due to over-plotting, particularly in static plots.</p>
+<p>To alleviate this, we can simplify our geometry features before plotting. For this, we will use the function <strong>ms_simplify</strong> from the package {rmapshaper}. This function simplifies spatial data while maintaining key topology. Simplifying functions in other packages can do funny things such leave gaps between polygons with internal borders when simplifying. <strong>ms_simplify</strong> doesn’t do this.</p>
+<p><em>Simplifying Spatial Data</em></p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="spatial.html#cb263-1" aria-hidden="true" tabindex="-1"></a>LAs_simp <span class="ot">&lt;-</span> rmapshaper<span class="sc">::</span><span class="fu">ms_simplify</span>(LAs, <span class="at">keep =</span> <span class="fl">0.05</span>, <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>This command creates a new sf data frame called “LAs_simp”, which has all the same information as the original LAs sf dataframe, but has a simplified geometry with fewer points. The “keep” argument specifies how much geographic information we want to hold onto. Here we only keep 5% of the original points. The “keep_shapes” argument specifies whether or not we want to allow the function to delete some features entirely for simplification purposes. This can be useful for polygons with lots of small islands as individual entries (where you are indifferent to whether or not you keep all islands in your dataset), BUT use with caution, as if you simplify too much R might delete entire features (observations) to fulfill the simplification. Here we set “keep_shapes = TRUE”” so we don’t lose any features.</p>
+<p>Let’s have a look at the difference between our original and our simplified polygon:</p>
+<p><img src="image/CornwallCompare.png" alt="Cornwall Compare" width="842" /></p>
+<p>Even with only 5% of the original points, we can see that we’ve held onto a lot of the information that we’d want if we were plotting these polygons.</p>
+<p>However, we should always use simplification with caution, and only simplify our spatial objects <em>after</em> we’ve carried out spatial analysis. Note that we can also simplify spatial data which are lines, reducing the number of vertices in lines, but we cannot simplify spatial points data, as their geometries (a single point for each entry) is already as small as it can be.</p>
+</div>
+<div id="mapping-spatial-data" class="section level2 hasAnchor" number="12.8">
+<h2><span class="header-section-number">12.8</span> Mapping Spatial Data<a href="spatial.html#mapping-spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are a number of packages that you can use to make maps with spatial data in R, including {leaflet}, {ggmap}, {mapdeck}, and {ggplot2}. Here, we will be using the package {tmap}. {tmap} is a highly versatile package for mapping spatial data, with a number of advantages over other packages:</p>
+<ul>
+<li>{tmap} uses a similar grammar to {ggplot2}, where aesthetic layers are layered on top of each other;</li>
+<li>the same piece of {tmap} code can be used to make either static or interactive maps, and;</li>
+<li>{tmap} can work with spatial data in a number of different formats, including {sp}, {raster}, {geojson} and {sf}.</li>
+</ul>
+<p>Similar to using {ggplot2}, the first layer of a tmap defines the spatial object that we wish to plot in the function <strong>tm_shape</strong>. We then add (+) an aesthetic element based on this spatial object Most often this aesthetic element will be one of type <strong>tm_polygons</strong>, <strong>tm_line</strong>, or <strong>tm_dots</strong>, depending on the spatial data type.</p>
+<p>Let’s see this in action, and map our local authorities based on how many road traffic casualties there were in each.</p>
+<p><em>Create static map in tmap</em></p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="spatial.html#cb264-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="ot">&lt;-</span> rmapshaper<span class="sc">::</span><span class="fu">ms_simplify</span>(LAs, <span class="at">keep =</span> <span class="fl">0.05</span>, <span class="at">keep_shapes =</span> <span class="cn">TRUE</span>) <span class="co"># Simplifying polygons. Remember to only do this after you&#39;ve finished your spatial analysis, or to save the simplified version as a different name.</span></span>
+<span id="cb264-2"><a href="spatial.html#cb264-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb264-3"><a href="spatial.html#cb264-3" aria-hidden="true" tabindex="-1"></a>tmap<span class="sc">::</span><span class="fu">tm_shape</span>(LAs) <span class="sc">+</span> <span class="co"># defining what shapefile to use</span></span>
+<span id="cb264-4"><a href="spatial.html#cb264-4" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;casualties&quot;</span>, <span class="co"># setting the variable to map the colour aesthetic to. tmap takes variable names in quotation marks</span></span>
+<span id="cb264-5"><a href="spatial.html#cb264-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="co"># the style option lets us define how we want the variable split</span></span>
+<span id="cb264-6"><a href="spatial.html#cb264-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">n =</span> <span class="dv">5</span>, <span class="co"># number of quantiles</span></span>
+<span id="cb264-7"><a href="spatial.html#cb264-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">pal =</span> <span class="st">&quot;YlGnBu&quot;</span> <span class="co"># choose from a number of palettes available from rcolorbrewer, or define your own</span></span>
+<span id="cb264-8"><a href="spatial.html#cb264-8" aria-hidden="true" tabindex="-1"></a>              ) <span class="sc">+</span></span>
+<span id="cb264-9"><a href="spatial.html#cb264-9" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;#000000&quot;</span>, <span class="co"># defining polygon border as black</span></span>
+<span id="cb264-10"><a href="spatial.html#cb264-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">lwd =</span> <span class="fl">0.3</span> <span class="co"># setting border width</span></span>
+<span id="cb264-11"><a href="spatial.html#cb264-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb264-12"><a href="spatial.html#cb264-12" aria-hidden="true" tabindex="-1"></a>  tmap<span class="sc">::</span><span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span> <span class="co"># putting the legend outside the plot rather than inside</span></span>
+<span id="cb264-13"><a href="spatial.html#cb264-13" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div>
+<p><img src="image/static1.png" alt="Static 1" width="842" /></p>
+<p>One problem with this plot is that we still have Northern Ireland in the plot, and we only have NAs for northern Ireland (as our casualties dataset didn’t have accidents which happened there). To fix this, we can utilise a simple {dplyr} filter to remove features which have an <em>NA</em> value for casualties. We can then pipe a filtered sf dataframe into the <strong>tm_shape</strong> function.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="spatial.html#cb265-1" aria-hidden="true" tabindex="-1"></a>LAs <span class="sc">%&gt;%</span></span>
+<span id="cb265-2"><a href="spatial.html#cb265-2" aria-hidden="true" tabindex="-1"></a> dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(casualties)) <span class="sc">%&gt;%</span></span>
+<span id="cb265-3"><a href="spatial.html#cb265-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span> <span class="co"># defining what shapefile to use</span></span>
+<span id="cb265-4"><a href="spatial.html#cb265-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;casualties&quot;</span>, <span class="co"># setting the variable to map the colour aesthetic to. tmap takes variable names in quotation marks</span></span>
+<span id="cb265-5"><a href="spatial.html#cb265-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="co"># the style option lets us define how we want the variable split</span></span>
+<span id="cb265-6"><a href="spatial.html#cb265-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="dv">5</span>, <span class="co"># number of quantiles</span></span>
+<span id="cb265-7"><a href="spatial.html#cb265-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">pal =</span> <span class="st">&quot;YlGnBu&quot;</span> <span class="co"># choose from a number of palettes available from rcolorbrewer, or define your own</span></span>
+<span id="cb265-8"><a href="spatial.html#cb265-8" aria-hidden="true" tabindex="-1"></a>             ) <span class="sc">+</span></span>
+<span id="cb265-9"><a href="spatial.html#cb265-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;#000000&quot;</span>, <span class="co"># defining polygon border as black</span></span>
+<span id="cb265-10"><a href="spatial.html#cb265-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">lwd =</span> <span class="fl">0.3</span> <span class="co"># setting border width</span></span>
+<span id="cb265-11"><a href="spatial.html#cb265-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb265-12"><a href="spatial.html#cb265-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span> <span class="co"># putting the legend outside the plot rather than inside</span></span>
+<span id="cb265-13"><a href="spatial.html#cb265-13" aria-hidden="true" tabindex="-1"></a>           )</span></code></pre></div>
+<p><img src="image/static2.png" alt="Static 2" width="842" /></p>
+<p>Though this plot is useful, and gives us a sense of the distribution of accidents, it’s difficult to make out values of smaller local authorities. What would make this easier is if we changed our map to an interactive map. We can do this very easily, using the same chunk of code, by simply setting the <strong>tmap_mode</strong> to “view”.</p>
+<p><em>Create interactive map in tmap</em></p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="spatial.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)</span>
+<span id="cb266-2"><a href="spatial.html#cb266-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-3"><a href="spatial.html#cb266-3" aria-hidden="true" tabindex="-1"></a>LAs <span class="sc">%&gt;%</span></span>
+<span id="cb266-4"><a href="spatial.html#cb266-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(casualties)) <span class="sc">%&gt;%</span></span>
+<span id="cb266-5"><a href="spatial.html#cb266-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span> <span class="co"># defining what shapefile to use</span></span>
+<span id="cb266-6"><a href="spatial.html#cb266-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;casualties&quot;</span>, <span class="co"># setting the variable to map the colour aesthetic to. tmap takes variable names in quotation marks.</span></span>
+<span id="cb266-7"><a href="spatial.html#cb266-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="co"># the style option lets us define how we want the variable split</span></span>
+<span id="cb266-8"><a href="spatial.html#cb266-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="dv">5</span>, <span class="co"># number of quantiles</span></span>
+<span id="cb266-9"><a href="spatial.html#cb266-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">pal =</span> <span class="st">&quot;YlGnBu&quot;</span> <span class="co"># choose from a number of palettes available from rcolorbrewer, or define your own</span></span>
+<span id="cb266-10"><a href="spatial.html#cb266-10" aria-hidden="true" tabindex="-1"></a>              ) <span class="sc">+</span></span>
+<span id="cb266-11"><a href="spatial.html#cb266-11" aria-hidden="true" tabindex="-1"></a> LAs <span class="sc">%&gt;%</span></span>
+<span id="cb266-12"><a href="spatial.html#cb266-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(casualties)) <span class="sc">%&gt;%</span></span>
+<span id="cb266-13"><a href="spatial.html#cb266-13" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb266-14"><a href="spatial.html#cb266-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">&quot;#000000&quot;</span>, <span class="co"># defining polygon border as black</span></span>
+<span id="cb266-15"><a href="spatial.html#cb266-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">lwd =</span> <span class="fl">0.3</span> <span class="co"># setting border width</span></span>
+<span id="cb266-16"><a href="spatial.html#cb266-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb266-17"><a href="spatial.html#cb266-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">legend.outside =</span> <span class="cn">TRUE</span> <span class="co"># putting the legend outside the plot rather than inside</span></span>
+<span id="cb266-18"><a href="spatial.html#cb266-18" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div>
+<p>It’s worth noting that some arguments in {tmap} are only availble in static plots, and some only available in interactive maps. However, R will just skip the arguments that don’t apply, so it wont break your code to leave them in. Here, the “legend.outside” argument is meaningless in an interactive plot, so is skipped by R when creating this interactive plot.</p>
+<p>A problem with this interact plot is that when you click on a local authority, you can’t find out it’s name. The default popup variable is the object id, because it’s the first variable in the sf dataframe, which isn’t very useful. We can manually set the popup variables instead.</p>
+<p>We can also make the map look a bit nicer by increasing the transparency of the polygons with the “alpha” argument.</p>
+<p>Finally we can pick from any number of basemaps. {tmap} leverages the {leaflet} package for basemaps, and you can find a list of available basemaps <a href="https://leaflet-extras.github.io/leaflet-providers/preview/">here</a>.</p>
+<p><em>Improving Interactive Map</em></p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="spatial.html#cb267-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-2"><a href="spatial.html#cb267-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>) <span class="sc">+</span> <span class="co"># defining basemap</span></span>
+<span id="cb267-3"><a href="spatial.html#cb267-3" aria-hidden="true" tabindex="-1"></a>LAs <span class="sc">%&gt;%</span></span>
+<span id="cb267-4"><a href="spatial.html#cb267-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(casualties)) <span class="sc">%&gt;%</span></span>
+<span id="cb267-5"><a href="spatial.html#cb267-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span> <span class="co"># defining what shapefile to use</span></span>
+<span id="cb267-6"><a href="spatial.html#cb267-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;casualties&quot;</span>, <span class="co"># setting the variable to map the colour aesthetic to. tmap takes variable names in quotation marks.</span></span>
+<span id="cb267-7"><a href="spatial.html#cb267-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="co"># the style option lets us define how we want the variable split</span></span>
+<span id="cb267-8"><a href="spatial.html#cb267-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="dv">5</span>, <span class="co"># number of quantiles</span></span>
+<span id="cb267-9"><a href="spatial.html#cb267-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">pal =</span> <span class="st">&quot;YlGnBu&quot;</span>, <span class="co"># choose from a number of palettes available from rcolorbrewer, or define your own</span></span>
+<span id="cb267-10"><a href="spatial.html#cb267-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="co"># setting transparency</span></span>
+<span id="cb267-11"><a href="spatial.html#cb267-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">&quot;Local Authority&quot;</span> <span class="ot">=</span> <span class="st">&quot;lad19nm&quot;</span>, <span class="st">&quot;casualties&quot;</span>), <span class="co"># setting variables to be seen on click</span></span>
+<span id="cb267-12"><a href="spatial.html#cb267-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">id =</span> <span class="st">&quot;lad19nm&quot;</span> <span class="co"># Setting a variable to display when hovered over</span></span>
+<span id="cb267-13"><a href="spatial.html#cb267-13" aria-hidden="true" tabindex="-1"></a>              ) </span></code></pre></div>
+<p>There are myriad aesthetic possibilities in {tmap} and related packages. It’s not uncommon for a map to be built first in {tmap}, before exported as {leaflet} map and further edited in the {leaflet} package, though we wont cover that here. It’s also possible to plot more than one spatial object at the same time. For example, layering polygons, points and lines from various shapefiles. Simply define the new spatial object with <strong>tm_shape</strong> and add aesthetics as before.</p>
+<p>Let’s see this in action, adding a layer to our map with the worst car accidents in our dataset (accidents with over 10 casualties).</p>
+<p><em>Mapping multiple spatial objects</em></p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="spatial.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_basemap</span>(<span class="at">server =</span> <span class="st">&quot;CartoDB.Positron&quot;</span>) <span class="sc">+</span> <span class="co"># defining basemap</span></span>
+<span id="cb268-2"><a href="spatial.html#cb268-2" aria-hidden="true" tabindex="-1"></a>LAs <span class="sc">%&gt;%</span></span>
+<span id="cb268-3"><a href="spatial.html#cb268-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(casualties)) <span class="sc">%&gt;%</span></span>
+<span id="cb268-4"><a href="spatial.html#cb268-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span> <span class="co"># defining what shapefile to use</span></span>
+<span id="cb268-5"><a href="spatial.html#cb268-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">&quot;casualties&quot;</span>, <span class="co"># setting the variable to map the colour aesthetic to. tmap takes variable names in quotation marks.</span></span>
+<span id="cb268-6"><a href="spatial.html#cb268-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="co"># the style option lets us define how we want the variable split</span></span>
+<span id="cb268-7"><a href="spatial.html#cb268-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">n =</span> <span class="dv">5</span>, <span class="co"># number of quantiles</span></span>
+<span id="cb268-8"><a href="spatial.html#cb268-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">pal =</span> <span class="st">&quot;YlGnBu&quot;</span>, <span class="co"># choose from a number of palettes available from rcolorbrewer, or define your own</span></span>
+<span id="cb268-9"><a href="spatial.html#cb268-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="co"># setting transparency</span></span>
+<span id="cb268-10"><a href="spatial.html#cb268-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">popup.vars =</span> <span class="fu">c</span>(<span class="st">&quot;Local Authority&quot;</span> <span class="ot">=</span> <span class="st">&quot;lad19nm&quot;</span>, <span class="st">&quot;casualties&quot;</span>),</span>
+<span id="cb268-11"><a href="spatial.html#cb268-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">id =</span> <span class="st">&quot;lad19nm&quot;</span>) <span class="sc">+</span></span>
+<span id="cb268-12"><a href="spatial.html#cb268-12" aria-hidden="true" tabindex="-1"></a>crashes <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Number_of_Casualties <span class="sc">==</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb268-13"><a href="spatial.html#cb268-13" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>() <span class="sc">+</span> <span class="co"># defining our second shapefile to use and plot in the same output as above</span></span>
+<span id="cb268-14"><a href="spatial.html#cb268-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="co"># calling tm_dots on point objects</span></span>
+<span id="cb268-15"><a href="spatial.html#cb268-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="co"># making the dots partially transparent</span></span>
+<span id="cb268-16"><a href="spatial.html#cb268-16" aria-hidden="true" tabindex="-1"></a>          <span class="at">jitter =</span> <span class="fl">0.05</span>,  <span class="co"># adding a small amount of random jittering to points so overlayed points are visible</span></span>
+<span id="cb268-17"><a href="spatial.html#cb268-17" aria-hidden="true" tabindex="-1"></a>          <span class="at">id =</span> <span class="st">&quot;Number_of_Casualties&quot;</span></span>
+<span id="cb268-18"><a href="spatial.html#cb268-18" aria-hidden="true" tabindex="-1"></a>  ) </span></code></pre></div>
+</div>
+<div id="mapping-with-leaflet" class="section level2 hasAnchor" number="12.9">
+<h2><span class="header-section-number">12.9</span> Mapping with {leaflet}<a href="spatial.html#mapping-with-leaflet" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {leaflet} package can be used to create interactive maps in R. Similar to {ggplot2}, you start with a base map and then add layers (i.e. features). We’re going to map some search and rescue helicopter data, using the longitude and latitude.</p>
+<pre><code>#&gt; Rows: 209 Columns: 7
+#&gt; ── Column specification ────────────────────────────────────────────────────────
+#&gt; Delimiter: &quot;,&quot;
+#&gt; chr (5): Base, Unique_ID, Cat, Place, Domain
+#&gt; dbl (2): latitude_new, longitude_new
+#&gt; 
+#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
+#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Base
+</th>
+<th style="text-align:left;">
+Unique_ID
+</th>
+<th style="text-align:left;">
+Cat
+</th>
+<th style="text-align:right;">
+latitude_new
+</th>
+<th style="text-align:right;">
+longitude_new
+</th>
+<th style="text-align:left;">
+Place
+</th>
+<th style="text-align:left;">
+Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Sumburgh
+</td>
+<td style="text-align:left;">
+Sumb6559171
+</td>
+<td style="text-align:left;">
+Rescue/Recovery
+</td>
+<td style="text-align:right;">
+61.10333
+</td>
+<td style="text-align:right;">
+1.073333
+</td>
+<td style="text-align:left;">
+Cormorant Alpha
+</td>
+<td style="text-align:left;">
+Maritime
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Caernarfon
+</td>
+<td style="text-align:left;">
+Caer6580171
+</td>
+<td style="text-align:left;">
+Support
+</td>
+<td style="text-align:right;">
+51.88602
+</td>
+<td style="text-align:right;">
+-5.307241
+</td>
+<td style="text-align:left;">
+Whitesands Bay
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Humberside
+</td>
+<td style="text-align:left;">
+Humb6587171
+</td>
+<td style="text-align:left;">
+Rescue/Recovery
+</td>
+<td style="text-align:right;">
+53.39779
+</td>
+<td style="text-align:right;">
+-1.903712
+</td>
+<td style="text-align:left;">
+Kinder Scout
+</td>
+<td style="text-align:left;">
+Land
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Prestwick
+</td>
+<td style="text-align:left;">
+Pres6613171
+</td>
+<td style="text-align:left;">
+Rescue/Recovery
+</td>
+<td style="text-align:right;">
+56.33115
+</td>
+<td style="text-align:right;">
+-4.618574
+</td>
+<td style="text-align:left;">
+Beinn A Chroin
+</td>
+<td style="text-align:left;">
+Land
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Inverness
+</td>
+<td style="text-align:left;">
+Inve6614171
+</td>
+<td style="text-align:left;">
+Rescue/Recovery
+</td>
+<td style="text-align:right;">
+56.80076
+</td>
+<td style="text-align:right;">
+-5.034575
+</td>
+<td style="text-align:left;">
+Ben Nevis
+</td>
+<td style="text-align:left;">
+Land
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Newquay
+</td>
+<td style="text-align:left;">
+Newq6617171
+</td>
+<td style="text-align:left;">
+Search only
+</td>
+<td style="text-align:right;">
+50.04000
+</td>
+<td style="text-align:right;">
+-5.636667
+</td>
+<td style="text-align:left;">
+Porthcurno
+</td>
+<td style="text-align:left;">
+Maritime
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-116a8706f0c35742cd1a" style="width:672px;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-116a8706f0c35742cd1a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Esri.NatGeoWorldMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addMarkers","args":[[61.1033333333333,51.886015,53.39779,56.331152,56.800758,50.04,51.45365,50.711125,54.575,57.4231666666667,51.799501,52.586561,51.16483,57.8333333333333,56.462968,56.805099,53.330636,56.515513,52.852372,50.547397,56.849041,60.9083333333333,54.893463,52.403546,53.8333333333333,50.735242,50.402114,49.912498,57.55563,50.410538,52.2073333333333,61.035,50.735242,54.454098,50.5821666666667,57.798884,50.765305,60.327256,54.4873333333333,51.2333333333333,49.9063333333333,61.7333333333333,57.5933333333333,50.216471,53.25234,49.912498,49.9616666666667,51.5858333333333,56.213799,57.027449,53.325235,51.60161,54.65043,51.39431,50.712041,59.254395,54.472066,54.595,51.811757,59.367065,50.4916666666667,56.235687,50.100836,51.075085,53.067777,50.626493,57.480292,50.710226,59.250456,56.235687,49.3525,50.711134,54.235332,57.137513,53.072398,53.020986,55.243419,59.248879,49.913343,51.22967,56.230154,56.517254,49.912446,49.913343,55.938184,50.264682,59.57,53.011309,51.4861666666667,60.353108,52.848703,53.001038,59.349956,60.353984,52.363585,59.7433333333333,50.746626,56.800718,54.539303,52.839442,60.805,50.697603,53.383375,51.397273,56.312653,49.913343,50.8248333333333,50.711125,58.9855,53.8776666666667,50.591828,59.5183333333333,59.25,50.739231,50.290231,49.912498,52.4833333333333,50.73403,59.5885,50.736448,50.736448,53.588081,55.542021,53.076125,50.621169,51.288194,57.993954,59.5885,53.891381,50.223794,50.043899,49.913549,50.3016666666667,50.006533,50.710226,52.979443,53.541895,58.662711,50.616769,55.333695,50.7155,53.0183333333333,59.4028333333333,53.26,51.4731666666667,57.725,51.8741666666667,56.1236666666667,54.4381666666667,52.809,57.8376666666667,50.7371666666667,56.569819,53.1211666666667,51.4418333333333,56.67347,57.639381,52.891176,49.435,50.32,50.67,53.5383333333333,50.0966666666667,50.0966666666667,56.24,57.73537,54.447046,57.895382,56.849041,59.5733333333333,51.378809,58.7666666666667,55.5901666666667,57.703953,50.710226,54.672456,50.481427,49.930384,56.75,50.725,57.417765,60.7333333333333,53.3883333333333,50.711125,59.875,50.657463,54.7563333333333,57.974281,49.91324,50.710226,58.3315,55.354281,58.346371,50.912007,53.067777,53.067777,53.077524,50.623547,50.094145,54.527648,55.915562,54.527648,50.710226,53.067777,51.3826666666667,56.213799,50.075675,57.007361,54.473865],[1.07333333333333,-5.3072415,-1.9037115,-4.6185738,-5.0345747,-5.63666666666667,0.81529027,-1.2988755,-5.93083333333333,-5.25,-2.445147,-4.088587,-4.6659543,-8.05,-2.9541999,-5.003795,-3.8379289,-5.9126421,-4.0033043,-4.9796494,-5.0450465,-2.16333333333333,-1.3622953,-4.0652278,-3.88333333333333,-1.668363,-3.5139878,-6.291765,-6.22611,-5.1216725,-4.32366666666667,1.705,-1.668363,-3.2122852,-1.06183333333333,-3.8439383,0.29439376,-1.6668376,-0.619333333333333,-3.85283333333333,-6.27366666666667,1.155,-1.76166666666667,-3.7926494,-4.6126107,-6.291765,-3.91933333333333,-4.67166666666667,-4.8057287,-2.4068696,-3.7791359,-3.8394612,-3.5684073,-3.4933362,-1.3016946,-2.5470855,-0.61891283,0.431666666666667,-3.8567121,-2.4363027,-0.43,-4.8702732,-5.4175696,1.1963064,-4.0774737,-2.3081466,-4.3616475,-1.298889,-2.6241682,-4.8702732,-2.32533333333333,-1.3002917,-0.44270768,-3.6588847,-4.0702322,-4.0796972,-4.8643807,-2.576802,-6.2932337,-3.9291465,-4.876314,-5.9144484,-6.2931539,-6.2932337,-4.9074732,-5.0587897,1.6785,-4.0151321,-0.8035,-1.2008459,-4.4828425,-4.1398424,-2.9513128,-1.1972,-3.4949692,1.67166666666667,0.18999653,-5.0362097,-3.3152798,-4.4956782,1.45,-1.2934134,-1.8691659,-3.5423076,-6.409623,-6.2932337,-0.258833333333333,-1.2988755,-2.9525,1.89766666666667,-1.9872328,-1.63833333333333,-2.57066666666667,0.24776319,-5.2443737,-6.291765,2.05333333333333,0.23759374,1.05483333333333,0.20511165,0.20511165,0.039535017,-5.1159577,-1.5626071,-2.2798398,-2.7398878,-7.0975821,1.05483333333333,-0.14812658,-5.396911,-5.6901347,-6.2876781,-1.31666666666667,-5.1582143,-1.298889,0.75261592,0.1610761,-4.4583291,-2.2359962,-1.5428338,-0.9985,1.79666666666667,-2.00333333333333,0.916666666666667,0.994333333333333,-5.72416666666667,-3.12833333333333,-4.81966666666667,-3.29033333333333,-3.90233333333333,-5.595,0.2575,-5.175614,-3.9695,-3.604,-5.0569796,-4.0502852,-3.1905112,-2.60283333333333,-4.685,-1.45816666666667,-0.2245,-5.27833333333333,-5.27833333333333,-4.74916666666667,-3.6273829,-3.1041236,-6.3639329,-5.0450465,1.055,-3.5100745,-7.65,-2.738,-7.2146621,-1.298889,-3.3025225,-4.0338273,-6.2947501,-7.05,-0.959333333333333,-5.691916,-2.48333333333333,2.005,-1.2988755,-6.53333333333333,-1.9433601,-3.92583333333333,-4.6460662,-6.2960114,-1.298889,-5.5795,-2.4778499,-5.1575743,-1.5518955,-4.0774737,-4.0774737,-3.9256605,-4.7737752,-5.3695452,-3.6100551,-4.9137816,-3.6100551,-1.298889,-4.0774737,-3.365,-4.8057287,-5.7093525,-7.510735,-3.2128698],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Sumburgh","Caernarfon","Humberside","Prestwick","Inverness","Newquay","Lydd","Lee on Solent","Prestwick","Inverness","St Athan","Caernarfon","Newquay","Stornoway","Inverness","Inverness","Caernarfon","Prestwick","Caernarfon","Newquay","Prestwick","Sumburgh","Humberside","St Athan","Caernarfon","Lee on Solent","Newquay","Newquay","Stornoway","Newquay","St Athan","Sumburgh","Lee on Solent","Prestwick","Lee on Solent","Inverness","Lydd","Sumburgh","Humberside","St Athan","Newquay","Sumburgh","Inverness","Newquay","Caernarfon","Newquay","Newquay","St Athan","Prestwick","Inverness","Caernarfon","St Athan","Prestwick","St Athan","Lee on Solent","Sumburgh","Humberside","Humberside","St Athan","Sumburgh","Lee on Solent","Prestwick","Newquay","Lydd","Caernarfon","Lee on Solent","Inverness","Lee on Solent","Sumburgh","Inverness","Lydd","Lee on Solent","Humberside","Inverness","Caernarfon","Caernarfon","Prestwick","Sumburgh","Newquay","St Athan","Prestwick","Prestwick","Newquay","Newquay","Prestwick","Newquay","Sumburgh","Caernarfon","Lee on Solent","Sumburgh","Caernarfon","Caernarfon","Sumburgh","Sumburgh","Caernarfon","Sumburgh","Lydd","Inverness","Prestwick","Caernarfon","Sumburgh","Lee on Solent","Humberside","St Athan","Prestwick","Lee on Solent","Lee on Solent","Lee on Solent","Sumburgh","Humberside","Lee on Solent","Sumburgh","Inverness","Lydd","Newquay","Newquay","Humberside","Lydd","Sumburgh","Lydd","Lydd","Humberside","Prestwick","Humberside","Lee on Solent","St Athan","Stornoway","Sumburgh","Humberside","Newquay","Newquay","Newquay","Lee on Solent","Newquay","Lee on Solent","Humberside","Humberside","Stornoway","Lee on Solent","Prestwick","Lee on Solent","Humberside","Sumburgh","Humberside","Lydd","Stornoway","St Athan","Prestwick","Humberside","Caernarfon","Stornoway","Lydd","Prestwick","Caernarfon","St Athan","Inverness","Inverness","Caernarfon","Newquay","Newquay","Lee on Solent","Humberside","Newquay","Prestwick","Prestwick","Inverness","Prestwick","Stornoway","Prestwick","Sumburgh","St Athan","Stornoway","Prestwick","Stornoway","Lee on Solent","Prestwick","Newquay","Newquay","Stornoway","Lee on Solent","Inverness","Sumburgh","Humberside","Lee on Solent","Stornoway","Lee on Solent","Prestwick","Inverness","Newquay","Lee on Solent","Stornoway","Prestwick","Inverness","Lee on Solent","Caernarfon","Caernarfon","Caernarfon","Newquay","Newquay","Prestwick","Inverness","Prestwick","Lee on Solent","Caernarfon","St Athan","Prestwick","Newquay","Stornoway","Prestwick"],null,null,null,["Maritime","Coastal","Land","Land","Land","Maritime","Coastal","Land","Land","Land","Land","Land","Land","Maritime","Coastal","Land","Land","Land","Land","Coastal","Land","Maritime","Coastal","Land","Maritime","Coastal","Coastal","Land","Land","Coastal","Coastal","Maritime","Coastal","Land","Maritime","Coastal","Coastal","Land","Coastal","Coastal","Land","Maritime","Maritime","Coastal","Coastal","Land","Maritime","Maritime","Land","Land","Coastal","Coastal","Aero","Coastal","Aero","Land","Land","Maritime","Land","Land","Maritime","Land","Coastal","Maritime","Land","Coastal","Coastal","Land","Land","Land","Land","Land","Land","Land","Land","Land","Coastal","Land","Land","Coastal","Land","Land","Land","Land","Maritime","Land","Maritime","Land","Aero","Land","Coastal","Land","Land","Land","Land","Maritime","Coastal","Land","Land","Coastal","Maritime","Land","Land","Coastal","Coastal","Land","Land","Land","Land","Maritime","Coastal","Land","Land","Coastal","Coastal","Land","Maritime","Coastal","Maritime","Coastal","Coastal","Maritime","Land","Land","Coastal","Land","Coastal","Maritime","Coastal","Coastal","Coastal","Land","Maritime","Coastal","Land","Coastal","Maritime","Maritime","Coastal","Coastal","Maritime","Maritime","Maritime","Maritime","Maritime","Coastal","Land","Maritime","Land","Land","Coastal","Coastal","Land","Land","Coastal","Land","Coastal","Land","Land","Coastal","Land","Land","Land","Aero","Land","Maritime","Land","Land","Land","Maritime","Maritime","Maritime","Land","Land","Land","Land","Land","Land","Coastal","Maritime","Land","Maritime","Maritime","Land","Maritime","Maritime","Maritime","Land","Land","Land","Maritime","Land","Land","Land","Land","Land","Land","Coastal","Coastal","Coastal","Coastal","Coastal","Land","Land","Maritime","Land","Coastal","Coastal","Land"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[49.3525,61.7333333333333],"lng":[-8.05,2.05333333333333]}},"evals":[],"jsHooks":[]}</script>
+<p>More information on using {leaflet} in R can be found here: <a href="https://rstudio.github.io/leaflet/">https://rstudio.github.io/leaflet/</a></p>
+</div>
+<div id="other-spatial-types" class="section level2 hasAnchor" number="12.10">
+<h2><span class="header-section-number">12.10</span> Other Spatial Types<a href="spatial.html#other-spatial-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have worked only with the {sf} package here, but it’s important to be aware of different types of spatial data formats that exist in R.</p>
+<p>Most similar to the {sf} package is {sp}. sp objects hold the different spatial and non-spatial components of a dataset in different “slots”, creating a hierarchical data structure, where an observation in one slot is linked to an observation in another slot. This works similarly to a relational database in SQL. For example, if our local authorities were in sp format, we would access names of local authorities by calling something like “<a href="mailto:LAs_sp@data" class="email">LAs_sp@data</a><span class="math inline">\(lad19nm&quot;. The &quot;@&quot; symbol specifies we want the dataframe &quot;slot&quot;, and then we call the variable with the &quot;\)</span>” as usual. Other slots in an sp object are the bounding box, the proj4string (a way of defining the projection, essentially a long-form crs), and the spatial data (points, polygons etc.). A drawback of holding data like this is that you have to use base R to manipulate data. {dplyr} will not work with sp objects, making sp objects more cumbersome to work with.</p>
+<p>{sf} was developed to replace {sp}, but as {sf} is a relatively new package, there may be times when you encounter a function you need that only works on an {sp} object. When this happens, we can quickly convert objects back and forth between <em>sf</em> and <em>sp</em> with the following commands:</p>
+<p><em>Converting data from sf to sp objects</em></p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="spatial.html#cb270-1" aria-hidden="true" tabindex="-1"></a>object_sp <span class="ot">&lt;-</span> <span class="fu">as</span>(object_sf, <span class="at">class =</span> <span class="st">&quot;SPATIAL&quot;</span>) <span class="co"># sf to sp object</span></span>
+<span id="cb270-2"><a href="spatial.html#cb270-2" aria-hidden="true" tabindex="-1"></a>object_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(object_sp) <span class="co"># sp to sf object</span></span></code></pre></div>
+<p>Another type of spatial data package to be aware of is the {raster} package. Raster objects are in a gridded data format: they define a rectangle, with a point of origin and an end point, and then define the number of rows and columns to split that rectangle into, making a grid of equal cell sizes. This format spares R from having to plot a polygon for every single grid square. It’s often used for altitude or temperature data, but can be used for a wide range of data (eg emissions, or calculating distance from features of interest across a defined spatial area). Raster objects are held in the {raster} package, though plotting can be done with {tmap}, {leaflet}, and a range of mapping packages.</p>
+</div>
+<div id="further-resources" class="section level2 hasAnchor" number="12.11">
+<h2><span class="header-section-number">12.11</span> Further Resources<a href="spatial.html#further-resources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For a range of shapefiles, the <a href="http://geoportal.statistics.gov.uk/">ONS data portal</a> is a good place to look. It has local authorities with joinable data on average wages, populations, etc. as well as a number of other shapefiles for points/areas of interest such as national parks, hospitals, output areas of different sizes, and rural/urban areas.</p>
+<p>For resources on using tmap and other mapping functions, see <a href="http://www.seascapemodels.org/data/data-wrangling-spatial-course.html">this online workshop</a> which covers a range of topics. It should take about 4 hours to do everything in the workshop (but also good to just find individual bits of code). It mostly uses {ggplot2} but it finishes with some work with {raster} and {tmap}.</p>
+<p>There’s also <a href="https://www.jessesadler.com/post/gis-with-r-intro/">this very good blog post</a>, which does a good job of peaking under the hood of how sf and sp objects work without getting <em>too</em> technical.</p>
+<p>For a more detailed overview of mapping in R, see <a href="https://geocompr.robinlovelace.net/">this amazing online book</a> from Robin Lovelace. Of particular interest are Chapters 5 and 8, but the whole book is useful.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="efficiency.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="functions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

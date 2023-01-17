@@ -1,0 +1,4849 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Table/Data Frame manipulation | DfT R Cookbook</title>
+  <meta name="description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Table/Data Frame manipulation | DfT R Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="github-repo" content="departmentfortransport/R-cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Table/Data Frame manipulation | DfT R Cookbook" />
+  
+  <meta name="twitter:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  
+
+<meta name="author" content="Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden" />
+
+
+<meta name="date" content="2023-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-import.html"/>
+<link rel="next" href="dates-times.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/d3-3.5.6/d3.min.js"></script>
+<link href="libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet" />
+<script src="libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="libs/highlight-6.2.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlight-6.2.0/highlight.js"></script>
+<script src="libs/profvis-binding-0.3.7/profvis.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html"><i class="fa fa-check"></i><b>1</b> Why do we need <em>another</em> book?</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#coding-standards"><i class="fa fa-check"></i><b>1.1</b> Coding standards</a></li>
+<li class="chapter" data-level="1.2" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#data"><i class="fa fa-check"></i><b>1.2</b> Data</a></li>
+<li class="chapter" data-level="1.3" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#work-in-progress"><i class="fa fa-check"></i><b>1.3</b> Work in progress</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>2</b> The R basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basics.html"><a href="basics.html#r-family"><i class="fa fa-check"></i><b>2.1</b> R family</a></li>
+<li class="chapter" data-level="2.2" data-path="basics.html"><a href="basics.html#dft-rrstudio---subject-to-change"><i class="fa fa-check"></i><b>2.2</b> DfT R/RStudio - subject to change</a></li>
+<li class="chapter" data-level="2.3" data-path="basics.html"><a href="basics.html#rstudio-ide"><i class="fa fa-check"></i><b>2.3</b> RStudio IDE</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="basics.html"><a href="basics.html#left-bottom-left-if-you-have-scripts-open"><i class="fa fa-check"></i><b>2.3.1</b> Left (bottom left if you have scripts open)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="basics.html"><a href="basics.html#top-right-environment-and-other-tabs"><i class="fa fa-check"></i><b>2.3.2</b> Top right; <strong>Environment</strong>, and other tabs</a></li>
+<li class="chapter" data-level="2.3.3" data-path="basics.html"><a href="basics.html#bottom-right"><i class="fa fa-check"></i><b>2.3.3</b> Bottom right</a></li>
+<li class="chapter" data-level="2.3.4" data-path="basics.html"><a href="basics.html#other-handy-buttons-in-rstudio-ide"><i class="fa fa-check"></i><b>2.3.4</b> Other handy buttons in RStudio IDE</a></li>
+<li class="chapter" data-level="2.3.5" data-path="basics.html"><a href="basics.html#rstudio-menu-bar-a-few-pointers"><i class="fa fa-check"></i><b>2.3.5</b> RStudio menu bar a few pointers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="basics.html"><a href="basics.html#projects"><i class="fa fa-check"></i><b>2.4</b> Projects</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="basics.html"><a href="basics.html#folders"><i class="fa fa-check"></i><b>2.4.1</b> Folders</a></li>
+<li class="chapter" data-level="2.4.2" data-path="basics.html"><a href="basics.html#sessioninfo"><i class="fa fa-check"></i><b>2.4.2</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="basics.html"><a href="basics.html#r-memory"><i class="fa fa-check"></i><b>2.5</b> R memory</a></li>
+<li class="chapter" data-level="2.6" data-path="basics.html"><a href="basics.html#a-note-on-rounding"><i class="fa fa-check"></i><b>2.6</b> A note on rounding</a></li>
+<li class="chapter" data-level="2.7" data-path="basics.html"><a href="basics.html#assignment-operators---vs"><i class="fa fa-check"></i><b>2.7</b> Assignment operators <code>&lt;-</code> vs <code>=</code></a></li>
+<li class="chapter" data-level="2.8" data-path="basics.html"><a href="basics.html#arithmetic-operators"><i class="fa fa-check"></i><b>2.8</b> Arithmetic operators</a></li>
+<li class="chapter" data-level="2.9" data-path="basics.html"><a href="basics.html#relational-operators"><i class="fa fa-check"></i><b>2.9</b> Relational operators</a></li>
+<li class="chapter" data-level="2.10" data-path="basics.html"><a href="basics.html#logical-operators"><i class="fa fa-check"></i><b>2.10</b> Logical operators</a></li>
+<li class="chapter" data-level="2.11" data-path="basics.html"><a href="basics.html#vectors"><i class="fa fa-check"></i><b>2.11</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="basics.html"><a href="basics.html#vector-types"><i class="fa fa-check"></i><b>2.11.1</b> Types</a></li>
+<li class="chapter" data-level="2.11.2" data-path="basics.html"><a href="basics.html#conversion-between-atomic-vector-types"><i class="fa fa-check"></i><b>2.11.2</b> Conversion between atomic vector types</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="packages.html"><a href="packages.html#what-are-packages"><i class="fa fa-check"></i><b>3.1</b> What are packages?</a></li>
+<li class="chapter" data-level="3.2" data-path="packages.html"><a href="packages.html#best-practice-in-using-packages"><i class="fa fa-check"></i><b>3.2</b> Best practice in using packages</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="packages.html"><a href="packages.html#calling-packages"><i class="fa fa-check"></i><b>3.2.1</b> Calling packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="packages.html"><a href="packages.html#core-package-usage"><i class="fa fa-check"></i><b>3.2.2</b> Core package usage</a></li>
+<li class="chapter" data-level="3.2.3" data-path="packages.html"><a href="packages.html#using-github-packages"><i class="fa fa-check"></i><b>3.2.3</b> Using Github packages</a></li>
+<li class="chapter" data-level="3.2.4" data-path="packages.html"><a href="packages.html#using-packages-instead-of-stand-alone-functions"><i class="fa fa-check"></i><b>3.2.4</b> Using packages instead of stand-alone functions</a></li>
+<li class="chapter" data-level="3.2.5" data-path="packages.html"><a href="packages.html#heavy-dependency-packages"><i class="fa fa-check"></i><b>3.2.5</b> Heavy dependency packages</a></li>
+<li class="chapter" data-level="3.2.6" data-path="packages.html"><a href="packages.html#specifying-packages-when-using-functions"><i class="fa fa-check"></i><b>3.2.6</b> Specifying packages when using functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="packages.html"><a href="packages.html#recommended-packages"><i class="fa fa-check"></i><b>3.3</b> Recommended packages</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="packages.html"><a href="packages.html#tidyverse"><i class="fa fa-check"></i><b>3.3.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.3.2" data-path="packages.html"><a href="packages.html#non-tidyverse-packages"><i class="fa fa-check"></i><b>3.3.2</b> Non-tidyverse packages</a></li>
+<li class="chapter" data-level="3.3.3" data-path="packages.html"><a href="packages.html#dft-specific-packages"><i class="fa fa-check"></i><b>3.3.3</b> DfT-specific packages</a></li>
+<li class="chapter" data-level="3.3.4" data-path="packages.html"><a href="packages.html#specialist-packages"><i class="fa fa-check"></i><b>3.3.4</b> Specialist packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="packages.html"><a href="packages.html#package-management"><i class="fa fa-check"></i><b>3.4</b> Package management</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>4</b> Data Importing/Exporting and interaction with other programmes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-import.html"><a href="data-import.html#libraries"><i class="fa fa-check"></i><b>4.1</b> Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-import.html"><a href="data-import.html#navigating-folders"><i class="fa fa-check"></i><b>4.2</b> Navigating folders</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-import.html"><a href="data-import.html#down"><i class="fa fa-check"></i><b>4.2.1</b> Down</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-import.html"><a href="data-import.html#up"><i class="fa fa-check"></i><b>4.2.2</b> Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-import.html"><a href="data-import.html#rds"><i class="fa fa-check"></i><b>4.3</b> .rds</a></li>
+<li class="chapter" data-level="4.4" data-path="data-import.html"><a href="data-import.html#csv"><i class="fa fa-check"></i><b>4.4</b> .csv</a></li>
+<li class="chapter" data-level="4.5" data-path="data-import.html"><a href="data-import.html#xlsx-and-.xls"><i class="fa fa-check"></i><b>4.5</b> .xlsx and .xls</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="data-import.html"><a href="data-import.html#single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.1</b> Single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.2" data-path="data-import.html"><a href="data-import.html#single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.2</b> Single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.3" data-path="data-import.html"><a href="data-import.html#many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.3</b> Many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.4" data-path="data-import.html"><a href="data-import.html#many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.4</b> Many worksheets - many workbooks</a></li>
+<li class="chapter" data-level="4.5.5" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.5</b> Non-rectangular data - single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.6" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.6</b> Non-rectangular data - single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.7" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.7</b> Non-rectangular data - many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.8" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.8</b> Non-rectangular data - many worksheets - many workbooks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="data-import.html"><a href="data-import.html#exporting-to-.xlsx"><i class="fa fa-check"></i><b>4.6</b> Exporting to .xlsx</a></li>
+<li class="chapter" data-level="4.7" data-path="data-import.html"><a href="data-import.html#sav"><i class="fa fa-check"></i><b>4.7</b> .sav</a></li>
+<li class="chapter" data-level="4.8" data-path="data-import.html"><a href="data-import.html#sql"><i class="fa fa-check"></i><b>4.8</b> SQL</a></li>
+<li class="chapter" data-level="4.9" data-path="data-import.html"><a href="data-import.html#gcp"><i class="fa fa-check"></i><b>4.9</b> GCP</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="data-import.html"><a href="data-import.html#bigquery"><i class="fa fa-check"></i><b>4.9.1</b> BigQuery</a></li>
+<li class="chapter" data-level="4.9.2" data-path="data-import.html"><a href="data-import.html#google-cloud-storage"><i class="fa fa-check"></i><b>4.9.2</b> Google Cloud Storage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tables.html"><a href="tables.html"><i class="fa fa-check"></i><b>5</b> Table/Data Frame manipulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tables.html"><a href="tables.html#pivoting-tables"><i class="fa fa-check"></i><b>5.1</b> Pivoting tables</a></li>
+<li class="chapter" data-level="5.2" data-path="tables.html"><a href="tables.html#dropping-and-selecting-columns"><i class="fa fa-check"></i><b>5.2</b> Dropping and selecting columns</a></li>
+<li class="chapter" data-level="5.3" data-path="tables.html"><a href="tables.html#rename-variables"><i class="fa fa-check"></i><b>5.3</b> Rename variables</a></li>
+<li class="chapter" data-level="5.4" data-path="tables.html"><a href="tables.html#filtering-data"><i class="fa fa-check"></i><b>5.4</b> Filtering data</a></li>
+<li class="chapter" data-level="5.5" data-path="tables.html"><a href="tables.html#group-data"><i class="fa fa-check"></i><b>5.5</b> Group data</a></li>
+<li class="chapter" data-level="5.6" data-path="tables.html"><a href="tables.html#order-data"><i class="fa fa-check"></i><b>5.6</b> Order data</a></li>
+<li class="chapter" data-level="5.7" data-path="tables.html"><a href="tables.html#get-counts-of-data"><i class="fa fa-check"></i><b>5.7</b> Get counts of data</a></li>
+<li class="chapter" data-level="5.8" data-path="tables.html"><a href="tables.html#combine-tables"><i class="fa fa-check"></i><b>5.8</b> Combine tables</a></li>
+<li class="chapter" data-level="5.9" data-path="tables.html"><a href="tables.html#joining-tables"><i class="fa fa-check"></i><b>5.9</b> Joining tables</a></li>
+<li class="chapter" data-level="5.10" data-path="tables.html"><a href="tables.html#select-specific-columns-in-a-join"><i class="fa fa-check"></i><b>5.10</b> Select specific columns in a join</a></li>
+<li class="chapter" data-level="5.11" data-path="tables.html"><a href="tables.html#sum-rows-or-columns"><i class="fa fa-check"></i><b>5.11</b> Sum rows or columns</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="tables.html"><a href="tables.html#sum-rows"><i class="fa fa-check"></i><b>5.11.1</b> Sum rows</a></li>
+<li class="chapter" data-level="5.11.2" data-path="tables.html"><a href="tables.html#sum-columns"><i class="fa fa-check"></i><b>5.11.2</b> Sum columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="tables.html"><a href="tables.html#replace-nas-or-other-values"><i class="fa fa-check"></i><b>5.12</b> Replace NAs or other values</a></li>
+<li class="chapter" data-level="5.13" data-path="tables.html"><a href="tables.html#reordering-rowscolumns"><i class="fa fa-check"></i><b>5.13</b> Reordering rows/columns</a>
+<ul>
+<li class="chapter" data-level="5.13.1" data-path="tables.html"><a href="tables.html#reordering-rows"><i class="fa fa-check"></i><b>5.13.1</b> Reordering rows</a></li>
+<li class="chapter" data-level="5.13.2" data-path="tables.html"><a href="tables.html#reordering-columns"><i class="fa fa-check"></i><b>5.13.2</b> Reordering columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.14" data-path="tables.html"><a href="tables.html#creating-new-variables"><i class="fa fa-check"></i><b>5.14</b> Creating new variables</a></li>
+<li class="chapter" data-level="5.15" data-path="tables.html"><a href="tables.html#summarising-data"><i class="fa fa-check"></i><b>5.15</b> Summarising data</a></li>
+<li class="chapter" data-level="5.16" data-path="tables.html"><a href="tables.html#look-up-tables"><i class="fa fa-check"></i><b>5.16</b> Look up tables</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dates-times.html"><a href="dates-times.html"><i class="fa fa-check"></i><b>6</b> Working with dates and times</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dates-times.html"><a href="dates-times.html#working-with-dates"><i class="fa fa-check"></i><b>6.1</b> Working with dates</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date"><i class="fa fa-check"></i><b>6.1.1</b> Converting a character to a date</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dates-times.html"><a href="dates-times.html#get-year-from-date"><i class="fa fa-check"></i><b>6.1.2</b> Get year from date</a></li>
+<li class="chapter" data-level="6.1.3" data-path="dates-times.html"><a href="dates-times.html#get-month-from-date"><i class="fa fa-check"></i><b>6.1.3</b> Get month from date</a></li>
+<li class="chapter" data-level="6.1.4" data-path="dates-times.html"><a href="dates-times.html#get-day-from-date"><i class="fa fa-check"></i><b>6.1.4</b> Get day from date</a></li>
+<li class="chapter" data-level="6.1.5" data-path="dates-times.html"><a href="dates-times.html#get-weekday-from-date"><i class="fa fa-check"></i><b>6.1.5</b> Get weekday from date</a></li>
+<li class="chapter" data-level="6.1.6" data-path="dates-times.html"><a href="dates-times.html#get-quarter-from-date"><i class="fa fa-check"></i><b>6.1.6</b> Get quarter from date</a></li>
+<li class="chapter" data-level="6.1.7" data-path="dates-times.html"><a href="dates-times.html#find-difference-between-two-dates"><i class="fa fa-check"></i><b>6.1.7</b> Find difference between two dates</a></li>
+<li class="chapter" data-level="6.1.8" data-path="dates-times.html"><a href="dates-times.html#convert-month-integer-to-character"><i class="fa fa-check"></i><b>6.1.8</b> Convert month (integer to character)</a></li>
+<li class="chapter" data-level="6.1.9" data-path="dates-times.html"><a href="dates-times.html#convert-month-character-to-integer"><i class="fa fa-check"></i><b>6.1.9</b> Convert month (character to integer)</a></li>
+<li class="chapter" data-level="6.1.10" data-path="dates-times.html"><a href="dates-times.html#merge-separate-date-information-into-a-date"><i class="fa fa-check"></i><b>6.1.10</b> Merge separate date information into a date</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dates-times.html"><a href="dates-times.html#working-with-date-times"><i class="fa fa-check"></i><b>6.2</b> Working with date-times</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date-time"><i class="fa fa-check"></i><b>6.2.1</b> Converting a character to a date-time</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dates-times.html"><a href="dates-times.html#extract-date-from-date-time-variable"><i class="fa fa-check"></i><b>6.2.2</b> Extract date from date time variable</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dates-times.html"><a href="dates-times.html#convert-character-to-hms-time-variable"><i class="fa fa-check"></i><b>6.2.3</b> Convert character to hms (time) variable</a></li>
+<li class="chapter" data-level="6.2.4" data-path="dates-times.html"><a href="dates-times.html#extract-hour-from-time"><i class="fa fa-check"></i><b>6.2.4</b> Extract hour from time</a></li>
+<li class="chapter" data-level="6.2.5" data-path="dates-times.html"><a href="dates-times.html#extract-minute-from-time"><i class="fa fa-check"></i><b>6.2.5</b> Extract minute from time</a></li>
+<li class="chapter" data-level="6.2.6" data-path="dates-times.html"><a href="dates-times.html#extract-second-from-time"><i class="fa fa-check"></i><b>6.2.6</b> Extract second from time</a></li>
+<li class="chapter" data-level="6.2.7" data-path="dates-times.html"><a href="dates-times.html#merge-separate-time-information-into-one-variable"><i class="fa fa-check"></i><b>6.2.7</b> Merge separate time information into one variable</a></li>
+<li class="chapter" data-level="6.2.8" data-path="dates-times.html"><a href="dates-times.html#find-the-difference-between-two-times"><i class="fa fa-check"></i><b>6.2.8</b> find the difference between two times</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>7</b> Working with factors</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factors.html"><a href="factors.html#common-uses"><i class="fa fa-check"></i><b>7.1</b> Common uses</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="factors.html"><a href="factors.html#tabulation-of-data"><i class="fa fa-check"></i><b>7.1.1</b> Tabulation of data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="factors.html"><a href="factors.html#ordering-of-data-for-output"><i class="fa fa-check"></i><b>7.1.2</b> Ordering of data for output</a></li>
+<li class="chapter" data-level="7.1.3" data-path="factors.html"><a href="factors.html#statistical-models"><i class="fa fa-check"></i><b>7.1.3</b> Statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="factors.html"><a href="factors.html#other-things-to-know-about-factors"><i class="fa fa-check"></i><b>7.2</b> Other things to know about factors</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factors.html"><a href="factors.html#renaming-factor-levels"><i class="fa fa-check"></i><b>7.2.1</b> Renaming factor levels</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factors.html"><a href="factors.html#combining-factors-does-not-result-in-a-factor"><i class="fa fa-check"></i><b>7.2.2</b> Combining factors does not result in a factor</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factors.html"><a href="factors.html#numeric-vectors-that-have-been-read-as-factors"><i class="fa fa-check"></i><b>7.2.3</b> Numeric vectors that have been read as factors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factors.html"><a href="factors.html#helpful-packages"><i class="fa fa-check"></i><b>7.3</b> Helpful packages</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="plots.html"><a href="plots.html"><i class="fa fa-check"></i><b>8</b> Plotting and Data Visualisations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="plots.html"><a href="plots.html#plotting-in-base-r"><i class="fa fa-check"></i><b>8.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="8.2" data-path="plots.html"><a href="plots.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>8.2</b> Plotting with {ggplot2}</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="plots.html"><a href="plots.html#line-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.1</b> Line charts with {ggplot2}</a></li>
+<li class="chapter" data-level="8.2.2" data-path="plots.html"><a href="plots.html#aesthetic-mappings"><i class="fa fa-check"></i><b>8.2.2</b> Aesthetic mappings</a></li>
+<li class="chapter" data-level="8.2.3" data-path="plots.html"><a href="plots.html#bar-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.3</b> Bar charts with {ggplot2}</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="plots.html"><a href="plots.html#dft-colours-and-themes-the-dftplotr-package"><i class="fa fa-check"></i><b>8.3</b> DfT colours and themes: the dftplotr package</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="plots.html"><a href="plots.html#custom-dft-theme"><i class="fa fa-check"></i><b>8.3.1</b> Custom DfT Theme</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="plots.html"><a href="plots.html#more-ggplot2-charts"><i class="fa fa-check"></i><b>8.4</b> More {ggplot2} charts</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="plots.html"><a href="plots.html#scatter-plots"><i class="fa fa-check"></i><b>8.4.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="8.4.2" data-path="plots.html"><a href="plots.html#horizontal-bar-chart"><i class="fa fa-check"></i><b>8.4.2</b> Horizontal bar chart</a></li>
+<li class="chapter" data-level="8.4.3" data-path="plots.html"><a href="plots.html#stacked-bar-chart"><i class="fa fa-check"></i><b>8.4.3</b> Stacked bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="plots.html"><a href="plots.html#interactive-charts-with-plotly"><i class="fa fa-check"></i><b>8.5</b> Interactive charts with {plotly}</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="plots.html"><a href="plots.html#plotly-with-ggplot2"><i class="fa fa-check"></i><b>8.5.1</b> {plotly} with {ggplot2}</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="best-practice.html"><a href="best-practice.html"><i class="fa fa-check"></i><b>9</b> Writing good quality code</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-practice.html"><a href="best-practice.html#best-practice-in-code"><i class="fa fa-check"></i><b>9.1</b> Best practice in code</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="best-practice.html"><a href="best-practice.html#assigning-variables"><i class="fa fa-check"></i><b>9.1.1</b> Assigning variables</a></li>
+<li class="chapter" data-level="9.1.2" data-path="best-practice.html"><a href="best-practice.html#using-package-functions"><i class="fa fa-check"></i><b>9.1.2</b> Using package functions</a></li>
+<li class="chapter" data-level="9.1.3" data-path="best-practice.html"><a href="best-practice.html#use-of-pipes"><i class="fa fa-check"></i><b>9.1.3</b> Use of pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="best-practice.html"><a href="best-practice.html#code-layout"><i class="fa fa-check"></i><b>9.2</b> Code Layout</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="best-practice.html"><a href="best-practice.html#code-spacing"><i class="fa fa-check"></i><b>9.2.1</b> Code spacing</a></li>
+<li class="chapter" data-level="9.2.2" data-path="best-practice.html"><a href="best-practice.html#code-width"><i class="fa fa-check"></i><b>9.2.2</b> Code width</a></li>
+<li class="chapter" data-level="9.2.3" data-path="best-practice.html"><a href="best-practice.html#code-length"><i class="fa fa-check"></i><b>9.2.3</b> Code length</a></li>
+<li class="chapter" data-level="9.2.4" data-path="best-practice.html"><a href="best-practice.html#linters"><i class="fa fa-check"></i><b>9.2.4</b> Linters</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="best-practice.html"><a href="best-practice.html#project-structure"><i class="fa fa-check"></i><b>9.3</b> Project structure</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="best-practice.html"><a href="best-practice.html#documentation"><i class="fa fa-check"></i><b>9.3.1</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="best-practice.html"><a href="best-practice.html#centralised-code-structure"><i class="fa fa-check"></i><b>9.3.2</b> Centralised code structure</a></li>
+<li class="chapter" data-level="9.3.3" data-path="best-practice.html"><a href="best-practice.html#data-storage"><i class="fa fa-check"></i><b>9.3.3</b> Data storage</a></li>
+<li class="chapter" data-level="9.3.4" data-path="best-practice.html"><a href="best-practice.html#project-management"><i class="fa fa-check"></i><b>9.3.4</b> Project management</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="RAP.html"><a href="RAP.html"><i class="fa fa-check"></i><b>10</b> DfT RAP guidance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="RAP.html"><a href="RAP.html#what"><i class="fa fa-check"></i><b>10.1</b> What</a></li>
+<li class="chapter" data-level="10.2" data-path="RAP.html"><a href="RAP.html#dft-rap-levels-guidance"><i class="fa fa-check"></i><b>10.2</b> DfT RAP levels guidance</a></li>
+<li class="chapter" data-level="10.3" data-path="RAP.html"><a href="RAP.html#when"><i class="fa fa-check"></i><b>10.3</b> When</a></li>
+<li class="chapter" data-level="10.4" data-path="RAP.html"><a href="RAP.html#additional-resources"><i class="fa fa-check"></i><b>10.4</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="efficiency.html"><a href="efficiency.html"><i class="fa fa-check"></i><b>11</b> Code efficiency and speed</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="efficiency.html"><a href="efficiency.html#checking-code-speed"><i class="fa fa-check"></i><b>11.1</b> Checking code speed</a></li>
+<li class="chapter" data-level="11.2" data-path="efficiency.html"><a href="efficiency.html#data-read-efficiency"><i class="fa fa-check"></i><b>11.2</b> Data read efficiency</a></li>
+<li class="chapter" data-level="11.3" data-path="efficiency.html"><a href="efficiency.html#ram-usage"><i class="fa fa-check"></i><b>11.3</b> RAM usage</a></li>
+<li class="chapter" data-level="11.4" data-path="efficiency.html"><a href="efficiency.html#package-selection"><i class="fa fa-check"></i><b>11.4</b> Package selection</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>12</b> Spatial Analysis in R</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="spatial.html"><a href="spatial.html#what-is-spatial-data"><i class="fa fa-check"></i><b>12.1</b> What is Spatial Data?</a></li>
+<li class="chapter" data-level="12.2" data-path="spatial.html"><a href="spatial.html#packages-1"><i class="fa fa-check"></i><b>12.2</b> Packages</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial.html"><a href="spatial.html#reading-in-spatial-data"><i class="fa fa-check"></i><b>12.3</b> Reading in Spatial Data</a></li>
+<li class="chapter" data-level="12.4" data-path="spatial.html"><a href="spatial.html#crs-projections"><i class="fa fa-check"></i><b>12.4</b> CRS Projections</a></li>
+<li class="chapter" data-level="12.5" data-path="spatial.html"><a href="spatial.html#manipulating-spatial-data"><i class="fa fa-check"></i><b>12.5</b> Manipulating Spatial Data</a></li>
+<li class="chapter" data-level="12.6" data-path="spatial.html"><a href="spatial.html#spatial-analysis---joins"><i class="fa fa-check"></i><b>12.6</b> Spatial Analysis - Joins</a></li>
+<li class="chapter" data-level="12.7" data-path="spatial.html"><a href="spatial.html#plotting-and-simplifying"><i class="fa fa-check"></i><b>12.7</b> Plotting and simplifying</a></li>
+<li class="chapter" data-level="12.8" data-path="spatial.html"><a href="spatial.html#mapping-spatial-data"><i class="fa fa-check"></i><b>12.8</b> Mapping Spatial Data</a></li>
+<li class="chapter" data-level="12.9" data-path="spatial.html"><a href="spatial.html#mapping-with-leaflet"><i class="fa fa-check"></i><b>12.9</b> Mapping with {leaflet}</a></li>
+<li class="chapter" data-level="12.10" data-path="spatial.html"><a href="spatial.html#other-spatial-types"><i class="fa fa-check"></i><b>12.10</b> Other Spatial Types</a></li>
+<li class="chapter" data-level="12.11" data-path="spatial.html"><a href="spatial.html#further-resources"><i class="fa fa-check"></i><b>12.11</b> Further Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>13</b> Functions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="functions.html"><a href="functions.html#user-defined-functions-udfs"><i class="fa fa-check"></i><b>13.1</b> User defined functions (UDFs)</a></li>
+<li class="chapter" data-level="13.2" data-path="functions.html"><a href="functions.html#top-tips-for-writing-functions"><i class="fa fa-check"></i><b>13.2</b> Top tips for writing functions</a></li>
+<li class="chapter" data-level="13.3" data-path="functions.html"><a href="functions.html#function-structure"><i class="fa fa-check"></i><b>13.3</b> Function structure</a></li>
+<li class="chapter" data-level="13.4" data-path="functions.html"><a href="functions.html#function-with-purrr-structure"><i class="fa fa-check"></i><b>13.4</b> Function with <code>purrr</code> structure</a></li>
+<li class="chapter" data-level="13.5" data-path="functions.html"><a href="functions.html#packages-within-dft"><i class="fa fa-check"></i><b>13.5</b> Packages within DfT</a></li>
+<li class="chapter" data-level="13.6" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>13.6</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="qa.html"><a href="qa.html"><i class="fa fa-check"></i><b>14</b> Quality assurance in code</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="qa.html"><a href="qa.html#qa-of-data"><i class="fa fa-check"></i><b>14.1</b> QA of data</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="qa.html"><a href="qa.html#adding-clear-messages-to-functions"><i class="fa fa-check"></i><b>14.1.1</b> Adding clear messages to functions</a></li>
+<li class="chapter" data-level="14.1.2" data-path="qa.html"><a href="qa.html#generating-qa-reports"><i class="fa fa-check"></i><b>14.1.2</b> Generating QA reports</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="qa.html"><a href="qa.html#qa-of-code"><i class="fa fa-check"></i><b>14.2</b> QA of code</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="qa.html"><a href="qa.html#code-commenting"><i class="fa fa-check"></i><b>14.2.1</b> Code commenting</a></li>
+<li class="chapter" data-level="14.2.2" data-path="qa.html"><a href="qa.html#code-reviews"><i class="fa fa-check"></i><b>14.2.2</b> Code reviews</a></li>
+<li class="chapter" data-level="14.2.3" data-path="qa.html"><a href="qa.html#testing-code"><i class="fa fa-check"></i><b>14.2.3</b> Testing code</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DfT R Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tables" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Table/Data Frame manipulation<a href="tables.html#tables" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This chapter provides an overview of code examples for table or data frame manipulation (a tidyverse data frame is referred to as a tibble).</p>
+<p>One of the main things you will have to do in any R project or RAP project will be manipulating the data that you are using in order to get it into the format you require.</p>
+<p>One of the main packages used to manipulate data is the {dplyr} package which we recommend and use throughout this book. The {dplyr} package (and others e.g. {tidyr}) are all part of the tidyverse. The tidyverse is a group of packages developed by Hadley Wickham and others and are all designed to work with each other. See <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a> for more info.</p>
+<p><strong>Tidyverse packages and functions can be combined and layered using the pipe operator <code>%&gt;%</code>.</strong></p>
+<p>{dplyr} is built to work with <strong>tidy data</strong>. To find out more about tidy data please look at the following link <a href="https://r4ds.had.co.nz/tidy-data.html" class="uri">https://r4ds.had.co.nz/tidy-data.html</a> but the general principles are:</p>
+<ol style="list-style-type: decimal">
+<li>Each variables must have its own column</li>
+<li>Each observation must have its own row</li>
+<li>Each value must have its own cell</li>
+</ol>
+<div id="pivoting-tables" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Pivoting tables<a href="tables.html#pivoting-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are two packages still in common use for pivoting data into tidy format.</p>
+<ul>
+<li>The {tidyr} package is a tidyverse package which contains functions used to create tidy data (among other data cleaning functions)</li>
+<li>The {reshape2} package is the non-tidyverse equivalent used to pivot tables. No updates have been made to this package in the last few years, and where possible tidyr should always be used in preference to it.</li>
+</ul>
+<p>We want to have the day of the week variable running along the top so each day of the week is its own column.</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-81">Table 5.1: </span>Number of road accidents by accident severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>{tidyr} package</strong></p>
+<p>The {tidyr} package is a tidyverse package for manipulating data into a tidy format, and should be the first choice for gathering and pivoting functions. Use of the tidyr package is made slightly more complicated by the fact that there are both legacy (prior to v1.2) and more recent (v1.2 onwards) pivoting verbs available:</p>
+<p><strong>gather and spread</strong></p>
+<p>The functions gather and spread were the tidyr functions used prior to version 1.2 of the package. These verbs are still supported in more recent versions of the package so old code will still work, but you should aim not to use these in new code.</p>
+<ul>
+<li><p><strong>gather</strong> makes wide data longer: equivalent is now pivot_longer()</p></li>
+<li><p><strong>spread</strong> makes long data wider: equivalent is now pivot_wider()</p></li>
+</ul>
+<p><strong>pivot_longer and pivot_wider</strong></p>
+<p>The pivot_longer and pivot_wider functions are the updated version of gather and spread, available in newer versions of the tidyr package. These are designed to have more intuative names, and more logical arguments in comparison to the older versions. You should aim to use these in all new code you are writing.</p>
+<ul>
+<li><p><strong>pivot_longer</strong> makes wide data longer i.e. variables running along the top can be “gathered” into rows running down.</p></li>
+<li><p><strong>pivot_wider</strong> makes long data wider i.e. one variable can be spread and run along the top with each value being a variable.</p></li>
+</ul>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="tables.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot table using newer tidyr package</span></span>
+<span id="cb143-2"><a href="tables.html#cb143-2" aria-hidden="true" tabindex="-1"></a>road_accidents_weekdays <span class="ot">&lt;-</span> road_accidents_small <span class="sc">%&gt;%</span></span>
+<span id="cb143-3"><a href="tables.html#cb143-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Day_of_Week,</span>
+<span id="cb143-4"><a href="tables.html#cb143-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> n)</span></code></pre></div>
+<p>In the pivot_wider function, you need to specify the dataset you want to transform, as well as the column you want to take the <em>names from</em> and the one you want to take the <em>values from</em>, in this case <code>Day_of_Week</code> and <code>n</code> respectively.</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-83">Table 5.2: </span>Number of road accidents by accident severity and weekday, tidyr::pivot_wider
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+1
+</th>
+<th style="text-align:right;">
+2
+</th>
+<th style="text-align:right;">
+3
+</th>
+<th style="text-align:right;">
+4
+</th>
+<th style="text-align:right;">
+5
+</th>
+<th style="text-align:right;">
+6
+</th>
+<th style="text-align:right;">
+7
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:right;">
+205
+</td>
+<td style="text-align:right;">
+187
+</td>
+<td style="text-align:right;">
+233
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:right;">
+281
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3009
+</td>
+<td style="text-align:right;">
+2948
+</td>
+<td style="text-align:right;">
+3230
+</td>
+<td style="text-align:right;">
+3227
+</td>
+<td style="text-align:right;">
+3246
+</td>
+<td style="text-align:right;">
+3649
+</td>
+<td style="text-align:right;">
+3225
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+11668
+</td>
+<td style="text-align:right;">
+14783
+</td>
+<td style="text-align:right;">
+16065
+</td>
+<td style="text-align:right;">
+15859
+</td>
+<td style="text-align:right;">
+16331
+</td>
+<td style="text-align:right;">
+17346
+</td>
+<td style="text-align:right;">
+13720
+</td>
+</tr>
+</tbody>
+</table>
+<p>The opposite can also be done using the pivot_longer function:</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="tables.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot table using newer tidyr package</span></span>
+<span id="cb144-2"><a href="tables.html#cb144-2" aria-hidden="true" tabindex="-1"></a>road_accidents_gather <span class="ot">&lt;-</span> road_accidents_weekdays <span class="sc">%&gt;%</span></span>
+<span id="cb144-3"><a href="tables.html#cb144-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span>, <span class="st">`</span><span class="at">4</span><span class="st">`</span>, <span class="st">`</span><span class="at">5</span><span class="st">`</span>, <span class="st">`</span><span class="at">6</span><span class="st">`</span>, <span class="st">`</span><span class="at">7</span><span class="st">`</span>), <span class="at">names_to =</span> <span class="st">&quot;weekday&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p>To use pivot_longer, specify which columns you want to be gathered into one column (in this case the individual weekday columns). Then specify the column name you’d like to move the <em>names to</em> (<code>weekday</code>) and the one you’d like to move the <em>values to</em> (<code>n</code>).</p>
+<p>It is also possible to pivot all columns except the ones you choose to exclude by specifying only those you <strong>do not</strong> want to pivot, using <code>-</code> to indicate this. In the example below, this is done by excluding the Accident_Severity column and pivoting all other columns by specifying <code>cols = -Accident_Severity</code>. This is useful when you may have a large number of columns or columns with unknown names that you want to turn into tidy data.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="tables.html#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot by excluding the accident severity column </span></span>
+<span id="cb145-2"><a href="tables.html#cb145-2" aria-hidden="true" tabindex="-1"></a>road_accidents_gather <span class="ot">&lt;-</span> road_accidents_weekdays <span class="sc">%&gt;%</span></span>
+<span id="cb145-3"><a href="tables.html#cb145-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>Accident_Severity, <span class="at">names_to =</span> <span class="st">&quot;weekday&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-86">Table 5.3: </span>Number of road accidents by accident severity and weekday, tidyr::pivot_longer
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+weekday
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Extended data transpose example</strong></p>
+<p>This section shows how to transpose data using the <strong>pivot_wider</strong> and <strong>pivot_longer</strong> functions with the <strong>tidyr</strong> package.</p>
+<p style="background-color: #D9D9D9">
+<br>The aim is to take a published table of reported road accidents in which each row contains the data for one year with the severity of accident recorded in the columns. The tranposition will enable the calculation of the percentage increases for each of the last two years.<br><br>
+</p>
+<p>Firstly, the <strong>current year</strong> is specified.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="tables.html#cb146-1" aria-hidden="true" tabindex="-1"></a>Yr <span class="ot">&lt;-</span> <span class="dv">2018</span>   <span class="do">## select for the latest of the three years you require </span></span></code></pre></div>
+<p>This example uses data from RAS30013 <em>“Reported casualty rates by road user type and severty: Great Britain”</em>. <a href="https://www.gov.uk/government/statistical-data-sets/ras30-reported-casualties-in-road-accidents#casualty-rates-and-risk" class="uri">https://www.gov.uk/government/statistical-data-sets/ras30-reported-casualties-in-road-accidents#casualty-rates-and-risk</a></p>
+<p>The contents of the published table is read in (the last 10 years only), and the adjusted data is rounded to the nearest whole number.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="tables.html#cb147-1" aria-hidden="true" tabindex="-1"></a>Accidents <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">&quot;data/ras10013.xlsx&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb147-2"><a href="tables.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2009</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb147-3"><a href="tables.html#cb147-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">SeriousAdjusted =</span> <span class="fu">round</span>(SeriousAdjusted),</span>
+<span id="cb147-4"><a href="tables.html#cb147-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">FatalSeriousAdjusted =</span> <span class="fu">round</span>(FatalSeriousAdjusted),</span>
+<span id="cb147-5"><a href="tables.html#cb147-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">SlightAdjusted =</span> <span class="fu">round</span>(SlightAdjusted))</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:right;">
+Fatal
+</th>
+<th style="text-align:right;">
+SeriousUnadjusted
+</th>
+<th style="text-align:right;">
+SeriousAdjusted
+</th>
+<th style="text-align:right;">
+FatalSeriousUnadjusted
+</th>
+<th style="text-align:right;">
+FatalSeriousAdjusted
+</th>
+<th style="text-align:right;">
+SlightUnadjusted
+</th>
+<th style="text-align:right;">
+SlightAdjusted
+</th>
+<th style="text-align:right;">
+AllAccidents
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2,009
+</td>
+<td style="text-align:right;">
+2,057
+</td>
+<td style="text-align:right;">
+21,997
+</td>
+<td style="text-align:right;">
+34,198
+</td>
+<td style="text-align:right;">
+24,054
+</td>
+<td style="text-align:right;">
+36,255
+</td>
+<td style="text-align:right;">
+139,500
+</td>
+<td style="text-align:right;">
+127,299
+</td>
+<td style="text-align:right;">
+163,554
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,010
+</td>
+<td style="text-align:right;">
+1,731
+</td>
+<td style="text-align:right;">
+20,440
+</td>
+<td style="text-align:right;">
+31,831
+</td>
+<td style="text-align:right;">
+22,171
+</td>
+<td style="text-align:right;">
+33,562
+</td>
+<td style="text-align:right;">
+132,243
+</td>
+<td style="text-align:right;">
+120,852
+</td>
+<td style="text-align:right;">
+154,414
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,011
+</td>
+<td style="text-align:right;">
+1,797
+</td>
+<td style="text-align:right;">
+20,986
+</td>
+<td style="text-align:right;">
+32,476
+</td>
+<td style="text-align:right;">
+22,783
+</td>
+<td style="text-align:right;">
+34,273
+</td>
+<td style="text-align:right;">
+128,691
+</td>
+<td style="text-align:right;">
+117,201
+</td>
+<td style="text-align:right;">
+151,474
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,012
+</td>
+<td style="text-align:right;">
+1,637
+</td>
+<td style="text-align:right;">
+20,901
+</td>
+<td style="text-align:right;">
+32,005
+</td>
+<td style="text-align:right;">
+22,538
+</td>
+<td style="text-align:right;">
+33,642
+</td>
+<td style="text-align:right;">
+123,033
+</td>
+<td style="text-align:right;">
+111,929
+</td>
+<td style="text-align:right;">
+145,571
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,013
+</td>
+<td style="text-align:right;">
+1,608
+</td>
+<td style="text-align:right;">
+19,624
+</td>
+<td style="text-align:right;">
+30,243
+</td>
+<td style="text-align:right;">
+21,232
+</td>
+<td style="text-align:right;">
+31,851
+</td>
+<td style="text-align:right;">
+117,428
+</td>
+<td style="text-align:right;">
+106,809
+</td>
+<td style="text-align:right;">
+138,660
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,014
+</td>
+<td style="text-align:right;">
+1,658
+</td>
+<td style="text-align:right;">
+20,676
+</td>
+<td style="text-align:right;">
+31,889
+</td>
+<td style="text-align:right;">
+22,334
+</td>
+<td style="text-align:right;">
+33,547
+</td>
+<td style="text-align:right;">
+123,988
+</td>
+<td style="text-align:right;">
+112,775
+</td>
+<td style="text-align:right;">
+146,322
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,015
+</td>
+<td style="text-align:right;">
+1,616
+</td>
+<td style="text-align:right;">
+20,038
+</td>
+<td style="text-align:right;">
+30,474
+</td>
+<td style="text-align:right;">
+21,654
+</td>
+<td style="text-align:right;">
+32,090
+</td>
+<td style="text-align:right;">
+118,402
+</td>
+<td style="text-align:right;">
+107,966
+</td>
+<td style="text-align:right;">
+140,056
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,016
+</td>
+<td style="text-align:right;">
+1,695
+</td>
+<td style="text-align:right;">
+21,725
+</td>
+<td style="text-align:right;">
+29,072
+</td>
+<td style="text-align:right;">
+23,420
+</td>
+<td style="text-align:right;">
+30,767
+</td>
+<td style="text-align:right;">
+113,201
+</td>
+<td style="text-align:right;">
+105,854
+</td>
+<td style="text-align:right;">
+136,621
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,017
+</td>
+<td style="text-align:right;">
+1,676
+</td>
+<td style="text-align:right;">
+22,534
+</td>
+<td style="text-align:right;">
+27,938
+</td>
+<td style="text-align:right;">
+24,210
+</td>
+<td style="text-align:right;">
+29,614
+</td>
+<td style="text-align:right;">
+105,772
+</td>
+<td style="text-align:right;">
+100,368
+</td>
+<td style="text-align:right;">
+129,982
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,018
+</td>
+<td style="text-align:right;">
+1,671
+</td>
+<td style="text-align:right;">
+23,165
+</td>
+<td style="text-align:right;">
+28,266
+</td>
+<td style="text-align:right;">
+24,836
+</td>
+<td style="text-align:right;">
+29,937
+</td>
+<td style="text-align:right;">
+97,799
+</td>
+<td style="text-align:right;">
+92,698
+</td>
+<td style="text-align:right;">
+122,635
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2,019
+</td>
+<td style="text-align:right;">
+1,658
+</td>
+<td style="text-align:right;">
+23,422
+</td>
+<td style="text-align:right;">
+27,222
+</td>
+<td style="text-align:right;">
+25,080
+</td>
+<td style="text-align:right;">
+28,880
+</td>
+<td style="text-align:right;">
+92,456
+</td>
+<td style="text-align:right;">
+88,656
+</td>
+<td style="text-align:right;">
+117,536
+</td>
+</tr>
+</tbody>
+</table>
+<p>The data is now filtered to keep only the last three years of data.</p>
+<p>We could have hard coded the year in the filter below e.g. <strong>Year %in% c(2017,2018,2019)</strong>. To save having to change the code every time we wish to run for different years, we can derive the required years from a previously defined variable. This picks up the most recent year from <strong>yr</strong> defined above and calculates the other years as 1 and 2 years before <strong>yr</strong> as <strong>yr-1</strong> and <strong>yr-2</strong>.</p>
+<p>A new variable <strong>YearLab</strong> with the respective text ThisYear, LastYear and YearBefore is created to automate calculations below.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="tables.html#cb148-1" aria-hidden="true" tabindex="-1"></a>Last3Years <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Accidents,</span>
+<span id="cb148-2"><a href="tables.html#cb148-2" aria-hidden="true" tabindex="-1"></a>                Year <span class="sc">%in%</span> <span class="fu">c</span>(Yr, Yr<span class="dv">-1</span>, Yr<span class="dv">-2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb148-3"><a href="tables.html#cb148-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">YearLab =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb148-4"><a href="tables.html#cb148-4" aria-hidden="true" tabindex="-1"></a>    Year <span class="sc">==</span> Yr <span class="sc">~</span> <span class="st">&quot;ThisYear&quot;</span>,</span>
+<span id="cb148-5"><a href="tables.html#cb148-5" aria-hidden="true" tabindex="-1"></a>    Year <span class="sc">==</span> Yr<span class="dv">-1</span> <span class="sc">~</span> <span class="st">&quot;LastYear&quot;</span>,</span>
+<span id="cb148-6"><a href="tables.html#cb148-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;YearBefore&quot;</span> <span class="co"># else option </span></span>
+<span id="cb148-7"><a href="tables.html#cb148-7" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb148-8"><a href="tables.html#cb148-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Year)</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Fatal
+</th>
+<th style="text-align:right;">
+SeriousUnadjusted
+</th>
+<th style="text-align:right;">
+SeriousAdjusted
+</th>
+<th style="text-align:right;">
+FatalSeriousUnadjusted
+</th>
+<th style="text-align:right;">
+FatalSeriousAdjusted
+</th>
+<th style="text-align:right;">
+SlightUnadjusted
+</th>
+<th style="text-align:right;">
+SlightAdjusted
+</th>
+<th style="text-align:right;">
+AllAccidents
+</th>
+<th style="text-align:left;">
+YearLab
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1,695
+</td>
+<td style="text-align:right;">
+21,725
+</td>
+<td style="text-align:right;">
+29,072
+</td>
+<td style="text-align:right;">
+23,420
+</td>
+<td style="text-align:right;">
+30,767
+</td>
+<td style="text-align:right;">
+113,201
+</td>
+<td style="text-align:right;">
+105,854
+</td>
+<td style="text-align:right;">
+136,621
+</td>
+<td style="text-align:left;">
+YearBefore
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1,676
+</td>
+<td style="text-align:right;">
+22,534
+</td>
+<td style="text-align:right;">
+27,938
+</td>
+<td style="text-align:right;">
+24,210
+</td>
+<td style="text-align:right;">
+29,614
+</td>
+<td style="text-align:right;">
+105,772
+</td>
+<td style="text-align:right;">
+100,368
+</td>
+<td style="text-align:right;">
+129,982
+</td>
+<td style="text-align:left;">
+LastYear
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1,671
+</td>
+<td style="text-align:right;">
+23,165
+</td>
+<td style="text-align:right;">
+28,266
+</td>
+<td style="text-align:right;">
+24,836
+</td>
+<td style="text-align:right;">
+29,937
+</td>
+<td style="text-align:right;">
+97,799
+</td>
+<td style="text-align:right;">
+92,698
+</td>
+<td style="text-align:right;">
+122,635
+</td>
+<td style="text-align:left;">
+ThisYear
+</td>
+</tr>
+</tbody>
+</table>
+<p>The table above holds the number of accidents for each severity (in columns) with a row for each of the last three years. We wish to calculate the annual growth in accidents by severity. To achieve this we need to transpose the table. This can be achieved using the <strong>pivot_longer</strong> function within the <strong>tidyr</strong> package which allows us to put data into a tidy format which makes it easier to manipulate.</p>
+<p>The template of the <strong>pivot_longer</strong> function is:</p>
+<pre><code>tidyr::pivot_longer(
+      cols = variables_to_input_into_one_column, 
+      names_to = column to move data names to, 
+      values_to = column to move data values to)</code></pre>
+<p>The variables we want to input into one column are the accident severities (<em>Fatal, SeriousUnadjusted, …, AllAccidents</em>); every column except for the <strong>YearLab</strong>. The <strong>names_to</strong> parameter we will call <em>SeverityType</em>. The <strong>values_to</strong> parameter is the name of the column holding the number of accidents (<em>n</em>). The variable <strong>YearLabel</strong> is the only one that will be unchanged, so can be specifically excluded from the <strong>pivot_longer</strong> call.</p>
+<p>A new field <strong>SeverityNum</strong> is created so that the severity types can be sorted in a logical order in the final output.</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="tables.html#cb150-1" aria-hidden="true" tabindex="-1"></a>Severity <span class="ot">&lt;-</span> Last3Years <span class="sc">%&gt;%</span> </span>
+<span id="cb150-2"><a href="tables.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>YearLab,</span>
+<span id="cb150-3"><a href="tables.html#cb150-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">names_to =</span> <span class="st">&quot;SeverityType&quot;</span>,</span>
+<span id="cb150-4"><a href="tables.html#cb150-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">values_to =</span> <span class="st">&quot;n&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb150-5"><a href="tables.html#cb150-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">SeverityNum =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb150-6"><a href="tables.html#cb150-6" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;Fatal&#39;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb150-7"><a href="tables.html#cb150-7" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;SeriousUnadjusted&#39;</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb150-8"><a href="tables.html#cb150-8" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;SeriousAdjusted&#39;</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb150-9"><a href="tables.html#cb150-9" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;FatalSeriousUnadjusted&#39;</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb150-10"><a href="tables.html#cb150-10" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;FatalSeriousAdjusted&#39;</span> <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb150-11"><a href="tables.html#cb150-11" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;SlightUnadjusted&#39;</span> <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb150-12"><a href="tables.html#cb150-12" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;SlightAdjusted&#39;</span> <span class="sc">~</span> <span class="dv">7</span>,</span>
+<span id="cb150-13"><a href="tables.html#cb150-13" aria-hidden="true" tabindex="-1"></a>  SeverityType<span class="sc">==</span><span class="st">&#39;AllAccidents&#39;</span> <span class="sc">~</span> <span class="dv">8</span>,</span>
+<span id="cb150-14"><a href="tables.html#cb150-14" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span> <span class="co"># else option </span></span>
+<span id="cb150-15"><a href="tables.html#cb150-15" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+YearLab
+</th>
+<th style="text-align:left;">
+SeverityType
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+SeverityNum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+1,695
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+SeriousUnadjusted
+</td>
+<td style="text-align:right;">
+21,725
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+SeriousAdjusted
+</td>
+<td style="text-align:right;">
+29,072
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+FatalSeriousUnadjusted
+</td>
+<td style="text-align:right;">
+23,420
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+FatalSeriousAdjusted
+</td>
+<td style="text-align:right;">
+30,767
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+SlightUnadjusted
+</td>
+<td style="text-align:right;">
+113,201
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+SlightAdjusted
+</td>
+<td style="text-align:right;">
+105,854
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+YearBefore
+</td>
+<td style="text-align:left;">
+AllAccidents
+</td>
+<td style="text-align:right;">
+136,621
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+1,676
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+SeriousUnadjusted
+</td>
+<td style="text-align:right;">
+22,534
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+SeriousAdjusted
+</td>
+<td style="text-align:right;">
+27,938
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+FatalSeriousUnadjusted
+</td>
+<td style="text-align:right;">
+24,210
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+FatalSeriousAdjusted
+</td>
+<td style="text-align:right;">
+29,614
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+SlightUnadjusted
+</td>
+<td style="text-align:right;">
+105,772
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+SlightAdjusted
+</td>
+<td style="text-align:right;">
+100,368
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+LastYear
+</td>
+<td style="text-align:left;">
+AllAccidents
+</td>
+<td style="text-align:right;">
+129,982
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+1,671
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+SeriousUnadjusted
+</td>
+<td style="text-align:right;">
+23,165
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+SeriousAdjusted
+</td>
+<td style="text-align:right;">
+28,266
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+FatalSeriousUnadjusted
+</td>
+<td style="text-align:right;">
+24,836
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+FatalSeriousAdjusted
+</td>
+<td style="text-align:right;">
+29,937
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+SlightUnadjusted
+</td>
+<td style="text-align:right;">
+97,799
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+SlightAdjusted
+</td>
+<td style="text-align:right;">
+92,698
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ThisYear
+</td>
+<td style="text-align:left;">
+AllAccidents
+</td>
+<td style="text-align:right;">
+122,635
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<p>We now wish to transpose this table so that the three years (<em>ThisYear, LastYear and YearBefore</em>) will be in separate columns rather than one.</p>
+<p>To do this, we use the <strong>pivot_wider</strong> function within the <strong>tidyr</strong> package.</p>
+<p>The template of the <strong>pivot_wider</strong> function is:</p>
+<pre><code>tidyr::pivot_wider(cols = variables_to_change_from rows_into_columns,
+      names_from = column_containing_variable_names,
+      values_form = column_containing_values)</code></pre>
+<p>Here the column containing the names is <em>YearLab</em>, and the column containing the values is the number of accidents <em>n</em>. The variables <strong>SeverityType</strong> and <strong>SeverityNum</strong> will each remain in one column so are not listed in the <strong>pivot_wider</strong> function.</p>
+<p>By default, the data would be sorted in alphabetical order of <strong>SeverityType</strong>. Instead the data is sorted in a pre-defined logical order using the <strong>SeverityNum</strong> variable defined above. The <strong>SeverityNum</strong>, having done its job, is then dropped from the final output.</p>
+<p>Now that the number of accidents for each year are in a separate column, the percentage growth for one year to the next can be calculated using the <strong>mutate</strong> function.</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="tables.html#cb152-1" aria-hidden="true" tabindex="-1"></a>Transposed <span class="ot">&lt;-</span> Severity <span class="sc">%&gt;%</span> </span>
+<span id="cb152-2"><a href="tables.html#cb152-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> YearLab, </span>
+<span id="cb152-3"><a href="tables.html#cb152-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb152-4"><a href="tables.html#cb152-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(SeverityNum) <span class="sc">%&gt;%</span></span>
+<span id="cb152-5"><a href="tables.html#cb152-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>SeverityNum) <span class="sc">%&gt;%</span></span>
+<span id="cb152-6"><a href="tables.html#cb152-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">PerGrowthThisYear =</span> <span class="fu">round</span>(ThisYear<span class="sc">/</span>LastYear <span class="sc">*</span><span class="dv">100-100</span>,<span class="dv">1</span>),</span>
+<span id="cb152-7"><a href="tables.html#cb152-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">PerGrowthLastYear=</span><span class="fu">round</span>(LastYear<span class="sc">/</span>YearBefore <span class="sc">*</span><span class="dv">100-100</span>,<span class="dv">1</span>))</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+SeverityType
+</th>
+<th style="text-align:right;">
+YearBefore
+</th>
+<th style="text-align:right;">
+LastYear
+</th>
+<th style="text-align:right;">
+ThisYear
+</th>
+<th style="text-align:right;">
+PerGrowthThisYear
+</th>
+<th style="text-align:right;">
+PerGrowthLastYear
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+1,695
+</td>
+<td style="text-align:right;">
+1,676
+</td>
+<td style="text-align:right;">
+1,671
+</td>
+<td style="text-align:right;">
+-0.3
+</td>
+<td style="text-align:right;">
+-1.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SeriousUnadjusted
+</td>
+<td style="text-align:right;">
+21,725
+</td>
+<td style="text-align:right;">
+22,534
+</td>
+<td style="text-align:right;">
+23,165
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SeriousAdjusted
+</td>
+<td style="text-align:right;">
+29,072
+</td>
+<td style="text-align:right;">
+27,938
+</td>
+<td style="text-align:right;">
+28,266
+</td>
+<td style="text-align:right;">
+1.2
+</td>
+<td style="text-align:right;">
+-3.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FatalSeriousUnadjusted
+</td>
+<td style="text-align:right;">
+23,420
+</td>
+<td style="text-align:right;">
+24,210
+</td>
+<td style="text-align:right;">
+24,836
+</td>
+<td style="text-align:right;">
+2.6
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FatalSeriousAdjusted
+</td>
+<td style="text-align:right;">
+30,767
+</td>
+<td style="text-align:right;">
+29,614
+</td>
+<td style="text-align:right;">
+29,937
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+<td style="text-align:right;">
+-3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SlightUnadjusted
+</td>
+<td style="text-align:right;">
+113,201
+</td>
+<td style="text-align:right;">
+105,772
+</td>
+<td style="text-align:right;">
+97,799
+</td>
+<td style="text-align:right;">
+-7.5
+</td>
+<td style="text-align:right;">
+-6.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SlightAdjusted
+</td>
+<td style="text-align:right;">
+105,854
+</td>
+<td style="text-align:right;">
+100,368
+</td>
+<td style="text-align:right;">
+92,698
+</td>
+<td style="text-align:right;">
+-7.6
+</td>
+<td style="text-align:right;">
+-5.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AllAccidents
+</td>
+<td style="text-align:right;">
+136,621
+</td>
+<td style="text-align:right;">
+129,982
+</td>
+<td style="text-align:right;">
+122,635
+</td>
+<td style="text-align:right;">
+-5.7
+</td>
+<td style="text-align:right;">
+-4.9
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="dropping-and-selecting-columns" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Dropping and selecting columns<a href="tables.html#dropping-and-selecting-columns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Use the {dplyr} select function to both select and drop columns.</p>
+<p><strong>Select columns</strong></p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="tables.html#cb153-1" aria-hidden="true" tabindex="-1"></a>road_accidents_4_cols <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb153-2"><a href="tables.html#cb153-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(acc_index, Accident_Severity, Date, Police_Force)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-88">Table 5.4: </span>Four columns from road accidents 2017
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Drop columns</strong></p>
+<p>As for pivoting, to drop columns the difference is putting a “-” in front of the variable name.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="tables.html#cb154-1" aria-hidden="true" tabindex="-1"></a>road_accidents_3_cols <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb154-2"><a href="tables.html#cb154-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>Police_Force)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-90">Table 5.5: </span>Three columns from road accidents 2017
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="rename-variables" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Rename variables<a href="tables.html#rename-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Use the <strong>rename</strong> function from {dplyr} to rename variables where the new variable name is on the left hand side of the <strong>=</strong> equals sign, and the old variable name is on the right hand.</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="tables.html#cb155-1" aria-hidden="true" tabindex="-1"></a>road_accidents_rename <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb155-2"><a href="tables.html#cb155-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">Date_of_Accident =</span> Date)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-92">Table 5.6: </span>Rename date column to Date_of_Accident
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+Date_of_Accident
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="filtering-data" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Filtering data<a href="tables.html#filtering-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Use the {dplyr} filter function to filter data.</p>
+<p>This example filters the data for slight severity accidents (accident severity 3).</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="tables.html#cb156-1" aria-hidden="true" tabindex="-1"></a>road_accidents_slight <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb156-2"><a href="tables.html#cb156-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Accident_Severity <span class="sc">==</span> <span class="dv">3</span>)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-94">Table 5.7: </span>Slight severity road accidents 2017
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009353
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009354
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>To filter multiple conditions:</p>
+<p>And operator</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="tables.html#cb157-1" aria-hidden="true" tabindex="-1"></a>road_accidents_filter <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb157-2"><a href="tables.html#cb157-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Accident_Severity <span class="sc">==</span> <span class="dv">3</span> <span class="sc">&amp;</span> Police_Force <span class="sc">==</span> <span class="dv">4</span>)</span></code></pre></div>
+<p>Or operator</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="tables.html#cb158-1" aria-hidden="true" tabindex="-1"></a>road_accidents_filter2 <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb158-2"><a href="tables.html#cb158-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Accident_Severity <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> Accident_Severity <span class="sc">==</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><strong>Note: filtering with characters must be wrapped in “quotation marks” e.g:</strong></p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="tables.html#cb159-1" aria-hidden="true" tabindex="-1"></a>road_accidents_filter3 <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb159-2"><a href="tables.html#cb159-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="st">`</span><span class="at">Local_Authority_(Highway)</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;E09000010&quot;</span>)</span></code></pre></div>
+<p>Also note that in the above example the variable is quoted in back ticks (`). This is necessary when a column or variable name contains non-standard characters (anything other than alphanumerics, and selected punctuation marks: _, - or .) or start with numbers; they need to be wrapped in back ticks so R knows that everything inside the back ticks is a variable name.</p>
+</div>
+<div id="group-data" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Group data<a href="tables.html#group-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Use the {dplyr} group_by function to group data. This works in a similar manner to “GROUP BY” in SQL.</p>
+<p>The below example groups the data by accident severity and weekday, and creates totals for each group using the “tally” function.</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tables.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grouped data set with counts</span></span>
+<span id="cb160-2"><a href="tables.html#cb160-2" aria-hidden="true" tabindex="-1"></a>road_accidents_small <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb160-3"><a href="tables.html#cb160-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Accident_Severity, Day_of_Week) <span class="sc">%&gt;%</span></span>
+<span id="cb160-4"><a href="tables.html#cb160-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">tally</span>()</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-99">Table 5.8: </span>Road accidents 2017 by accident severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="order-data" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Order data<a href="tables.html#order-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Use the {dplyr} arrange function to order data. This works in a similar manner to “ORDER BY” in SQL.</p>
+<p>This example orders the data by date and number of casualties.</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="tables.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Order data by date and number of casualties</span></span>
+<span id="cb161-2"><a href="tables.html#cb161-2" aria-hidden="true" tabindex="-1"></a>road_accidents_ordered <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb161-3"><a href="tables.html#cb161-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">sample_n</span>(<span class="dv">7</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb161-4"><a href="tables.html#cb161-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) <span class="sc">%&gt;%</span></span>
+<span id="cb161-5"><a href="tables.html#cb161-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(Date, Number_of_Casualties)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-101">Table 5.9: </span>Road accidents 2017 ordered by date and number of casualties
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:right;">
+Number_of_Casualties
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+201797UA00802
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+97
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-02-09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010036859
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-05-11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017134791665
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-07-09
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017200259717
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010076218
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2017-12-03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010077687
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="get-counts-of-data" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Get counts of data<a href="tables.html#get-counts-of-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To get counts for groups of data, the {dplyr} tally function can be used in conjunction with the {dplyr} group by function. This groups the data into the required groups and then tallys how many records are in each group.</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tables.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grouped data set with counts</span></span>
+<span id="cb162-2"><a href="tables.html#cb162-2" aria-hidden="true" tabindex="-1"></a>road_accidents_small <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb162-3"><a href="tables.html#cb162-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Accident_Severity, Day_of_Week) <span class="sc">%&gt;%</span></span>
+<span id="cb162-4"><a href="tables.html#cb162-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">tally</span>()</span></code></pre></div>
+<p>The above example creates groups by accident severity and weekday and counts how many accidents are in each group (one row equals one accident therefore the tally is counting accidents).</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-103">Table 5.10: </span>Road accidents 2017 by accident severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="combine-tables" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Combine tables<a href="tables.html#combine-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When combining data from two tables there are two ways to do this in R:</p>
+<ul>
+<li>Bind the tables by basically either appending the tables on the rows or columns</li>
+<li>Join the tables using the {dplyr} version of SQL joins</li>
+</ul>
+<p><strong>Binding tables</strong></p>
+<p>Binding tables is mainly done to append tables by creating more rows, however tables can also be bound by adding more columns. Although it is recommended to use the {dplyr} join functions to combine columns (see 5.6).</p>
+<p>Here are three tables, one shows data for accident severity of 1, one for accident severity of 2, and one for accident severity of 3.</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-105">Table 5.11: </span>Number of fatal road accidents in 2017, by weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+281
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-105">Table 5.11: </span>Number of serious injury road accidents in 2017, by weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3009
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2948
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3230
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3227
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3246
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3649
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3225
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-105">Table 5.11: </span>Number of slight injury road accidents in 2017, by weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+11668
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14783
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+16065
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+15859
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+16331
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+17346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+13720
+</td>
+</tr>
+</tbody>
+</table>
+<p>To combine these tables we can use the bind_rows function from the {dplyr} package. Use bind_rows when you want to append the tables underneath one another to make one longer table, i.e. you want to add more rows.</p>
+<p><strong>Ensure that the column names for each table are exactly the same in each table.</strong></p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="tables.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine tables using bind_rows</span></span>
+<span id="cb163-2"><a href="tables.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb163-3"><a href="tables.html#cb163-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-4"><a href="tables.html#cb163-4" aria-hidden="true" tabindex="-1"></a>all_accidents <span class="ot">&lt;-</span> accidents_1 <span class="sc">%&gt;%</span></span>
+<span id="cb163-5"><a href="tables.html#cb163-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(accidents_2, accidents_3)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-107">Table 5.12: </span>Road accident data 2017, bind_rows
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+281
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3009
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2948
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3230
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3227
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3246
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3649
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3225
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+11668
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14783
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+16065
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+15859
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+16331
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+17346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+13720
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="joining-tables" class="section level2 hasAnchor" number="5.9">
+<h2><span class="header-section-number">5.9</span> Joining tables<a href="tables.html#joining-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Joins in R can be done using {dplyr}. This is generally to combine columns of data from two tables:</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tables.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine tables using left join</span></span>
+<span id="cb164-2"><a href="tables.html#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb164-3"><a href="tables.html#cb164-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-4"><a href="tables.html#cb164-4" aria-hidden="true" tabindex="-1"></a>all_accidents_cols_join <span class="ot">&lt;-</span> road_acc_1 <span class="sc">%&gt;%</span></span>
+<span id="cb164-5"><a href="tables.html#cb164-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(road_acc_2, <span class="at">by =</span> <span class="st">&quot;acc_index&quot;</span>)</span></code></pre></div>
+<p>This uses the same principles as SQL, by specifying what the tables should be joined on using the <strong>by =</strong> argument.</p>
+<p>{dplyr} has all the usual SQL joins for example, <code>inner_join</code>, <code>full_join</code>, <code>right_join</code>. All of these are used in the same way as the left join example above.</p>
+<p>Another useful join for data manipulation is an <code>anti_join</code>. This provides all the data that is not in the joined table. For example, the below snapshot of a table displays road accident totals broken down by accident severity and weekday:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+<p>I am interested in creating two sub-groups of this data, a table for all accidents on a Monday (weekday 2), and all other accidents.</p>
+<p>First, I get the <strong>Monday</strong> data using the {dplyr} filter function (see 5.3).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2948
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14783
+</td>
+</tr>
+</tbody>
+</table>
+<p>Then, I can use an <code>anti-join</code> to create a table which has all of the data that is not in the above table:</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="tables.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create table of all rows not in the joined table</span></span>
+<span id="cb165-2"><a href="tables.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb165-3"><a href="tables.html#cb165-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-4"><a href="tables.html#cb165-4" aria-hidden="true" tabindex="-1"></a>all_accidents_not_monday <span class="ot">&lt;-</span> road_accidents_small <span class="sc">%&gt;%</span></span>
+<span id="cb165-5"><a href="tables.html#cb165-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">anti_join</span>(accidents_monday, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;Accident_Severity&quot;</span>, <span class="st">&quot;Day_of_Week&quot;</span>))</span></code></pre></div>
+<p>The above code takes the initial table we want to get our data from (road_accidents_small) and anti joins accidents_monday. This says, “get all the rows from road_accidents_small that are not in accidents_monday”. Again, note the need to specify what the join rows would be joined and compared by.</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-114">Table 5.13: </span>Road accident data 2017 not on a Monday by accident severity
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+281
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3009
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3230
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3227
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3246
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+3649
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3225
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+11668
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+16065
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+15859
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+16331
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+17346
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+13720
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="select-specific-columns-in-a-join" class="section level2 hasAnchor" number="5.10">
+<h2><span class="header-section-number">5.10</span> Select specific columns in a join<a href="tables.html#select-specific-columns-in-a-join" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Doing a join with {dplyr} will join all columns from both tables, however sometimes not all columns from each table are needed.</p>
+<p>Let’s look at some previous tables again:</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-115">Table 5.14: </span>Police force and accident severity information for accidents
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-115">Table 5.14: </span>Date and weekday information for accidents
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s say we want <strong>acc_index</strong> and <strong>Police_Force</strong> from the first table, and <strong>Date</strong> from the second table.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="tables.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select specific columns from each table and left join</span></span>
+<span id="cb166-2"><a href="tables.html#cb166-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb166-3"><a href="tables.html#cb166-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb166-4"><a href="tables.html#cb166-4" aria-hidden="true" tabindex="-1"></a>road_acc_3 <span class="ot">&lt;-</span> road_acc_1 <span class="sc">%&gt;%</span></span>
+<span id="cb166-5"><a href="tables.html#cb166-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(acc_index, Police_Force) <span class="sc">%&gt;%</span></span>
+<span id="cb166-6"><a href="tables.html#cb166-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(<span class="fu">select</span>(road_acc_2, acc_index, Date), <span class="at">by =</span> <span class="st">&quot;acc_index&quot;</span>)</span></code></pre></div>
+<p>The above code takes the first table and uses the <code>select</code> statement to select the required columns from the first table.</p>
+<p>Then within the <code>left_join</code> command, to select the data from the second table, you again add the <code>select</code> statement.</p>
+<p><strong>Note: you will need to select the joining variable in both tables but this will only appear once</strong></p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-117">Table 5.15: </span>Police force and Date information for specific accidents
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sum-rows-or-columns" class="section level2 hasAnchor" number="5.11">
+<h2><span class="header-section-number">5.11</span> Sum rows or columns<a href="tables.html#sum-rows-or-columns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sum-rows" class="section level3 hasAnchor" number="5.11.1">
+<h3><span class="header-section-number">5.11.1</span> Sum rows<a href="tables.html#sum-rows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Summing across a row can be done using the dplyr function <strong>c_across</strong>; you just need to specify that this should be done row-wise before performing the calculation:</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="tables.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum across a row </span></span>
+<span id="cb167-2"><a href="tables.html#cb167-2" aria-hidden="true" tabindex="-1"></a>road_accidents_weekdays <span class="ot">&lt;-</span> road_accidents_weekdays <span class="sc">%&gt;%</span> </span>
+<span id="cb167-3"><a href="tables.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb167-4"><a href="tables.html#cb167-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rowsum =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>())) </span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-119">Table 5.16: </span>Road accidents 2017 by accident severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+1
+</th>
+<th style="text-align:right;">
+2
+</th>
+<th style="text-align:right;">
+3
+</th>
+<th style="text-align:right;">
+4
+</th>
+<th style="text-align:right;">
+5
+</th>
+<th style="text-align:right;">
+6
+</th>
+<th style="text-align:right;">
+7
+</th>
+<th style="text-align:right;">
+rowsum
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:right;">
+205
+</td>
+<td style="text-align:right;">
+187
+</td>
+<td style="text-align:right;">
+233
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:right;">
+281
+</td>
+<td style="text-align:right;">
+1676
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3009
+</td>
+<td style="text-align:right;">
+2948
+</td>
+<td style="text-align:right;">
+3230
+</td>
+<td style="text-align:right;">
+3227
+</td>
+<td style="text-align:right;">
+3246
+</td>
+<td style="text-align:right;">
+3649
+</td>
+<td style="text-align:right;">
+3225
+</td>
+<td style="text-align:right;">
+22534
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+11668
+</td>
+<td style="text-align:right;">
+14783
+</td>
+<td style="text-align:right;">
+16065
+</td>
+<td style="text-align:right;">
+15859
+</td>
+<td style="text-align:right;">
+16331
+</td>
+<td style="text-align:right;">
+17346
+</td>
+<td style="text-align:right;">
+13720
+</td>
+<td style="text-align:right;">
+105772
+</td>
+</tr>
+</tbody>
+</table>
+<p>To sum across specific rows, you can name these within the c_across function:</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="tables.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum across specific rows </span></span>
+<span id="cb168-2"><a href="tables.html#cb168-2" aria-hidden="true" tabindex="-1"></a>road_accidents_weekdays <span class="ot">&lt;-</span> road_accidents_weekdays <span class="sc">%&gt;%</span> </span>
+<span id="cb168-3"><a href="tables.html#cb168-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb168-4"><a href="tables.html#cb168-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">alldays =</span> <span class="fu">sum</span>(<span class="fu">c_across</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span><span class="sc">:</span><span class="st">`</span><span class="at">5</span><span class="st">`</span>))) </span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-121">Table 5.17: </span>Road accidents 2017 by accident severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+1
+</th>
+<th style="text-align:right;">
+2
+</th>
+<th style="text-align:right;">
+3
+</th>
+<th style="text-align:right;">
+4
+</th>
+<th style="text-align:right;">
+5
+</th>
+<th style="text-align:right;">
+6
+</th>
+<th style="text-align:right;">
+7
+</th>
+<th style="text-align:right;">
+alldays
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:right;">
+205
+</td>
+<td style="text-align:right;">
+187
+</td>
+<td style="text-align:right;">
+233
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:right;">
+281
+</td>
+<td style="text-align:right;">
+1145
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3009
+</td>
+<td style="text-align:right;">
+2948
+</td>
+<td style="text-align:right;">
+3230
+</td>
+<td style="text-align:right;">
+3227
+</td>
+<td style="text-align:right;">
+3246
+</td>
+<td style="text-align:right;">
+3649
+</td>
+<td style="text-align:right;">
+3225
+</td>
+<td style="text-align:right;">
+15660
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+11668
+</td>
+<td style="text-align:right;">
+14783
+</td>
+<td style="text-align:right;">
+16065
+</td>
+<td style="text-align:right;">
+15859
+</td>
+<td style="text-align:right;">
+16331
+</td>
+<td style="text-align:right;">
+17346
+</td>
+<td style="text-align:right;">
+13720
+</td>
+<td style="text-align:right;">
+74706
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="sum-columns" class="section level3 hasAnchor" number="5.11.2">
+<h3><span class="header-section-number">5.11.2</span> Sum columns<a href="tables.html#sum-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Columns can also be summed, although it isn’t recommended that these sums are added to a data table:</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="tables.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum columns</span></span>
+<span id="cb169-2"><a href="tables.html#cb169-2" aria-hidden="true" tabindex="-1"></a>road_accidents_weekdays <span class="sc">%&gt;%</span></span>
+<span id="cb169-3"><a href="tables.html#cb169-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise_if</span>(is.numeric, sum)</span></code></pre></div>
+</div>
+</div>
+<div id="replace-nas-or-other-values" class="section level2 hasAnchor" number="5.12">
+<h2><span class="header-section-number">5.12</span> Replace NAs or other values<a href="tables.html#replace-nas-or-other-values" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To replace all NAs in one column (Junction Control column) with a specific value:</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="tables.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span> (tidyr)</span>
+<span id="cb170-2"><a href="tables.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="co"># replace all NAs with value -1</span></span>
+<span id="cb170-3"><a href="tables.html#cb170-3" aria-hidden="true" tabindex="-1"></a>road_accidents_na <span class="ot">&lt;-</span> road_accidents_na <span class="sc">%&gt;%</span></span>
+<span id="cb170-4"><a href="tables.html#cb170-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">Junction_Control =</span> tidyr<span class="sc">::</span><span class="fu">replace_na</span>(Junction_Control, <span class="sc">-</span><span class="dv">1</span>))</span></code></pre></div>
+<p><strong>Note: To replace NA with a character the character replacement must be wrapped in “quotation marks”</strong></p>
+<p>To replace all NAs in a data frame or tibble:</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="tables.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace all NAs with value -1</span></span>
+<span id="cb171-2"><a href="tables.html#cb171-2" aria-hidden="true" tabindex="-1"></a>road_accidents_na <span class="ot">&lt;-</span> road_accidents_na <span class="sc">%&gt;%</span></span>
+<span id="cb171-3"><a href="tables.html#cb171-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_if</span>(is.numeric, tidyr<span class="sc">::</span>replace_na, <span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
+<p>To replace values with NA, specify what value you want to be replaced with NA using the na_if function:</p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="tables.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create nas</span></span>
+<span id="cb172-2"><a href="tables.html#cb172-2" aria-hidden="true" tabindex="-1"></a>road_accidents_na <span class="ot">&lt;-</span> road_accidents_na <span class="sc">%&gt;%</span></span>
+<span id="cb172-3"><a href="tables.html#cb172-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
+<p><strong>Note: to only create NAs in a specific column specify the column name in a similar manner to the first example in this section.</strong></p>
+<p>To replace values:</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="tables.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># replace 1st_road_class </span></span>
+<span id="cb173-2"><a href="tables.html#cb173-2" aria-hidden="true" tabindex="-1"></a>road_accidents_na <span class="ot">&lt;-</span> road_accidents_na <span class="sc">%&gt;%</span></span>
+<span id="cb173-3"><a href="tables.html#cb173-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="st">`</span><span class="at">1st_Road_Class</span><span class="st">`</span> <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(<span class="st">`</span><span class="at">1st_Road_Class</span><span class="st">`</span> <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;A Road&quot;</span>,</span>
+<span id="cb173-4"><a href="tables.html#cb173-4" aria-hidden="true" tabindex="-1"></a>                                      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(<span class="st">`</span><span class="at">1st_Road_Class</span><span class="st">`</span>)))</span></code></pre></div>
+<p>The case_when function is similar to using CASE WHEN in SQL.</p>
+<p>The TRUE argument indicates that if the values aren’t included in the case_when then they should be whatever is after the tilda (~) i.e. the equivalent of the ELSE statement in SQL.</p>
+<p>The “as.character” function says that everything that in <code>1st_Road_Class</code> isn’t 3 should be kept as it is, this could be replaced by an arbitrary character or value e.g. “Other”. This would make everything that is not a 3, coded as “Other”.</p>
+<p>You can have multiple case_when arguments for multiple values, they just need to be seperated with a comma. Multiple case_when statements for different variables can be layered using the pipe operator <code>%&gt;%</code>.</p>
+</div>
+<div id="reordering-rowscolumns" class="section level2 hasAnchor" number="5.13">
+<h2><span class="header-section-number">5.13</span> Reordering rows/columns<a href="tables.html#reordering-rowscolumns" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="reordering-rows" class="section level3 hasAnchor" number="5.13.1">
+<h3><span class="header-section-number">5.13.1</span> Reordering rows<a href="tables.html#reordering-rows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Rows can be reordered by certain variables using the {dplyr} arrange function with examples in the <strong>4.5 Order data</strong> sub-chapter of this book. This will order the data in ascending order by the variables quoted. To order rows in descending order the <code>desc()</code> command can be used within the arrange function.</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="tables.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Order data by date and number of casualties</span></span>
+<span id="cb174-2"><a href="tables.html#cb174-2" aria-hidden="true" tabindex="-1"></a>road_accidents_ordered_desc <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb174-3"><a href="tables.html#cb174-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(acc_index, Accident_Severity, Police_Force, Number_of_Casualties, Date) <span class="sc">%&gt;%</span></span>
+<span id="cb174-4"><a href="tables.html#cb174-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(Date), Number_of_Casualties)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-129">Table 5.18: </span>Road accidents 2017 ordered by date (descending) and number of casualties
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:right;">
+Number_of_Casualties
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010065745
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010080880
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010080888
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010080889
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010080894
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010080901
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-12-31
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="reordering-columns" class="section level3 hasAnchor" number="5.13.2">
+<h3><span class="header-section-number">5.13.2</span> Reordering columns<a href="tables.html#reordering-columns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Use the {dplyr} select statement to reorder columns, where the order of the variables quoted represents the order of the columns in the table.</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-130">Table 5.19: </span>Four columns from road accidents 2017
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>To reorder this table we do:</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="tables.html#cb175-1" aria-hidden="true" tabindex="-1"></a>table_reordered <span class="ot">&lt;-</span> road_accidents_4_cols <span class="sc">%&gt;%</span></span>
+<span id="cb175-2"><a href="tables.html#cb175-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Accident_Severity, Date, acc_index, Police_Force)</span></code></pre></div>
+</div>
+</div>
+<div id="creating-new-variables" class="section level2 hasAnchor" number="5.14">
+<h2><span class="header-section-number">5.14</span> Creating new variables<a href="tables.html#creating-new-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {dplyr} mutate function can be used to create new variables based on current variables or other additional information.</p>
+<p>For example, to create a new variable which is speed limit in km:</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="tables.html#cb176-1" aria-hidden="true" tabindex="-1"></a>road_acc_km <span class="ot">&lt;-</span> road_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb176-2"><a href="tables.html#cb176-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">speed_km =</span> Speed_limit <span class="sc">*</span> <span class="fl">1.6</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb176-3"><a href="tables.html#cb176-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(acc_index, Police_Force, Speed_limit, speed_km)</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-133">Table 5.20: </span>Road accidents by km/h
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:right;">
+Speed_limit
+</th>
+<th style="text-align:right;">
+speed_km
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summarising-data" class="section level2 hasAnchor" number="5.15">
+<h2><span class="header-section-number">5.15</span> Summarising data<a href="tables.html#summarising-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The {dplyr} summarise function can be used to summarise data (mean, median, sd, min, max, n_distinct). See <a href="https://dplyr.tidyverse.org/reference/summarise.html" class="uri">https://dplyr.tidyverse.org/reference/summarise.html</a> for more examples.</p>
+<p>For example, to get the mean number of accidents for each weekday:</p>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-134">Table 5.21: </span>Road accidents 2017, by severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+</tr>
+</tbody>
+</table>
+<p>The group by function is used with the summarise function to specify what groups the mean will be applied to, in this case weekday.</p>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="tables.html#cb177-1" aria-hidden="true" tabindex="-1"></a>road_acc_mean <span class="ot">&lt;-</span> road_accidents_small <span class="sc">%&gt;%</span></span>
+<span id="cb177-2"><a href="tables.html#cb177-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Day_of_Week) <span class="sc">%&gt;%</span></span>
+<span id="cb177-3"><a href="tables.html#cb177-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(n))</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-136">Table 5.22: </span>Mean number of accidents in 2017, by weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+mean
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4992.333
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5978.667
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6494.000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6439.667
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6599.000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7081.667
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="look-up-tables" class="section level2 hasAnchor" number="5.16">
+<h2><span class="header-section-number">5.16</span> Look up tables<a href="tables.html#look-up-tables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Aside from importing a separate lookup data file into R, named vectors can be used as lookup tables.</p>
+<p>For example, to assign accident severity values with labels, named vectors can be used (<strong>note: numbers must also be in quotation marks</strong>):</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tables.html#cb178-1" aria-hidden="true" tabindex="-1"></a>lookup_severity <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Fatal&quot;</span>, <span class="st">&quot;2&quot;</span> <span class="ot">=</span> <span class="st">&quot;Serious&quot;</span>, <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="st">&quot;Slight&quot;</span>)</span></code></pre></div>
+<p>To convert the data and create a label variable (<strong>note: the Accident_Severity variable values can be replaced with the lookup values by changing the name of the variable on the left to Accident_Severity</strong>):</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="tables.html#cb179-1" aria-hidden="true" tabindex="-1"></a>road_accidents_small<span class="sc">$</span>Accident_Severity_label <span class="ot">&lt;-</span> lookup_severity[road_accidents_small<span class="sc">$</span>Accident_Severity]</span></code></pre></div>
+<table>
+<caption>
+<span id="tab:unnamed-chunk-139">Table 5.23: </span>Road accidents 2017, by severity and weekday
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:left;">
+Accident_Severity_label
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+300
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+205
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+187
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+233
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-import.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="dates-times.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

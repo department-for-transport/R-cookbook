@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Plotting and Data Visualisations | DfT R Cookbook</title>
+  <meta name="description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Plotting and Data Visualisations | DfT R Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="github-repo" content="departmentfortransport/R-cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Plotting and Data Visualisations | DfT R Cookbook" />
+  
+  <meta name="twitter:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  
+
+<meta name="author" content="Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden" />
+
+
+<meta name="date" content="2023-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="factors.html"/>
+<link rel="next" href="best-practice.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/d3-3.5.6/d3.min.js"></script>
+<link href="libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet" />
+<script src="libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="libs/highlight-6.2.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlight-6.2.0/highlight.js"></script>
+<script src="libs/profvis-binding-0.3.7/profvis.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html"><i class="fa fa-check"></i><b>1</b> Why do we need <em>another</em> book?</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#coding-standards"><i class="fa fa-check"></i><b>1.1</b> Coding standards</a></li>
+<li class="chapter" data-level="1.2" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#data"><i class="fa fa-check"></i><b>1.2</b> Data</a></li>
+<li class="chapter" data-level="1.3" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#work-in-progress"><i class="fa fa-check"></i><b>1.3</b> Work in progress</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>2</b> The R basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basics.html"><a href="basics.html#r-family"><i class="fa fa-check"></i><b>2.1</b> R family</a></li>
+<li class="chapter" data-level="2.2" data-path="basics.html"><a href="basics.html#dft-rrstudio---subject-to-change"><i class="fa fa-check"></i><b>2.2</b> DfT R/RStudio - subject to change</a></li>
+<li class="chapter" data-level="2.3" data-path="basics.html"><a href="basics.html#rstudio-ide"><i class="fa fa-check"></i><b>2.3</b> RStudio IDE</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="basics.html"><a href="basics.html#left-bottom-left-if-you-have-scripts-open"><i class="fa fa-check"></i><b>2.3.1</b> Left (bottom left if you have scripts open)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="basics.html"><a href="basics.html#top-right-environment-and-other-tabs"><i class="fa fa-check"></i><b>2.3.2</b> Top right; <strong>Environment</strong>, and other tabs</a></li>
+<li class="chapter" data-level="2.3.3" data-path="basics.html"><a href="basics.html#bottom-right"><i class="fa fa-check"></i><b>2.3.3</b> Bottom right</a></li>
+<li class="chapter" data-level="2.3.4" data-path="basics.html"><a href="basics.html#other-handy-buttons-in-rstudio-ide"><i class="fa fa-check"></i><b>2.3.4</b> Other handy buttons in RStudio IDE</a></li>
+<li class="chapter" data-level="2.3.5" data-path="basics.html"><a href="basics.html#rstudio-menu-bar-a-few-pointers"><i class="fa fa-check"></i><b>2.3.5</b> RStudio menu bar a few pointers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="basics.html"><a href="basics.html#projects"><i class="fa fa-check"></i><b>2.4</b> Projects</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="basics.html"><a href="basics.html#folders"><i class="fa fa-check"></i><b>2.4.1</b> Folders</a></li>
+<li class="chapter" data-level="2.4.2" data-path="basics.html"><a href="basics.html#sessioninfo"><i class="fa fa-check"></i><b>2.4.2</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="basics.html"><a href="basics.html#r-memory"><i class="fa fa-check"></i><b>2.5</b> R memory</a></li>
+<li class="chapter" data-level="2.6" data-path="basics.html"><a href="basics.html#a-note-on-rounding"><i class="fa fa-check"></i><b>2.6</b> A note on rounding</a></li>
+<li class="chapter" data-level="2.7" data-path="basics.html"><a href="basics.html#assignment-operators---vs"><i class="fa fa-check"></i><b>2.7</b> Assignment operators <code>&lt;-</code> vs <code>=</code></a></li>
+<li class="chapter" data-level="2.8" data-path="basics.html"><a href="basics.html#arithmetic-operators"><i class="fa fa-check"></i><b>2.8</b> Arithmetic operators</a></li>
+<li class="chapter" data-level="2.9" data-path="basics.html"><a href="basics.html#relational-operators"><i class="fa fa-check"></i><b>2.9</b> Relational operators</a></li>
+<li class="chapter" data-level="2.10" data-path="basics.html"><a href="basics.html#logical-operators"><i class="fa fa-check"></i><b>2.10</b> Logical operators</a></li>
+<li class="chapter" data-level="2.11" data-path="basics.html"><a href="basics.html#vectors"><i class="fa fa-check"></i><b>2.11</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="basics.html"><a href="basics.html#vector-types"><i class="fa fa-check"></i><b>2.11.1</b> Types</a></li>
+<li class="chapter" data-level="2.11.2" data-path="basics.html"><a href="basics.html#conversion-between-atomic-vector-types"><i class="fa fa-check"></i><b>2.11.2</b> Conversion between atomic vector types</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="packages.html"><a href="packages.html#what-are-packages"><i class="fa fa-check"></i><b>3.1</b> What are packages?</a></li>
+<li class="chapter" data-level="3.2" data-path="packages.html"><a href="packages.html#best-practice-in-using-packages"><i class="fa fa-check"></i><b>3.2</b> Best practice in using packages</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="packages.html"><a href="packages.html#calling-packages"><i class="fa fa-check"></i><b>3.2.1</b> Calling packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="packages.html"><a href="packages.html#core-package-usage"><i class="fa fa-check"></i><b>3.2.2</b> Core package usage</a></li>
+<li class="chapter" data-level="3.2.3" data-path="packages.html"><a href="packages.html#using-github-packages"><i class="fa fa-check"></i><b>3.2.3</b> Using Github packages</a></li>
+<li class="chapter" data-level="3.2.4" data-path="packages.html"><a href="packages.html#using-packages-instead-of-stand-alone-functions"><i class="fa fa-check"></i><b>3.2.4</b> Using packages instead of stand-alone functions</a></li>
+<li class="chapter" data-level="3.2.5" data-path="packages.html"><a href="packages.html#heavy-dependency-packages"><i class="fa fa-check"></i><b>3.2.5</b> Heavy dependency packages</a></li>
+<li class="chapter" data-level="3.2.6" data-path="packages.html"><a href="packages.html#specifying-packages-when-using-functions"><i class="fa fa-check"></i><b>3.2.6</b> Specifying packages when using functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="packages.html"><a href="packages.html#recommended-packages"><i class="fa fa-check"></i><b>3.3</b> Recommended packages</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="packages.html"><a href="packages.html#tidyverse"><i class="fa fa-check"></i><b>3.3.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.3.2" data-path="packages.html"><a href="packages.html#non-tidyverse-packages"><i class="fa fa-check"></i><b>3.3.2</b> Non-tidyverse packages</a></li>
+<li class="chapter" data-level="3.3.3" data-path="packages.html"><a href="packages.html#dft-specific-packages"><i class="fa fa-check"></i><b>3.3.3</b> DfT-specific packages</a></li>
+<li class="chapter" data-level="3.3.4" data-path="packages.html"><a href="packages.html#specialist-packages"><i class="fa fa-check"></i><b>3.3.4</b> Specialist packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="packages.html"><a href="packages.html#package-management"><i class="fa fa-check"></i><b>3.4</b> Package management</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>4</b> Data Importing/Exporting and interaction with other programmes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-import.html"><a href="data-import.html#libraries"><i class="fa fa-check"></i><b>4.1</b> Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-import.html"><a href="data-import.html#navigating-folders"><i class="fa fa-check"></i><b>4.2</b> Navigating folders</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-import.html"><a href="data-import.html#down"><i class="fa fa-check"></i><b>4.2.1</b> Down</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-import.html"><a href="data-import.html#up"><i class="fa fa-check"></i><b>4.2.2</b> Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-import.html"><a href="data-import.html#rds"><i class="fa fa-check"></i><b>4.3</b> .rds</a></li>
+<li class="chapter" data-level="4.4" data-path="data-import.html"><a href="data-import.html#csv"><i class="fa fa-check"></i><b>4.4</b> .csv</a></li>
+<li class="chapter" data-level="4.5" data-path="data-import.html"><a href="data-import.html#xlsx-and-.xls"><i class="fa fa-check"></i><b>4.5</b> .xlsx and .xls</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="data-import.html"><a href="data-import.html#single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.1</b> Single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.2" data-path="data-import.html"><a href="data-import.html#single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.2</b> Single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.3" data-path="data-import.html"><a href="data-import.html#many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.3</b> Many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.4" data-path="data-import.html"><a href="data-import.html#many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.4</b> Many worksheets - many workbooks</a></li>
+<li class="chapter" data-level="4.5.5" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.5</b> Non-rectangular data - single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.6" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.6</b> Non-rectangular data - single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.7" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.7</b> Non-rectangular data - many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.8" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.8</b> Non-rectangular data - many worksheets - many workbooks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="data-import.html"><a href="data-import.html#exporting-to-.xlsx"><i class="fa fa-check"></i><b>4.6</b> Exporting to .xlsx</a></li>
+<li class="chapter" data-level="4.7" data-path="data-import.html"><a href="data-import.html#sav"><i class="fa fa-check"></i><b>4.7</b> .sav</a></li>
+<li class="chapter" data-level="4.8" data-path="data-import.html"><a href="data-import.html#sql"><i class="fa fa-check"></i><b>4.8</b> SQL</a></li>
+<li class="chapter" data-level="4.9" data-path="data-import.html"><a href="data-import.html#gcp"><i class="fa fa-check"></i><b>4.9</b> GCP</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="data-import.html"><a href="data-import.html#bigquery"><i class="fa fa-check"></i><b>4.9.1</b> BigQuery</a></li>
+<li class="chapter" data-level="4.9.2" data-path="data-import.html"><a href="data-import.html#google-cloud-storage"><i class="fa fa-check"></i><b>4.9.2</b> Google Cloud Storage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tables.html"><a href="tables.html"><i class="fa fa-check"></i><b>5</b> Table/Data Frame manipulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tables.html"><a href="tables.html#pivoting-tables"><i class="fa fa-check"></i><b>5.1</b> Pivoting tables</a></li>
+<li class="chapter" data-level="5.2" data-path="tables.html"><a href="tables.html#dropping-and-selecting-columns"><i class="fa fa-check"></i><b>5.2</b> Dropping and selecting columns</a></li>
+<li class="chapter" data-level="5.3" data-path="tables.html"><a href="tables.html#rename-variables"><i class="fa fa-check"></i><b>5.3</b> Rename variables</a></li>
+<li class="chapter" data-level="5.4" data-path="tables.html"><a href="tables.html#filtering-data"><i class="fa fa-check"></i><b>5.4</b> Filtering data</a></li>
+<li class="chapter" data-level="5.5" data-path="tables.html"><a href="tables.html#group-data"><i class="fa fa-check"></i><b>5.5</b> Group data</a></li>
+<li class="chapter" data-level="5.6" data-path="tables.html"><a href="tables.html#order-data"><i class="fa fa-check"></i><b>5.6</b> Order data</a></li>
+<li class="chapter" data-level="5.7" data-path="tables.html"><a href="tables.html#get-counts-of-data"><i class="fa fa-check"></i><b>5.7</b> Get counts of data</a></li>
+<li class="chapter" data-level="5.8" data-path="tables.html"><a href="tables.html#combine-tables"><i class="fa fa-check"></i><b>5.8</b> Combine tables</a></li>
+<li class="chapter" data-level="5.9" data-path="tables.html"><a href="tables.html#joining-tables"><i class="fa fa-check"></i><b>5.9</b> Joining tables</a></li>
+<li class="chapter" data-level="5.10" data-path="tables.html"><a href="tables.html#select-specific-columns-in-a-join"><i class="fa fa-check"></i><b>5.10</b> Select specific columns in a join</a></li>
+<li class="chapter" data-level="5.11" data-path="tables.html"><a href="tables.html#sum-rows-or-columns"><i class="fa fa-check"></i><b>5.11</b> Sum rows or columns</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="tables.html"><a href="tables.html#sum-rows"><i class="fa fa-check"></i><b>5.11.1</b> Sum rows</a></li>
+<li class="chapter" data-level="5.11.2" data-path="tables.html"><a href="tables.html#sum-columns"><i class="fa fa-check"></i><b>5.11.2</b> Sum columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="tables.html"><a href="tables.html#replace-nas-or-other-values"><i class="fa fa-check"></i><b>5.12</b> Replace NAs or other values</a></li>
+<li class="chapter" data-level="5.13" data-path="tables.html"><a href="tables.html#reordering-rowscolumns"><i class="fa fa-check"></i><b>5.13</b> Reordering rows/columns</a>
+<ul>
+<li class="chapter" data-level="5.13.1" data-path="tables.html"><a href="tables.html#reordering-rows"><i class="fa fa-check"></i><b>5.13.1</b> Reordering rows</a></li>
+<li class="chapter" data-level="5.13.2" data-path="tables.html"><a href="tables.html#reordering-columns"><i class="fa fa-check"></i><b>5.13.2</b> Reordering columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.14" data-path="tables.html"><a href="tables.html#creating-new-variables"><i class="fa fa-check"></i><b>5.14</b> Creating new variables</a></li>
+<li class="chapter" data-level="5.15" data-path="tables.html"><a href="tables.html#summarising-data"><i class="fa fa-check"></i><b>5.15</b> Summarising data</a></li>
+<li class="chapter" data-level="5.16" data-path="tables.html"><a href="tables.html#look-up-tables"><i class="fa fa-check"></i><b>5.16</b> Look up tables</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dates-times.html"><a href="dates-times.html"><i class="fa fa-check"></i><b>6</b> Working with dates and times</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dates-times.html"><a href="dates-times.html#working-with-dates"><i class="fa fa-check"></i><b>6.1</b> Working with dates</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date"><i class="fa fa-check"></i><b>6.1.1</b> Converting a character to a date</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dates-times.html"><a href="dates-times.html#get-year-from-date"><i class="fa fa-check"></i><b>6.1.2</b> Get year from date</a></li>
+<li class="chapter" data-level="6.1.3" data-path="dates-times.html"><a href="dates-times.html#get-month-from-date"><i class="fa fa-check"></i><b>6.1.3</b> Get month from date</a></li>
+<li class="chapter" data-level="6.1.4" data-path="dates-times.html"><a href="dates-times.html#get-day-from-date"><i class="fa fa-check"></i><b>6.1.4</b> Get day from date</a></li>
+<li class="chapter" data-level="6.1.5" data-path="dates-times.html"><a href="dates-times.html#get-weekday-from-date"><i class="fa fa-check"></i><b>6.1.5</b> Get weekday from date</a></li>
+<li class="chapter" data-level="6.1.6" data-path="dates-times.html"><a href="dates-times.html#get-quarter-from-date"><i class="fa fa-check"></i><b>6.1.6</b> Get quarter from date</a></li>
+<li class="chapter" data-level="6.1.7" data-path="dates-times.html"><a href="dates-times.html#find-difference-between-two-dates"><i class="fa fa-check"></i><b>6.1.7</b> Find difference between two dates</a></li>
+<li class="chapter" data-level="6.1.8" data-path="dates-times.html"><a href="dates-times.html#convert-month-integer-to-character"><i class="fa fa-check"></i><b>6.1.8</b> Convert month (integer to character)</a></li>
+<li class="chapter" data-level="6.1.9" data-path="dates-times.html"><a href="dates-times.html#convert-month-character-to-integer"><i class="fa fa-check"></i><b>6.1.9</b> Convert month (character to integer)</a></li>
+<li class="chapter" data-level="6.1.10" data-path="dates-times.html"><a href="dates-times.html#merge-separate-date-information-into-a-date"><i class="fa fa-check"></i><b>6.1.10</b> Merge separate date information into a date</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dates-times.html"><a href="dates-times.html#working-with-date-times"><i class="fa fa-check"></i><b>6.2</b> Working with date-times</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date-time"><i class="fa fa-check"></i><b>6.2.1</b> Converting a character to a date-time</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dates-times.html"><a href="dates-times.html#extract-date-from-date-time-variable"><i class="fa fa-check"></i><b>6.2.2</b> Extract date from date time variable</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dates-times.html"><a href="dates-times.html#convert-character-to-hms-time-variable"><i class="fa fa-check"></i><b>6.2.3</b> Convert character to hms (time) variable</a></li>
+<li class="chapter" data-level="6.2.4" data-path="dates-times.html"><a href="dates-times.html#extract-hour-from-time"><i class="fa fa-check"></i><b>6.2.4</b> Extract hour from time</a></li>
+<li class="chapter" data-level="6.2.5" data-path="dates-times.html"><a href="dates-times.html#extract-minute-from-time"><i class="fa fa-check"></i><b>6.2.5</b> Extract minute from time</a></li>
+<li class="chapter" data-level="6.2.6" data-path="dates-times.html"><a href="dates-times.html#extract-second-from-time"><i class="fa fa-check"></i><b>6.2.6</b> Extract second from time</a></li>
+<li class="chapter" data-level="6.2.7" data-path="dates-times.html"><a href="dates-times.html#merge-separate-time-information-into-one-variable"><i class="fa fa-check"></i><b>6.2.7</b> Merge separate time information into one variable</a></li>
+<li class="chapter" data-level="6.2.8" data-path="dates-times.html"><a href="dates-times.html#find-the-difference-between-two-times"><i class="fa fa-check"></i><b>6.2.8</b> find the difference between two times</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>7</b> Working with factors</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factors.html"><a href="factors.html#common-uses"><i class="fa fa-check"></i><b>7.1</b> Common uses</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="factors.html"><a href="factors.html#tabulation-of-data"><i class="fa fa-check"></i><b>7.1.1</b> Tabulation of data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="factors.html"><a href="factors.html#ordering-of-data-for-output"><i class="fa fa-check"></i><b>7.1.2</b> Ordering of data for output</a></li>
+<li class="chapter" data-level="7.1.3" data-path="factors.html"><a href="factors.html#statistical-models"><i class="fa fa-check"></i><b>7.1.3</b> Statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="factors.html"><a href="factors.html#other-things-to-know-about-factors"><i class="fa fa-check"></i><b>7.2</b> Other things to know about factors</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factors.html"><a href="factors.html#renaming-factor-levels"><i class="fa fa-check"></i><b>7.2.1</b> Renaming factor levels</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factors.html"><a href="factors.html#combining-factors-does-not-result-in-a-factor"><i class="fa fa-check"></i><b>7.2.2</b> Combining factors does not result in a factor</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factors.html"><a href="factors.html#numeric-vectors-that-have-been-read-as-factors"><i class="fa fa-check"></i><b>7.2.3</b> Numeric vectors that have been read as factors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factors.html"><a href="factors.html#helpful-packages"><i class="fa fa-check"></i><b>7.3</b> Helpful packages</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="plots.html"><a href="plots.html"><i class="fa fa-check"></i><b>8</b> Plotting and Data Visualisations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="plots.html"><a href="plots.html#plotting-in-base-r"><i class="fa fa-check"></i><b>8.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="8.2" data-path="plots.html"><a href="plots.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>8.2</b> Plotting with {ggplot2}</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="plots.html"><a href="plots.html#line-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.1</b> Line charts with {ggplot2}</a></li>
+<li class="chapter" data-level="8.2.2" data-path="plots.html"><a href="plots.html#aesthetic-mappings"><i class="fa fa-check"></i><b>8.2.2</b> Aesthetic mappings</a></li>
+<li class="chapter" data-level="8.2.3" data-path="plots.html"><a href="plots.html#bar-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.3</b> Bar charts with {ggplot2}</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="plots.html"><a href="plots.html#dft-colours-and-themes-the-dftplotr-package"><i class="fa fa-check"></i><b>8.3</b> DfT colours and themes: the dftplotr package</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="plots.html"><a href="plots.html#custom-dft-theme"><i class="fa fa-check"></i><b>8.3.1</b> Custom DfT Theme</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="plots.html"><a href="plots.html#more-ggplot2-charts"><i class="fa fa-check"></i><b>8.4</b> More {ggplot2} charts</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="plots.html"><a href="plots.html#scatter-plots"><i class="fa fa-check"></i><b>8.4.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="8.4.2" data-path="plots.html"><a href="plots.html#horizontal-bar-chart"><i class="fa fa-check"></i><b>8.4.2</b> Horizontal bar chart</a></li>
+<li class="chapter" data-level="8.4.3" data-path="plots.html"><a href="plots.html#stacked-bar-chart"><i class="fa fa-check"></i><b>8.4.3</b> Stacked bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="plots.html"><a href="plots.html#interactive-charts-with-plotly"><i class="fa fa-check"></i><b>8.5</b> Interactive charts with {plotly}</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="plots.html"><a href="plots.html#plotly-with-ggplot2"><i class="fa fa-check"></i><b>8.5.1</b> {plotly} with {ggplot2}</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="best-practice.html"><a href="best-practice.html"><i class="fa fa-check"></i><b>9</b> Writing good quality code</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-practice.html"><a href="best-practice.html#best-practice-in-code"><i class="fa fa-check"></i><b>9.1</b> Best practice in code</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="best-practice.html"><a href="best-practice.html#assigning-variables"><i class="fa fa-check"></i><b>9.1.1</b> Assigning variables</a></li>
+<li class="chapter" data-level="9.1.2" data-path="best-practice.html"><a href="best-practice.html#using-package-functions"><i class="fa fa-check"></i><b>9.1.2</b> Using package functions</a></li>
+<li class="chapter" data-level="9.1.3" data-path="best-practice.html"><a href="best-practice.html#use-of-pipes"><i class="fa fa-check"></i><b>9.1.3</b> Use of pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="best-practice.html"><a href="best-practice.html#code-layout"><i class="fa fa-check"></i><b>9.2</b> Code Layout</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="best-practice.html"><a href="best-practice.html#code-spacing"><i class="fa fa-check"></i><b>9.2.1</b> Code spacing</a></li>
+<li class="chapter" data-level="9.2.2" data-path="best-practice.html"><a href="best-practice.html#code-width"><i class="fa fa-check"></i><b>9.2.2</b> Code width</a></li>
+<li class="chapter" data-level="9.2.3" data-path="best-practice.html"><a href="best-practice.html#code-length"><i class="fa fa-check"></i><b>9.2.3</b> Code length</a></li>
+<li class="chapter" data-level="9.2.4" data-path="best-practice.html"><a href="best-practice.html#linters"><i class="fa fa-check"></i><b>9.2.4</b> Linters</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="best-practice.html"><a href="best-practice.html#project-structure"><i class="fa fa-check"></i><b>9.3</b> Project structure</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="best-practice.html"><a href="best-practice.html#documentation"><i class="fa fa-check"></i><b>9.3.1</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="best-practice.html"><a href="best-practice.html#centralised-code-structure"><i class="fa fa-check"></i><b>9.3.2</b> Centralised code structure</a></li>
+<li class="chapter" data-level="9.3.3" data-path="best-practice.html"><a href="best-practice.html#data-storage"><i class="fa fa-check"></i><b>9.3.3</b> Data storage</a></li>
+<li class="chapter" data-level="9.3.4" data-path="best-practice.html"><a href="best-practice.html#project-management"><i class="fa fa-check"></i><b>9.3.4</b> Project management</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="RAP.html"><a href="RAP.html"><i class="fa fa-check"></i><b>10</b> DfT RAP guidance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="RAP.html"><a href="RAP.html#what"><i class="fa fa-check"></i><b>10.1</b> What</a></li>
+<li class="chapter" data-level="10.2" data-path="RAP.html"><a href="RAP.html#dft-rap-levels-guidance"><i class="fa fa-check"></i><b>10.2</b> DfT RAP levels guidance</a></li>
+<li class="chapter" data-level="10.3" data-path="RAP.html"><a href="RAP.html#when"><i class="fa fa-check"></i><b>10.3</b> When</a></li>
+<li class="chapter" data-level="10.4" data-path="RAP.html"><a href="RAP.html#additional-resources"><i class="fa fa-check"></i><b>10.4</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="efficiency.html"><a href="efficiency.html"><i class="fa fa-check"></i><b>11</b> Code efficiency and speed</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="efficiency.html"><a href="efficiency.html#checking-code-speed"><i class="fa fa-check"></i><b>11.1</b> Checking code speed</a></li>
+<li class="chapter" data-level="11.2" data-path="efficiency.html"><a href="efficiency.html#data-read-efficiency"><i class="fa fa-check"></i><b>11.2</b> Data read efficiency</a></li>
+<li class="chapter" data-level="11.3" data-path="efficiency.html"><a href="efficiency.html#ram-usage"><i class="fa fa-check"></i><b>11.3</b> RAM usage</a></li>
+<li class="chapter" data-level="11.4" data-path="efficiency.html"><a href="efficiency.html#package-selection"><i class="fa fa-check"></i><b>11.4</b> Package selection</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>12</b> Spatial Analysis in R</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="spatial.html"><a href="spatial.html#what-is-spatial-data"><i class="fa fa-check"></i><b>12.1</b> What is Spatial Data?</a></li>
+<li class="chapter" data-level="12.2" data-path="spatial.html"><a href="spatial.html#packages-1"><i class="fa fa-check"></i><b>12.2</b> Packages</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial.html"><a href="spatial.html#reading-in-spatial-data"><i class="fa fa-check"></i><b>12.3</b> Reading in Spatial Data</a></li>
+<li class="chapter" data-level="12.4" data-path="spatial.html"><a href="spatial.html#crs-projections"><i class="fa fa-check"></i><b>12.4</b> CRS Projections</a></li>
+<li class="chapter" data-level="12.5" data-path="spatial.html"><a href="spatial.html#manipulating-spatial-data"><i class="fa fa-check"></i><b>12.5</b> Manipulating Spatial Data</a></li>
+<li class="chapter" data-level="12.6" data-path="spatial.html"><a href="spatial.html#spatial-analysis---joins"><i class="fa fa-check"></i><b>12.6</b> Spatial Analysis - Joins</a></li>
+<li class="chapter" data-level="12.7" data-path="spatial.html"><a href="spatial.html#plotting-and-simplifying"><i class="fa fa-check"></i><b>12.7</b> Plotting and simplifying</a></li>
+<li class="chapter" data-level="12.8" data-path="spatial.html"><a href="spatial.html#mapping-spatial-data"><i class="fa fa-check"></i><b>12.8</b> Mapping Spatial Data</a></li>
+<li class="chapter" data-level="12.9" data-path="spatial.html"><a href="spatial.html#mapping-with-leaflet"><i class="fa fa-check"></i><b>12.9</b> Mapping with {leaflet}</a></li>
+<li class="chapter" data-level="12.10" data-path="spatial.html"><a href="spatial.html#other-spatial-types"><i class="fa fa-check"></i><b>12.10</b> Other Spatial Types</a></li>
+<li class="chapter" data-level="12.11" data-path="spatial.html"><a href="spatial.html#further-resources"><i class="fa fa-check"></i><b>12.11</b> Further Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>13</b> Functions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="functions.html"><a href="functions.html#user-defined-functions-udfs"><i class="fa fa-check"></i><b>13.1</b> User defined functions (UDFs)</a></li>
+<li class="chapter" data-level="13.2" data-path="functions.html"><a href="functions.html#top-tips-for-writing-functions"><i class="fa fa-check"></i><b>13.2</b> Top tips for writing functions</a></li>
+<li class="chapter" data-level="13.3" data-path="functions.html"><a href="functions.html#function-structure"><i class="fa fa-check"></i><b>13.3</b> Function structure</a></li>
+<li class="chapter" data-level="13.4" data-path="functions.html"><a href="functions.html#function-with-purrr-structure"><i class="fa fa-check"></i><b>13.4</b> Function with <code>purrr</code> structure</a></li>
+<li class="chapter" data-level="13.5" data-path="functions.html"><a href="functions.html#packages-within-dft"><i class="fa fa-check"></i><b>13.5</b> Packages within DfT</a></li>
+<li class="chapter" data-level="13.6" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>13.6</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="qa.html"><a href="qa.html"><i class="fa fa-check"></i><b>14</b> Quality assurance in code</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="qa.html"><a href="qa.html#qa-of-data"><i class="fa fa-check"></i><b>14.1</b> QA of data</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="qa.html"><a href="qa.html#adding-clear-messages-to-functions"><i class="fa fa-check"></i><b>14.1.1</b> Adding clear messages to functions</a></li>
+<li class="chapter" data-level="14.1.2" data-path="qa.html"><a href="qa.html#generating-qa-reports"><i class="fa fa-check"></i><b>14.1.2</b> Generating QA reports</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="qa.html"><a href="qa.html#qa-of-code"><i class="fa fa-check"></i><b>14.2</b> QA of code</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="qa.html"><a href="qa.html#code-commenting"><i class="fa fa-check"></i><b>14.2.1</b> Code commenting</a></li>
+<li class="chapter" data-level="14.2.2" data-path="qa.html"><a href="qa.html#code-reviews"><i class="fa fa-check"></i><b>14.2.2</b> Code reviews</a></li>
+<li class="chapter" data-level="14.2.3" data-path="qa.html"><a href="qa.html#testing-code"><i class="fa fa-check"></i><b>14.2.3</b> Testing code</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DfT R Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="plots" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Plotting and Data Visualisations<a href="plots.html#plots" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This chapter provides some examples of how to visualise data in R, focussing primarily on using {ggplot2} to plot charts. For maps, we’ll look at how to produce static choropleth maps using {ggplot2} and how to produce interactive maps using {leaflet}.</p>
+<div id="plotting-in-base-r" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Plotting in base R<a href="plots.html#plotting-in-base-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While it is possible to plot charts in base R without using {ggplot2}, this is not recommended. Base R plotting has only limited functionality, and the code looks quite different to the simple syntax of {ggplot2}, so it can make your code hard to write and difficult to read. we’ll look at how to plot simple charts using functions in base R. We’ll use road accident data from 2005 to 2017 to demonstrate how to create line and bar charts.</p>
+</div>
+<div id="plotting-with-ggplot2" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Plotting with {ggplot2}<a href="plots.html#plotting-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>What is {ggplot2}?</strong></p>
+<p>The ‘gg’ in {ggplot2} stands for ‘grammar of graphics’. This is a way of thinking about plotting as having grammar elements that can be applied in succession to create a plot. This is the idea that you can build every graph from the same few components: a dataset, geoms (marks representing data points), a co-ordinate system and some other things.</p>
+<p>The ggplot() function from the {ggplot2} package is how you create these plots. You build up the graphical elements using the + symbol. Think about it as placing down a canvas and then adding layers on top.</p>
+<p>At DfT we advocate using {ggplot2} when plotting charts. There is consistency in the way that {ggplot2} works which makes it easier to get to grips with for beginners. It is also part of the {tidyverse} which we have used earlier on in this cookbook so it shares the underlying design philosophy, grammar, and data structures.</p>
+<div id="line-charts-with-ggplot2" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Line charts with {ggplot2}<a href="plots.html#line-charts-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When plotting with {ggplot2}, we start with the ggplot() function which creates a blank canvas describing the data that we’re going to use and how that relates to different aspects of charts (x axis, y axis, colour, size, etc). The next layer we add is the plot type using a <em>geom</em> function. This specifies what type of chart we’d like to create; a line chart, bar chart, etc. If we were create a simple line chart for total accidents against year, the code would read as follows:</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="plots.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in road accident data</span></span>
+<span id="cb214-2"><a href="plots.html#cb214-2" aria-hidden="true" tabindex="-1"></a>road_acc <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb214-3"><a href="plots.html#cb214-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/road_accidents_by_year_and_severity.csv&quot;</span>)</span>
+<span id="cb214-4"><a href="plots.html#cb214-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 39 Columns: 4</span></span>
+<span id="cb214-5"><a href="plots.html#cb214-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb214-6"><a href="plots.html#cb214-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb214-7"><a href="plots.html#cb214-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (1): name</span></span>
+<span id="cb214-8"><a href="plots.html#cb214-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dbl (3): accident_year, accident_severity_id, total</span></span>
+<span id="cb214-9"><a href="plots.html#cb214-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb214-10"><a href="plots.html#cb214-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb214-11"><a href="plots.html#cb214-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span id="cb214-12"><a href="plots.html#cb214-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(road_acc)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+accident_year
+</th>
+<th style="text-align:right;">
+accident_severity_id
+</th>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2005
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+2913
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2005
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Serious
+</td>
+<td style="text-align:right;">
+25029
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2005
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Slight
+</td>
+<td style="text-align:right;">
+170793
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2006
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Fatal
+</td>
+<td style="text-align:right;">
+2926
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2006
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Serious
+</td>
+<td style="text-align:right;">
+24946
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2006
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Slight
+</td>
+<td style="text-align:right;">
+161289
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="plots.html#cb215-1" aria-hidden="true" tabindex="-1"></a>road_total <span class="ot">&lt;-</span> road_acc <span class="sc">%&gt;%</span></span>
+<span id="cb215-2"><a href="plots.html#cb215-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(accident_year) <span class="sc">%&gt;%</span></span>
+<span id="cb215-3"><a href="plots.html#cb215-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(total))</span>
+<span id="cb215-4"><a href="plots.html#cb215-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb215-5"><a href="plots.html#cb215-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_total, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total)) <span class="sc">+</span></span>
+<span id="cb215-6"><a href="plots.html#cb215-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-188-1.png" alt="ggplot plot" width="672" /></p>
+<p>So a reusable template for making graphs would be as below, with the relevant sections in the code replaced with a dataset, a geom function and a collection of mappings:</p>
+<p>ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +
+<GEOM_FUNCTION>()</p>
+<p>A ggplot object must contain</p>
+<ul>
+<li><p>the data to be plotted as the first argument</p></li>
+<li><p>how that data should be mapped to the different aspects of the plot, defined using <code>aes()</code> (short for aesthetics).</p></li>
+<li><p>a geometric to draw the aesthetics with</p></li>
+<li><p>ggplot works with layers, each added with the <code>+</code> operator.</p></li>
+<li><p>Mappings are always added using the <code>aes()</code> command, which can be inside the <code>ggplot()</code> or <code>geom</code>.</p></li>
+</ul>
+<p>You can find a range of different plot types available in {ggplot2}, as well as tips on how to use them in the {ggplot2} cheatsheet (<a href="https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf</a>).</p>
+<p>Let’s create a line chart showing total road accidents against year:</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="plots.html#cb216-1" aria-hidden="true" tabindex="-1"></a>road_total <span class="ot">&lt;-</span> road_acc <span class="sc">%&gt;%</span></span>
+<span id="cb216-2"><a href="plots.html#cb216-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(accident_year) <span class="sc">%&gt;%</span></span>
+<span id="cb216-3"><a href="plots.html#cb216-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">sum</span>(total))</span>
+<span id="cb216-4"><a href="plots.html#cb216-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb216-5"><a href="plots.html#cb216-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_total, <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total)) <span class="sc">+</span></span>
+<span id="cb216-6"><a href="plots.html#cb216-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() </span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-189-1.png" alt="plot1" width="672" /></p>
+</div>
+<div id="aesthetic-mappings" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Aesthetic mappings<a href="plots.html#aesthetic-mappings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It’s normal that you will want to explore more than two variables within your datasets. You can do this by mapping those variables to different aspects of the chart in ggplot; things like colour, point shape, or line type. This is done by mapping a column to an aesthetic. For example, if we want to see the total number of road accidents by severity type against year, we can map the ‘name’ variable to the colour aesthetic:</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="plots.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total, <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb217-2"><a href="plots.html#cb217-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb217-3"><a href="plots.html#cb217-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2000</span>, <span class="dv">2017</span>, <span class="dv">2</span>))</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-190-1.png" alt="plot2" width="672" /></p>
+<p>You also don’t <em>have</em> to map aesthetics onto variables; you can specify them manually if you don’t want them to be related to a variable. To do this, you need to specify the colour, shape, linetype, etc <strong>outside</strong> of the aesthetic call. Here we have specified the colour of the line (notice this is outside of the aes() function) as red. We have also labelled the x and y axes and given the plot a title.</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="plots.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_total, <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total)) <span class="sc">+</span></span>
+<span id="cb218-2"><a href="plots.html#cb218-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>( <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb218-3"><a href="plots.html#cb218-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="sc">+</span></span>
+<span id="cb218-4"><a href="plots.html#cb218-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total&quot;</span>) <span class="sc">+</span></span>
+<span id="cb218-5"><a href="plots.html#cb218-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Total road accidents per year, 2005 - 2017&quot;</span>) </span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-191-1.png" alt="plot1a" width="672" /></p>
+</div>
+<div id="bar-charts-with-ggplot2" class="section level3 hasAnchor" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> Bar charts with {ggplot2}<a href="plots.html#bar-charts-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When creating bar charts with {ggplot2}, we can use geom_bar() or geom_col(). geom_bar() makes the height of the bar proportional to the number of cases in each group while geom_col() enables the heights of the bars to represent values in the data. So if your data is not already grouped you can use geom_bar() like so:</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="plots.html#cb219-1" aria-hidden="true" tabindex="-1"></a>messy_pokemon <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb219-2"><a href="plots.html#cb219-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/messy_pokemon_data.csv&quot;</span>)</span>
+<span id="cb219-3"><a href="plots.html#cb219-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(messy_pokemon)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+species
+</th>
+<th style="text-align:left;">
+combat_power
+</th>
+<th style="text-align:right;">
+hit_points
+</th>
+<th style="text-align:right;">
+weight_kg
+</th>
+<th style="text-align:left;">
+weight_bin
+</th>
+<th style="text-align:right;">
+height_m
+</th>
+<th style="text-align:left;">
+height_bin
+</th>
+<th style="text-align:left;">
+fast_attack
+</th>
+<th style="text-align:left;">
+charge_attack
+</th>
+<th style="text-align:left;">
+date_first_capture
+</th>
+<th style="text-align:left;">
+time_first_capture
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+abra
+</td>
+<td style="text-align:left;">
+101
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+17.18
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+zen_headbutt
+</td>
+<td style="text-align:left;">
+shadow_ball
+</td>
+<td style="text-align:left;">
+31 May 1977
+</td>
+<td style="text-align:left;">
+20:59:33
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+abra
+</td>
+<td style="text-align:left;">
+81
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+25.94
+</td>
+<td style="text-align:left;">
+extra_large
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+zen_headbutt
+</td>
+<td style="text-align:left;">
+shadow_ball
+</td>
+<td style="text-align:left;">
+24 February 1973
+</td>
+<td style="text-align:left;">
+10:18:40
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bellsprout
+</td>
+<td style="text-align:left;">
+156
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+5.85
+</td>
+<td style="text-align:left;">
+extra_large
+</td>
+<td style="text-align:right;">
+0.80
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+acid
+</td>
+<td style="text-align:left;">
+sludge_bomb
+</td>
+<td style="text-align:left;">
+21 June 1924
+</td>
+<td style="text-align:left;">
+08:06:55
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bellsprout
+</td>
+<td style="text-align:left;">
+262
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+5.42
+</td>
+<td style="text-align:left;">
+extra_large
+</td>
+<td style="text-align:right;">
+0.82
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+acid
+</td>
+<td style="text-align:left;">
+sludge_bomb
+</td>
+<td style="text-align:left;">
+01 August 1925
+</td>
+<td style="text-align:left;">
+11:18:28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bellsprout
+</td>
+<td style="text-align:left;">
+389
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+3.40
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+vine_whip
+</td>
+<td style="text-align:left;">
+wrap
+</td>
+<td style="text-align:left;">
+06 August 1952
+</td>
+<td style="text-align:left;">
+21:11:42
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bellsprout
+</td>
+<td style="text-align:left;">
+433
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+6.67
+</td>
+<td style="text-align:left;">
+extra_large
+</td>
+<td style="text-align:right;">
+0.84
+</td>
+<td style="text-align:left;">
+normal
+</td>
+<td style="text-align:left;">
+acid
+</td>
+<td style="text-align:left;">
+power_whip
+</td>
+<td style="text-align:left;">
+17 January 1915
+</td>
+<td style="text-align:left;">
+13:30:41
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="plots.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> messy_pokemon, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> weight_bin)) <span class="sc">+</span></span>
+<span id="cb220-2"><a href="plots.html#cb220-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-192-1.png" alt="plot3" width="672" /></p>
+<p>This has grouped our data by weight_bin with the height of the bars representing the number of pokemon in each weight bin.</p>
+<p>You can also use geom_bar() to create a similar type of chart using the road accident data. Note that by default geom_bar() doesn’t take a y variable, so in this situation you would need to add an extra argument into the geom_bar call: stat = “identity”.</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="plots.html#cb221-1" aria-hidden="true" tabindex="-1"></a>road_acc_2017 <span class="ot">&lt;-</span> road_acc <span class="sc">%&gt;%</span></span>
+<span id="cb221-2"><a href="plots.html#cb221-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(accident_year <span class="sc">==</span> <span class="dv">2017</span>)</span>
+<span id="cb221-3"><a href="plots.html#cb221-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb221-4"><a href="plots.html#cb221-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc_2017, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> total),  <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb221-5"><a href="plots.html#cb221-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)<span class="sc">+</span></span>
+<span id="cb221-6"><a href="plots.html#cb221-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Severity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb221-7"><a href="plots.html#cb221-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total accidents&quot;</span>) <span class="sc">+</span></span>
+<span id="cb221-8"><a href="plots.html#cb221-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Total accidents by severity, 2017&quot;</span>) </span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-193-1.png" alt="plot5" width="672" /></p>
+</div>
+</div>
+<div id="dft-colours-and-themes-the-dftplotr-package" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> DfT colours and themes: the dftplotr package<a href="plots.html#dft-colours-and-themes-the-dftplotr-package" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So far we’ve used colours built into R and referred to them by name e.g. red, lightblue etc. In order to make charts using DfT colours, we can make use of the <a href="https://github.com/department-for-transport/dftplotr">dftplotr package</a>. This is a Github package with pre-loaded colour palettes and theming to produce publication-quality charts.</p>
+<p>Installation of the {dftplotr} package is via the {remotes} package:</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="plots.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb222-2"><a href="plots.html#cb222-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;department-for-transport/dftplotr&quot;</span>)</span></code></pre></div>
+<p>For example, for the previous bar chart we can set the levels of severity to different DfT colours easily using the <code>scale_fill_dft()</code> function</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="plots.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc_2017, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> name, <span class="at">y =</span> total, <span class="at">fill =</span> name)) <span class="sc">+</span></span>
+<span id="cb223-2"><a href="plots.html#cb223-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>)<span class="sc">+</span></span>
+<span id="cb223-3"><a href="plots.html#cb223-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Severity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb223-4"><a href="plots.html#cb223-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Total accidents&quot;</span>) <span class="sc">+</span></span>
+<span id="cb223-5"><a href="plots.html#cb223-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Total accidents by severity, 2017&quot;</span>) <span class="sc">+</span></span>
+<span id="cb223-6"><a href="plots.html#cb223-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb223-7"><a href="plots.html#cb223-7" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">scale_fill_dft</span>()</span>
+<span id="cb223-8"><a href="plots.html#cb223-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This palette meets WCAG 2.0 AAA accessibility guidelines. This is the highest standard of accessibility.</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-195-1.png" alt="plot6" width="672" /></p>
+<p>Here we map the name variable to the fill argument within the aesthetic.</p>
+<p>Similarly, you can use the present DfT themes in the package to set the appearance of your plots. Themes are used to set the style of your plot and can give your plots a consistent customized look, setting the appearance of features such as titles, labels, fonts, background, gridlines, and legends.</p>
+<div id="custom-dft-theme" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> Custom DfT Theme<a href="plots.html#custom-dft-theme" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The dftplotr package comes with several inbuilt themes for both line and bar charts, that are easy to apply:</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="plots.html#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by severity line chart</span></span>
+<span id="cb224-2"><a href="plots.html#cb224-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total, <span class="at">colour =</span> name, <span class="at">label =</span> name), <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb224-3"><a href="plots.html#cb224-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb224-4"><a href="plots.html#cb224-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Accidents by severity, 2005 to 2017&quot;</span>, </span>
+<span id="cb224-5"><a href="plots.html#cb224-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Accident Year&quot;</span>, </span>
+<span id="cb224-6"><a href="plots.html#cb224-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb224-7"><a href="plots.html#cb224-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2005</span>, <span class="dv">2017</span>, <span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb224-8"><a href="plots.html#cb224-8" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">theme_line_dft</span>() <span class="co">#here we specify our custom theme</span></span>
+<span id="cb224-9"><a href="plots.html#cb224-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This palette meets WCAG 2.0 AAA accessibility guidelines. This is the highest standard of accessibility.</span></span>
+<span id="cb224-10"><a href="plots.html#cb224-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in directlabels::geom_dl(aes(label_nudge = label_nudge), method =</span></span>
+<span id="cb224-11"><a href="plots.html#cb224-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; list(&quot;last.qp&quot;, : Ignoring unknown aesthetics: label_nudge</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-196-1.png" alt="plot8" width="672" /></p>
+<p>You can also modify aspects of a theme using the theme() function. For example, for our previous accidents plot, we can remove the legend title and move the position of the plot title.</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="plots.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by severity line chart</span></span>
+<span id="cb225-2"><a href="plots.html#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total, <span class="at">colour =</span> name, <span class="at">label =</span> name), <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb225-3"><a href="plots.html#cb225-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb225-4"><a href="plots.html#cb225-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Accidents by severity, 2005 to 2017&quot;</span>, </span>
+<span id="cb225-5"><a href="plots.html#cb225-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Accident Year&quot;</span>, </span>
+<span id="cb225-6"><a href="plots.html#cb225-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb225-7"><a href="plots.html#cb225-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2005</span>, <span class="dv">2017</span>, <span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb225-8"><a href="plots.html#cb225-8" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">theme_line_dft</span>()<span class="sc">+</span> <span class="co">#here we specify our custom theme</span></span>
+<span id="cb225-9"><a href="plots.html#cb225-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb225-10"><a href="plots.html#cb225-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span>
+<span id="cb225-11"><a href="plots.html#cb225-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This palette meets WCAG 2.0 AAA accessibility guidelines. This is the highest standard of accessibility.</span></span>
+<span id="cb225-12"><a href="plots.html#cb225-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in directlabels::geom_dl(aes(label_nudge = label_nudge), method =</span></span>
+<span id="cb225-13"><a href="plots.html#cb225-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; list(&quot;last.qp&quot;, : Ignoring unknown aesthetics: label_nudge</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-197-1.png" alt="plot7" width="672" /></p>
+</div>
+</div>
+<div id="more-ggplot2-charts" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> More {ggplot2} charts<a href="plots.html#more-ggplot2-charts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This section provides more code examples for creating {ggplot2} themes, including the DfT theme code.</p>
+<p>First, some more record-level road accident data is read in which can be used with the charts:</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="plots.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in road accident data</span></span>
+<span id="cb226-2"><a href="plots.html#cb226-2" aria-hidden="true" tabindex="-1"></a>road_acc_data <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_rds</span>(<span class="st">&quot;data/road_accidents_2017.RDS&quot;</span>)</span>
+<span id="cb226-3"><a href="plots.html#cb226-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(road_acc_data)</span></code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+acc_index
+</th>
+<th style="text-align:right;">
+Location_Easting_OSGR
+</th>
+<th style="text-align:right;">
+Location_Northing_OSGR
+</th>
+<th style="text-align:right;">
+Longitude
+</th>
+<th style="text-align:right;">
+Latitude
+</th>
+<th style="text-align:right;">
+Police_Force
+</th>
+<th style="text-align:right;">
+Accident_Severity
+</th>
+<th style="text-align:right;">
+Number_of_Vehicles
+</th>
+<th style="text-align:right;">
+Number_of_Casualties
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Day_of_Week
+</th>
+<th style="text-align:left;">
+Time
+</th>
+<th style="text-align:right;">
+Local_Authority_(District)
+</th>
+<th style="text-align:left;">
+Local_Authority_(Highway)
+</th>
+<th style="text-align:right;">
+1st_Road_Class
+</th>
+<th style="text-align:right;">
+1st_Road_Number
+</th>
+<th style="text-align:right;">
+Road_Type
+</th>
+<th style="text-align:right;">
+Speed_limit
+</th>
+<th style="text-align:right;">
+Junction_Detail
+</th>
+<th style="text-align:right;">
+Junction_Control
+</th>
+<th style="text-align:right;">
+2nd_Road_Class
+</th>
+<th style="text-align:right;">
+2nd_Road_Number
+</th>
+<th style="text-align:right;">
+Pedestrian_Crossing-Human_Control
+</th>
+<th style="text-align:right;">
+Pedestrian_Crossing-Physical_Facilities
+</th>
+<th style="text-align:right;">
+Light_Conditions
+</th>
+<th style="text-align:right;">
+Weather_Conditions
+</th>
+<th style="text-align:right;">
+Road_Surface_Conditions
+</th>
+<th style="text-align:right;">
+Special_Conditions_at_Site
+</th>
+<th style="text-align:right;">
+Carriageway_Hazards
+</th>
+<th style="text-align:right;">
+Urban_or_Rural_Area
+</th>
+<th style="text-align:right;">
+Did_Police_Officer_Attend_Scene_of_Accident
+</th>
+<th style="text-align:left;">
+LSOA_of_Accident_Location
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2017010001708
+</td>
+<td style="text-align:right;">
+532920
+</td>
+<td style="text-align:right;">
+196330
+</td>
+<td style="text-align:right;">
+-0.080107
+</td>
+<td style="text-align:right;">
+51.65006
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2017-08-05
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+1899-12-31 03:12:00
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+E09000010
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+105
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01001450
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009342
+</td>
+<td style="text-align:right;">
+526790
+</td>
+<td style="text-align:right;">
+181970
+</td>
+<td style="text-align:right;">
+-0.173845
+</td>
+<td style="text-align:right;">
+51.52242
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1899-12-31 01:30:00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E09000033
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01004702
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009344
+</td>
+<td style="text-align:right;">
+535200
+</td>
+<td style="text-align:right;">
+181260
+</td>
+<td style="text-align:right;">
+-0.052969
+</td>
+<td style="text-align:right;">
+51.51410
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1899-12-31 00:30:00
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+E09000030
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01004298
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009348
+</td>
+<td style="text-align:right;">
+534340
+</td>
+<td style="text-align:right;">
+193560
+</td>
+<td style="text-align:right;">
+-0.060658
+</td>
+<td style="text-align:right;">
+51.62483
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1899-12-31 01:11:00
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+E09000010
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1010
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+154
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01001429
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009350
+</td>
+<td style="text-align:right;">
+533680
+</td>
+<td style="text-align:right;">
+187820
+</td>
+<td style="text-align:right;">
+-0.072372
+</td>
+<td style="text-align:right;">
+51.57341
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1899-12-31 01:42:00
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+E09000012
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+107
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01001808
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2017010009351
+</td>
+<td style="text-align:right;">
+514510
+</td>
+<td style="text-align:right;">
+172370
+</td>
+<td style="text-align:right;">
+-0.353876
+</td>
+<td style="text-align:right;">
+51.43876
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2017-01-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1899-12-31 03:31:00
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+E09000027
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+E01003900
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="scatter-plots" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> Scatter plots<a href="plots.html#scatter-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The scatter plot example will plot the number of accidents in 2017 for each police force.</p>
+<p>To create a scatter plot use <strong>geom_point</strong> in the ggplot2 code.</p>
+<p>Note that to draw out a colour for the points, the code specifies which colour in the list of DfT colours (see DfT colours sub-chapter 7.4) the points will be. In this case, the third colour in the list will be the colour of the points.</p>
+<p>Labels are added to the scatter plot using <strong>geom_text</strong>.</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="plots.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First get total number of accidents for each police force</span></span>
+<span id="cb227-2"><a href="plots.html#cb227-2" aria-hidden="true" tabindex="-1"></a>accident_pf <span class="ot">&lt;-</span> road_acc_data <span class="sc">%&gt;%</span></span>
+<span id="cb227-3"><a href="plots.html#cb227-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(Police_Force) <span class="sc">%&gt;%</span></span>
+<span id="cb227-4"><a href="plots.html#cb227-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">tally</span>()</span>
+<span id="cb227-5"><a href="plots.html#cb227-5" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by police force scatter chart</span></span>
+<span id="cb227-6"><a href="plots.html#cb227-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> accident_pf, <span class="fu">aes</span>(<span class="at">x =</span> Police_Force, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb227-7"><a href="plots.html#cb227-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb227-8"><a href="plots.html#cb227-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reported Road Accidents by Police Force&quot;</span>, </span>
+<span id="cb227-9"><a href="plots.html#cb227-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Police Force&quot;</span>, </span>
+<span id="cb227-10"><a href="plots.html#cb227-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of Accidents&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb227-11"><a href="plots.html#cb227-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">30000</span>, <span class="dv">2000</span>)) <span class="sc">+</span>     <span class="co"># set y axis to go from 0 to 30,000</span></span>
+<span id="cb227-12"><a href="plots.html#cb227-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>Police_Force), <span class="at">size=</span><span class="dv">3</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">0</span>) <span class="sc">+</span>   <span class="co"># amend hjust and vjust to change position</span></span>
+<span id="cb227-13"><a href="plots.html#cb227-13" aria-hidden="true" tabindex="-1"></a> dftplotr<span class="sc">::</span><span class="fu">theme_general_dft</span>() <span class="co">#here we specify our custom theme</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-199-1.png" alt="plot9" width="672" /></p>
+<p>The police forces are labelled with numbers, but the chart shows that police force 1 (Metropolitan Police) has the highest number of road accidents in 2017.</p>
+</div>
+<div id="horizontal-bar-chart" class="section level3 hasAnchor" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> Horizontal bar chart<a href="plots.html#horizontal-bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The scatter plot showing the number of accidents by police force could also be shown in a horizontal bar chart.</p>
+<p>Use <strong>geom_col</strong> plus <strong>coord_flip</strong> to create a horizontal bar chart.</p>
+<p>For the horizontal bar chart, bars will be shown in descending order, with the police force with the largest value at the top of the chart. This is done by ensuring the data is arranged by the number of accidents (“n”).</p>
+<p>As this is categorical data, police force is made a factor, with each police force made a separate level.</p>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="plots.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Arrange police force data by size</span></span>
+<span id="cb228-2"><a href="plots.html#cb228-2" aria-hidden="true" tabindex="-1"></a>accident_pf <span class="ot">&lt;-</span> <span class="fu">arrange</span>(accident_pf, n)</span>
+<span id="cb228-3"><a href="plots.html#cb228-3" aria-hidden="true" tabindex="-1"></a><span class="co"># take a subset for charting purposes</span></span>
+<span id="cb228-4"><a href="plots.html#cb228-4" aria-hidden="true" tabindex="-1"></a>accident_pf_small <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(accident_pf, n <span class="sc">&lt;</span> <span class="dv">600</span>)</span>
+<span id="cb228-5"><a href="plots.html#cb228-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Make police force a factor</span></span>
+<span id="cb228-6"><a href="plots.html#cb228-6" aria-hidden="true" tabindex="-1"></a>accident_pf_small<span class="sc">$</span>Police_Force <span class="ot">&lt;-</span> </span>
+<span id="cb228-7"><a href="plots.html#cb228-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">factor</span>(accident_pf_small<span class="sc">$</span>Police_Force, <span class="at">levels =</span> accident_pf_small<span class="sc">$</span>Police_Force)</span>
+<span id="cb228-8"><a href="plots.html#cb228-8" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by police force scatter chart</span></span>
+<span id="cb228-9"><a href="plots.html#cb228-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> accident_pf_small, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Police_Force, <span class="at">y =</span> n, <span class="at">fill =</span> Police_Force)) <span class="sc">+</span></span>
+<span id="cb228-10"><a href="plots.html#cb228-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb228-11"><a href="plots.html#cb228-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>         <span class="co"># make bar chart horizontal</span></span>
+<span id="cb228-12"><a href="plots.html#cb228-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reported Road Accidents by Police Force, 2017&quot;</span>, </span>
+<span id="cb228-13"><a href="plots.html#cb228-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Police Force&quot;</span>, </span>
+<span id="cb228-14"><a href="plots.html#cb228-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Number of Accidents&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb228-15"><a href="plots.html#cb228-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">500</span>, <span class="dv">50</span>)) <span class="sc">+</span> <span class="co"># set y axis running from 0 to 500</span></span>
+<span id="cb228-16"><a href="plots.html#cb228-16" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">scale_fill_dft</span>(<span class="at">gradient =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb228-17"><a href="plots.html#cb228-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span>  <span class="co">#here we specify our custom theme</span></span>
+<span id="cb228-18"><a href="plots.html#cb228-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="co"># command to remove legends</span></span>
+<span id="cb228-19"><a href="plots.html#cb228-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Returning a gradient with 7 shades. To change the number of shades returned, use the n parameter</span></span>
+<span id="cb228-20"><a href="plots.html#cb228-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in extract_gradient(palette = palette, ...): Gradient palettes do not</span></span>
+<span id="cb228-21"><a href="plots.html#cb228-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; meet accessibility requirements for publishing</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-200-1.png" alt="plot10" width="672" /></p>
+<p>The chart shows that police force 98 (Dumfries and Galloway) recorded the lowest number of accidents in 2017.</p>
+</div>
+<div id="stacked-bar-chart" class="section level3 hasAnchor" number="8.4.3">
+<h3><span class="header-section-number">8.4.3</span> Stacked bar chart<a href="plots.html#stacked-bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This example will create a stacked bar chart showing the percentage of road accidents in each accident severity category, for each year.</p>
+<p>Creating a <strong>percentage stacked bar</strong> requires using the <strong>geom_bar</strong> command in ggplot2 and setting the position to <strong>fill</strong>.</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="plots.html#cb229-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb229-2"><a href="plots.html#cb229-2" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by police force scatter chart</span></span>
+<span id="cb229-3"><a href="plots.html#cb229-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="fu">aes</span>(<span class="at">fill =</span> name, <span class="at">y=</span>total, <span class="at">x=</span> accident_year)) <span class="sc">+</span></span>
+<span id="cb229-4"><a href="plots.html#cb229-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&quot;fill&quot;</span>, <span class="at">stat=</span><span class="st">&quot;identity&quot;</span>) <span class="sc">+</span>  <span class="co"># geom bar with position fill makes stacked bar</span></span>
+<span id="cb229-5"><a href="plots.html#cb229-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Percentage Accident Severity, by Year&quot;</span>, </span>
+<span id="cb229-6"><a href="plots.html#cb229-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Accident Year&quot;</span>, </span>
+<span id="cb229-7"><a href="plots.html#cb229-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;% Accident Severity&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb229-8"><a href="plots.html#cb229-8" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">theme_bar_dft</span>()<span class="sc">+</span></span>
+<span id="cb229-9"><a href="plots.html#cb229-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent)</span>
+<span id="cb229-10"><a href="plots.html#cb229-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This palette meets WCAG 2.0 AAA accessibility guidelines. This is the highest standard of accessibility.</span></span>
+<span id="cb229-11"><a href="plots.html#cb229-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Scale for y is already present.</span></span>
+<span id="cb229-12"><a href="plots.html#cb229-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Adding another scale for y, which will replace the existing scale.</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-201-1.png" alt="plot11" width="672" /></p>
+<p>If you want the stacked bar chart to show numbers instead of percentages use <strong>position = “stack”</strong> instead.</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="plots.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the DfT colours and the DfT theme for the accidents by police force scatter chart</span></span>
+<span id="cb230-2"><a href="plots.html#cb230-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="fu">aes</span>(<span class="at">fill =</span> name, <span class="at">y=</span>total, <span class="at">x=</span> accident_year)) <span class="sc">+</span></span>
+<span id="cb230-3"><a href="plots.html#cb230-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">&quot;stack&quot;</span>, <span class="at">stat=</span><span class="st">&quot;identity&quot;</span>) <span class="sc">+</span></span>
+<span id="cb230-4"><a href="plots.html#cb230-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of accidents by severity, by Year&quot;</span>, </span>
+<span id="cb230-5"><a href="plots.html#cb230-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Accident Year&quot;</span>, </span>
+<span id="cb230-6"><a href="plots.html#cb230-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;% Accident Severity&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb230-7"><a href="plots.html#cb230-7" aria-hidden="true" tabindex="-1"></a>  dftplotr<span class="sc">::</span><span class="fu">theme_bar_dft</span>()</span>
+<span id="cb230-8"><a href="plots.html#cb230-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This palette meets WCAG 2.0 AAA accessibility guidelines. This is the highest standard of accessibility.</span></span></code></pre></div>
+<p><img src="bookdown-demo_files/figure-html/unnamed-chunk-202-1.png" alt="plot12" width="672" /></p>
+</div>
+</div>
+<div id="interactive-charts-with-plotly" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Interactive charts with {plotly}<a href="plots.html#interactive-charts-with-plotly" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>{plotly} is a graphing library which makes interactive html graphs. It uses the open source JavaScript graphing library plotly.js. It is great for building dashboards or allowing the user to interact with the data themselves. Plotly charts have a high level of interactivity out of the box, and allow you to zoom in, select different series of interest, and export .png images of the customised charts.</p>
+<p>{plotly} is not useful for official stats publications as they cannot be uploaded to the gov.uk platform. They are however really useful for other applications; they can be easily built into HTML outputs from Rmarkdown, including reports, slidepacks and static web pages. They can also be used for exploratory analysis and QA notes.</p>
+<p>It can be used in two ways - either creating charts directly in plotly (which is difficult as the syntax is very different to ggplot2), or by using the <code>ggplotly()</code> wrapper in combination with {ggplot2}.</p>
+<div id="plotly-with-ggplot2" class="section level3 hasAnchor" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> {plotly} with {ggplot2}<a href="plots.html#plotly-with-ggplot2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Taking our previous accidents by severity plot, we can simply assign this to an object and use the ggplotly() function to make it interactive.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="plots.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb231-2"><a href="plots.html#cb231-2" aria-hidden="true" tabindex="-1"></a>road_acc_chart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> road_acc, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> accident_year, <span class="at">y =</span> total, <span class="at">colour =</span> name)) <span class="sc">+</span></span>
+<span id="cb231-3"><a href="plots.html#cb231-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb231-4"><a href="plots.html#cb231-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Accidents by severity, 2005 to 2017&quot;</span>, </span>
+<span id="cb231-5"><a href="plots.html#cb231-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Accident Year&quot;</span>, </span>
+<span id="cb231-6"><a href="plots.html#cb231-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>)<span class="sc">+</span></span>
+<span id="cb231-7"><a href="plots.html#cb231-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">2005</span>, <span class="dv">2017</span>, <span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb231-8"><a href="plots.html#cb231-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb231-9"><a href="plots.html#cb231-9" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(road_acc_chart)</span></code></pre></div>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3963d9213d0d29207444" style="width:672px;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-3963d9213d0d29207444">{"x":{"data":[{"x":[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[2913,2926,2714,2341,2057,1731,1797,1637,1608,1658,1618,1695,1676],"text":["accident_year: 2005<br />total:   2913<br />name: Fatal","accident_year: 2006<br />total:   2926<br />name: Fatal","accident_year: 2007<br />total:   2714<br />name: Fatal","accident_year: 2008<br />total:   2341<br />name: Fatal","accident_year: 2009<br />total:   2057<br />name: Fatal","accident_year: 2010<br />total:   1731<br />name: Fatal","accident_year: 2011<br />total:   1797<br />name: Fatal","accident_year: 2012<br />total:   1637<br />name: Fatal","accident_year: 2013<br />total:   1608<br />name: Fatal","accident_year: 2014<br />total:   1658<br />name: Fatal","accident_year: 2015<br />total:   1618<br />name: Fatal","accident_year: 2016<br />total:   1695<br />name: Fatal","accident_year: 2017<br />total:   1676<br />name: Fatal"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","name":"Fatal","legendgroup":"Fatal","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[25029,24946,24322,23121,21997,20440,20986,20901,19624,20676,20033,21725,22534],"text":["accident_year: 2005<br />total:  25029<br />name: Serious","accident_year: 2006<br />total:  24946<br />name: Serious","accident_year: 2007<br />total:  24322<br />name: Serious","accident_year: 2008<br />total:  23121<br />name: Serious","accident_year: 2009<br />total:  21997<br />name: Serious","accident_year: 2010<br />total:  20440<br />name: Serious","accident_year: 2011<br />total:  20986<br />name: Serious","accident_year: 2012<br />total:  20901<br />name: Serious","accident_year: 2013<br />total:  19624<br />name: Serious","accident_year: 2014<br />total:  20676<br />name: Serious","accident_year: 2015<br />total:  20033<br />name: Serious","accident_year: 2016<br />total:  21725<br />name: Serious","accident_year: 2017<br />total:  22534<br />name: Serious"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)","dash":"solid"},"hoveron":"points","name":"Serious","legendgroup":"Serious","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017],"y":[170793,161289,155079,145129,139500,132243,128691,123033,117428,123988,118435,113201,105772],"text":["accident_year: 2005<br />total: 170793<br />name: Slight","accident_year: 2006<br />total: 161289<br />name: Slight","accident_year: 2007<br />total: 155079<br />name: Slight","accident_year: 2008<br />total: 145129<br />name: Slight","accident_year: 2009<br />total: 139500<br />name: Slight","accident_year: 2010<br />total: 132243<br />name: Slight","accident_year: 2011<br />total: 128691<br />name: Slight","accident_year: 2012<br />total: 123033<br />name: Slight","accident_year: 2013<br />total: 117428<br />name: Slight","accident_year: 2014<br />total: 123988<br />name: Slight","accident_year: 2015<br />total: 118435<br />name: Slight","accident_year: 2016<br />total: 113201<br />name: Slight","accident_year: 2017<br />total: 105772<br />name: Slight"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)","dash":"solid"},"hoveron":"points","name":"Slight","legendgroup":"Slight","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":42.0578386605784,"r":7.30593607305936,"b":38.4779299847793,"l":46.027397260274},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Accidents by severity, 2005 to 2017","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2004.4,2017.6],"tickmode":"array","ticktext":["2005","2007","2009","2011","2013","2015","2017"],"tickvals":[2005,2007,2009,2011,2013,2015,2017],"categoryorder":"array","categoryarray":["2005","2007","2009","2011","2013","2015","2017"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Accident Year","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-6851.25,179252.25],"tickmode":"array","ticktext":["0","50000","100000","150000"],"tickvals":[0,50000,100000,150000],"categoryorder":"array","categoryarray":["0","50000","100000","150000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"name","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"21625b2a4588":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"21625b2a4588","visdat":{"21625b2a4588":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>You can find more information about using {plotly} in R from the following websites:</p>
+<ul>
+<li><p>Graphing library with example code: <a href="https://plot.ly/r/">https://plot.ly/r/</a></p></li>
+<li><p>Cheat sheet: <a href="https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf">https://images.plot.ly/plotly-documentation/images/r_cheat_sheet.pdf</a></p></li>
+<li><p>E-book: <a href="https://plotly-r.com/index.html">https://plotly-r.com/index.html</a></p></li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="factors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="best-practice.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

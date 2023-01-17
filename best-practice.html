@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Writing good quality code | DfT R Cookbook</title>
+  <meta name="description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Writing good quality code | DfT R Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="github-repo" content="departmentfortransport/R-cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Writing good quality code | DfT R Cookbook" />
+  
+  <meta name="twitter:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  
+
+<meta name="author" content="Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden" />
+
+
+<meta name="date" content="2023-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="plots.html"/>
+<link rel="next" href="RAP.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/d3-3.5.6/d3.min.js"></script>
+<link href="libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet" />
+<script src="libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="libs/highlight-6.2.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlight-6.2.0/highlight.js"></script>
+<script src="libs/profvis-binding-0.3.7/profvis.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html"><i class="fa fa-check"></i><b>1</b> Why do we need <em>another</em> book?</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#coding-standards"><i class="fa fa-check"></i><b>1.1</b> Coding standards</a></li>
+<li class="chapter" data-level="1.2" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#data"><i class="fa fa-check"></i><b>1.2</b> Data</a></li>
+<li class="chapter" data-level="1.3" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#work-in-progress"><i class="fa fa-check"></i><b>1.3</b> Work in progress</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>2</b> The R basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basics.html"><a href="basics.html#r-family"><i class="fa fa-check"></i><b>2.1</b> R family</a></li>
+<li class="chapter" data-level="2.2" data-path="basics.html"><a href="basics.html#dft-rrstudio---subject-to-change"><i class="fa fa-check"></i><b>2.2</b> DfT R/RStudio - subject to change</a></li>
+<li class="chapter" data-level="2.3" data-path="basics.html"><a href="basics.html#rstudio-ide"><i class="fa fa-check"></i><b>2.3</b> RStudio IDE</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="basics.html"><a href="basics.html#left-bottom-left-if-you-have-scripts-open"><i class="fa fa-check"></i><b>2.3.1</b> Left (bottom left if you have scripts open)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="basics.html"><a href="basics.html#top-right-environment-and-other-tabs"><i class="fa fa-check"></i><b>2.3.2</b> Top right; <strong>Environment</strong>, and other tabs</a></li>
+<li class="chapter" data-level="2.3.3" data-path="basics.html"><a href="basics.html#bottom-right"><i class="fa fa-check"></i><b>2.3.3</b> Bottom right</a></li>
+<li class="chapter" data-level="2.3.4" data-path="basics.html"><a href="basics.html#other-handy-buttons-in-rstudio-ide"><i class="fa fa-check"></i><b>2.3.4</b> Other handy buttons in RStudio IDE</a></li>
+<li class="chapter" data-level="2.3.5" data-path="basics.html"><a href="basics.html#rstudio-menu-bar-a-few-pointers"><i class="fa fa-check"></i><b>2.3.5</b> RStudio menu bar a few pointers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="basics.html"><a href="basics.html#projects"><i class="fa fa-check"></i><b>2.4</b> Projects</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="basics.html"><a href="basics.html#folders"><i class="fa fa-check"></i><b>2.4.1</b> Folders</a></li>
+<li class="chapter" data-level="2.4.2" data-path="basics.html"><a href="basics.html#sessioninfo"><i class="fa fa-check"></i><b>2.4.2</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="basics.html"><a href="basics.html#r-memory"><i class="fa fa-check"></i><b>2.5</b> R memory</a></li>
+<li class="chapter" data-level="2.6" data-path="basics.html"><a href="basics.html#a-note-on-rounding"><i class="fa fa-check"></i><b>2.6</b> A note on rounding</a></li>
+<li class="chapter" data-level="2.7" data-path="basics.html"><a href="basics.html#assignment-operators---vs"><i class="fa fa-check"></i><b>2.7</b> Assignment operators <code>&lt;-</code> vs <code>=</code></a></li>
+<li class="chapter" data-level="2.8" data-path="basics.html"><a href="basics.html#arithmetic-operators"><i class="fa fa-check"></i><b>2.8</b> Arithmetic operators</a></li>
+<li class="chapter" data-level="2.9" data-path="basics.html"><a href="basics.html#relational-operators"><i class="fa fa-check"></i><b>2.9</b> Relational operators</a></li>
+<li class="chapter" data-level="2.10" data-path="basics.html"><a href="basics.html#logical-operators"><i class="fa fa-check"></i><b>2.10</b> Logical operators</a></li>
+<li class="chapter" data-level="2.11" data-path="basics.html"><a href="basics.html#vectors"><i class="fa fa-check"></i><b>2.11</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="basics.html"><a href="basics.html#vector-types"><i class="fa fa-check"></i><b>2.11.1</b> Types</a></li>
+<li class="chapter" data-level="2.11.2" data-path="basics.html"><a href="basics.html#conversion-between-atomic-vector-types"><i class="fa fa-check"></i><b>2.11.2</b> Conversion between atomic vector types</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="packages.html"><a href="packages.html#what-are-packages"><i class="fa fa-check"></i><b>3.1</b> What are packages?</a></li>
+<li class="chapter" data-level="3.2" data-path="packages.html"><a href="packages.html#best-practice-in-using-packages"><i class="fa fa-check"></i><b>3.2</b> Best practice in using packages</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="packages.html"><a href="packages.html#calling-packages"><i class="fa fa-check"></i><b>3.2.1</b> Calling packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="packages.html"><a href="packages.html#core-package-usage"><i class="fa fa-check"></i><b>3.2.2</b> Core package usage</a></li>
+<li class="chapter" data-level="3.2.3" data-path="packages.html"><a href="packages.html#using-github-packages"><i class="fa fa-check"></i><b>3.2.3</b> Using Github packages</a></li>
+<li class="chapter" data-level="3.2.4" data-path="packages.html"><a href="packages.html#using-packages-instead-of-stand-alone-functions"><i class="fa fa-check"></i><b>3.2.4</b> Using packages instead of stand-alone functions</a></li>
+<li class="chapter" data-level="3.2.5" data-path="packages.html"><a href="packages.html#heavy-dependency-packages"><i class="fa fa-check"></i><b>3.2.5</b> Heavy dependency packages</a></li>
+<li class="chapter" data-level="3.2.6" data-path="packages.html"><a href="packages.html#specifying-packages-when-using-functions"><i class="fa fa-check"></i><b>3.2.6</b> Specifying packages when using functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="packages.html"><a href="packages.html#recommended-packages"><i class="fa fa-check"></i><b>3.3</b> Recommended packages</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="packages.html"><a href="packages.html#tidyverse"><i class="fa fa-check"></i><b>3.3.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.3.2" data-path="packages.html"><a href="packages.html#non-tidyverse-packages"><i class="fa fa-check"></i><b>3.3.2</b> Non-tidyverse packages</a></li>
+<li class="chapter" data-level="3.3.3" data-path="packages.html"><a href="packages.html#dft-specific-packages"><i class="fa fa-check"></i><b>3.3.3</b> DfT-specific packages</a></li>
+<li class="chapter" data-level="3.3.4" data-path="packages.html"><a href="packages.html#specialist-packages"><i class="fa fa-check"></i><b>3.3.4</b> Specialist packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="packages.html"><a href="packages.html#package-management"><i class="fa fa-check"></i><b>3.4</b> Package management</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>4</b> Data Importing/Exporting and interaction with other programmes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-import.html"><a href="data-import.html#libraries"><i class="fa fa-check"></i><b>4.1</b> Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-import.html"><a href="data-import.html#navigating-folders"><i class="fa fa-check"></i><b>4.2</b> Navigating folders</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-import.html"><a href="data-import.html#down"><i class="fa fa-check"></i><b>4.2.1</b> Down</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-import.html"><a href="data-import.html#up"><i class="fa fa-check"></i><b>4.2.2</b> Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-import.html"><a href="data-import.html#rds"><i class="fa fa-check"></i><b>4.3</b> .rds</a></li>
+<li class="chapter" data-level="4.4" data-path="data-import.html"><a href="data-import.html#csv"><i class="fa fa-check"></i><b>4.4</b> .csv</a></li>
+<li class="chapter" data-level="4.5" data-path="data-import.html"><a href="data-import.html#xlsx-and-.xls"><i class="fa fa-check"></i><b>4.5</b> .xlsx and .xls</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="data-import.html"><a href="data-import.html#single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.1</b> Single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.2" data-path="data-import.html"><a href="data-import.html#single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.2</b> Single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.3" data-path="data-import.html"><a href="data-import.html#many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.3</b> Many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.4" data-path="data-import.html"><a href="data-import.html#many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.4</b> Many worksheets - many workbooks</a></li>
+<li class="chapter" data-level="4.5.5" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.5</b> Non-rectangular data - single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.6" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.6</b> Non-rectangular data - single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.7" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.7</b> Non-rectangular data - many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.8" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.8</b> Non-rectangular data - many worksheets - many workbooks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="data-import.html"><a href="data-import.html#exporting-to-.xlsx"><i class="fa fa-check"></i><b>4.6</b> Exporting to .xlsx</a></li>
+<li class="chapter" data-level="4.7" data-path="data-import.html"><a href="data-import.html#sav"><i class="fa fa-check"></i><b>4.7</b> .sav</a></li>
+<li class="chapter" data-level="4.8" data-path="data-import.html"><a href="data-import.html#sql"><i class="fa fa-check"></i><b>4.8</b> SQL</a></li>
+<li class="chapter" data-level="4.9" data-path="data-import.html"><a href="data-import.html#gcp"><i class="fa fa-check"></i><b>4.9</b> GCP</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="data-import.html"><a href="data-import.html#bigquery"><i class="fa fa-check"></i><b>4.9.1</b> BigQuery</a></li>
+<li class="chapter" data-level="4.9.2" data-path="data-import.html"><a href="data-import.html#google-cloud-storage"><i class="fa fa-check"></i><b>4.9.2</b> Google Cloud Storage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tables.html"><a href="tables.html"><i class="fa fa-check"></i><b>5</b> Table/Data Frame manipulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tables.html"><a href="tables.html#pivoting-tables"><i class="fa fa-check"></i><b>5.1</b> Pivoting tables</a></li>
+<li class="chapter" data-level="5.2" data-path="tables.html"><a href="tables.html#dropping-and-selecting-columns"><i class="fa fa-check"></i><b>5.2</b> Dropping and selecting columns</a></li>
+<li class="chapter" data-level="5.3" data-path="tables.html"><a href="tables.html#rename-variables"><i class="fa fa-check"></i><b>5.3</b> Rename variables</a></li>
+<li class="chapter" data-level="5.4" data-path="tables.html"><a href="tables.html#filtering-data"><i class="fa fa-check"></i><b>5.4</b> Filtering data</a></li>
+<li class="chapter" data-level="5.5" data-path="tables.html"><a href="tables.html#group-data"><i class="fa fa-check"></i><b>5.5</b> Group data</a></li>
+<li class="chapter" data-level="5.6" data-path="tables.html"><a href="tables.html#order-data"><i class="fa fa-check"></i><b>5.6</b> Order data</a></li>
+<li class="chapter" data-level="5.7" data-path="tables.html"><a href="tables.html#get-counts-of-data"><i class="fa fa-check"></i><b>5.7</b> Get counts of data</a></li>
+<li class="chapter" data-level="5.8" data-path="tables.html"><a href="tables.html#combine-tables"><i class="fa fa-check"></i><b>5.8</b> Combine tables</a></li>
+<li class="chapter" data-level="5.9" data-path="tables.html"><a href="tables.html#joining-tables"><i class="fa fa-check"></i><b>5.9</b> Joining tables</a></li>
+<li class="chapter" data-level="5.10" data-path="tables.html"><a href="tables.html#select-specific-columns-in-a-join"><i class="fa fa-check"></i><b>5.10</b> Select specific columns in a join</a></li>
+<li class="chapter" data-level="5.11" data-path="tables.html"><a href="tables.html#sum-rows-or-columns"><i class="fa fa-check"></i><b>5.11</b> Sum rows or columns</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="tables.html"><a href="tables.html#sum-rows"><i class="fa fa-check"></i><b>5.11.1</b> Sum rows</a></li>
+<li class="chapter" data-level="5.11.2" data-path="tables.html"><a href="tables.html#sum-columns"><i class="fa fa-check"></i><b>5.11.2</b> Sum columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="tables.html"><a href="tables.html#replace-nas-or-other-values"><i class="fa fa-check"></i><b>5.12</b> Replace NAs or other values</a></li>
+<li class="chapter" data-level="5.13" data-path="tables.html"><a href="tables.html#reordering-rowscolumns"><i class="fa fa-check"></i><b>5.13</b> Reordering rows/columns</a>
+<ul>
+<li class="chapter" data-level="5.13.1" data-path="tables.html"><a href="tables.html#reordering-rows"><i class="fa fa-check"></i><b>5.13.1</b> Reordering rows</a></li>
+<li class="chapter" data-level="5.13.2" data-path="tables.html"><a href="tables.html#reordering-columns"><i class="fa fa-check"></i><b>5.13.2</b> Reordering columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.14" data-path="tables.html"><a href="tables.html#creating-new-variables"><i class="fa fa-check"></i><b>5.14</b> Creating new variables</a></li>
+<li class="chapter" data-level="5.15" data-path="tables.html"><a href="tables.html#summarising-data"><i class="fa fa-check"></i><b>5.15</b> Summarising data</a></li>
+<li class="chapter" data-level="5.16" data-path="tables.html"><a href="tables.html#look-up-tables"><i class="fa fa-check"></i><b>5.16</b> Look up tables</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dates-times.html"><a href="dates-times.html"><i class="fa fa-check"></i><b>6</b> Working with dates and times</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dates-times.html"><a href="dates-times.html#working-with-dates"><i class="fa fa-check"></i><b>6.1</b> Working with dates</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date"><i class="fa fa-check"></i><b>6.1.1</b> Converting a character to a date</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dates-times.html"><a href="dates-times.html#get-year-from-date"><i class="fa fa-check"></i><b>6.1.2</b> Get year from date</a></li>
+<li class="chapter" data-level="6.1.3" data-path="dates-times.html"><a href="dates-times.html#get-month-from-date"><i class="fa fa-check"></i><b>6.1.3</b> Get month from date</a></li>
+<li class="chapter" data-level="6.1.4" data-path="dates-times.html"><a href="dates-times.html#get-day-from-date"><i class="fa fa-check"></i><b>6.1.4</b> Get day from date</a></li>
+<li class="chapter" data-level="6.1.5" data-path="dates-times.html"><a href="dates-times.html#get-weekday-from-date"><i class="fa fa-check"></i><b>6.1.5</b> Get weekday from date</a></li>
+<li class="chapter" data-level="6.1.6" data-path="dates-times.html"><a href="dates-times.html#get-quarter-from-date"><i class="fa fa-check"></i><b>6.1.6</b> Get quarter from date</a></li>
+<li class="chapter" data-level="6.1.7" data-path="dates-times.html"><a href="dates-times.html#find-difference-between-two-dates"><i class="fa fa-check"></i><b>6.1.7</b> Find difference between two dates</a></li>
+<li class="chapter" data-level="6.1.8" data-path="dates-times.html"><a href="dates-times.html#convert-month-integer-to-character"><i class="fa fa-check"></i><b>6.1.8</b> Convert month (integer to character)</a></li>
+<li class="chapter" data-level="6.1.9" data-path="dates-times.html"><a href="dates-times.html#convert-month-character-to-integer"><i class="fa fa-check"></i><b>6.1.9</b> Convert month (character to integer)</a></li>
+<li class="chapter" data-level="6.1.10" data-path="dates-times.html"><a href="dates-times.html#merge-separate-date-information-into-a-date"><i class="fa fa-check"></i><b>6.1.10</b> Merge separate date information into a date</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dates-times.html"><a href="dates-times.html#working-with-date-times"><i class="fa fa-check"></i><b>6.2</b> Working with date-times</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date-time"><i class="fa fa-check"></i><b>6.2.1</b> Converting a character to a date-time</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dates-times.html"><a href="dates-times.html#extract-date-from-date-time-variable"><i class="fa fa-check"></i><b>6.2.2</b> Extract date from date time variable</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dates-times.html"><a href="dates-times.html#convert-character-to-hms-time-variable"><i class="fa fa-check"></i><b>6.2.3</b> Convert character to hms (time) variable</a></li>
+<li class="chapter" data-level="6.2.4" data-path="dates-times.html"><a href="dates-times.html#extract-hour-from-time"><i class="fa fa-check"></i><b>6.2.4</b> Extract hour from time</a></li>
+<li class="chapter" data-level="6.2.5" data-path="dates-times.html"><a href="dates-times.html#extract-minute-from-time"><i class="fa fa-check"></i><b>6.2.5</b> Extract minute from time</a></li>
+<li class="chapter" data-level="6.2.6" data-path="dates-times.html"><a href="dates-times.html#extract-second-from-time"><i class="fa fa-check"></i><b>6.2.6</b> Extract second from time</a></li>
+<li class="chapter" data-level="6.2.7" data-path="dates-times.html"><a href="dates-times.html#merge-separate-time-information-into-one-variable"><i class="fa fa-check"></i><b>6.2.7</b> Merge separate time information into one variable</a></li>
+<li class="chapter" data-level="6.2.8" data-path="dates-times.html"><a href="dates-times.html#find-the-difference-between-two-times"><i class="fa fa-check"></i><b>6.2.8</b> find the difference between two times</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>7</b> Working with factors</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factors.html"><a href="factors.html#common-uses"><i class="fa fa-check"></i><b>7.1</b> Common uses</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="factors.html"><a href="factors.html#tabulation-of-data"><i class="fa fa-check"></i><b>7.1.1</b> Tabulation of data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="factors.html"><a href="factors.html#ordering-of-data-for-output"><i class="fa fa-check"></i><b>7.1.2</b> Ordering of data for output</a></li>
+<li class="chapter" data-level="7.1.3" data-path="factors.html"><a href="factors.html#statistical-models"><i class="fa fa-check"></i><b>7.1.3</b> Statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="factors.html"><a href="factors.html#other-things-to-know-about-factors"><i class="fa fa-check"></i><b>7.2</b> Other things to know about factors</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factors.html"><a href="factors.html#renaming-factor-levels"><i class="fa fa-check"></i><b>7.2.1</b> Renaming factor levels</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factors.html"><a href="factors.html#combining-factors-does-not-result-in-a-factor"><i class="fa fa-check"></i><b>7.2.2</b> Combining factors does not result in a factor</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factors.html"><a href="factors.html#numeric-vectors-that-have-been-read-as-factors"><i class="fa fa-check"></i><b>7.2.3</b> Numeric vectors that have been read as factors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factors.html"><a href="factors.html#helpful-packages"><i class="fa fa-check"></i><b>7.3</b> Helpful packages</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="plots.html"><a href="plots.html"><i class="fa fa-check"></i><b>8</b> Plotting and Data Visualisations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="plots.html"><a href="plots.html#plotting-in-base-r"><i class="fa fa-check"></i><b>8.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="8.2" data-path="plots.html"><a href="plots.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>8.2</b> Plotting with {ggplot2}</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="plots.html"><a href="plots.html#line-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.1</b> Line charts with {ggplot2}</a></li>
+<li class="chapter" data-level="8.2.2" data-path="plots.html"><a href="plots.html#aesthetic-mappings"><i class="fa fa-check"></i><b>8.2.2</b> Aesthetic mappings</a></li>
+<li class="chapter" data-level="8.2.3" data-path="plots.html"><a href="plots.html#bar-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.3</b> Bar charts with {ggplot2}</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="plots.html"><a href="plots.html#dft-colours-and-themes-the-dftplotr-package"><i class="fa fa-check"></i><b>8.3</b> DfT colours and themes: the dftplotr package</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="plots.html"><a href="plots.html#custom-dft-theme"><i class="fa fa-check"></i><b>8.3.1</b> Custom DfT Theme</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="plots.html"><a href="plots.html#more-ggplot2-charts"><i class="fa fa-check"></i><b>8.4</b> More {ggplot2} charts</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="plots.html"><a href="plots.html#scatter-plots"><i class="fa fa-check"></i><b>8.4.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="8.4.2" data-path="plots.html"><a href="plots.html#horizontal-bar-chart"><i class="fa fa-check"></i><b>8.4.2</b> Horizontal bar chart</a></li>
+<li class="chapter" data-level="8.4.3" data-path="plots.html"><a href="plots.html#stacked-bar-chart"><i class="fa fa-check"></i><b>8.4.3</b> Stacked bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="plots.html"><a href="plots.html#interactive-charts-with-plotly"><i class="fa fa-check"></i><b>8.5</b> Interactive charts with {plotly}</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="plots.html"><a href="plots.html#plotly-with-ggplot2"><i class="fa fa-check"></i><b>8.5.1</b> {plotly} with {ggplot2}</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="best-practice.html"><a href="best-practice.html"><i class="fa fa-check"></i><b>9</b> Writing good quality code</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-practice.html"><a href="best-practice.html#best-practice-in-code"><i class="fa fa-check"></i><b>9.1</b> Best practice in code</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="best-practice.html"><a href="best-practice.html#assigning-variables"><i class="fa fa-check"></i><b>9.1.1</b> Assigning variables</a></li>
+<li class="chapter" data-level="9.1.2" data-path="best-practice.html"><a href="best-practice.html#using-package-functions"><i class="fa fa-check"></i><b>9.1.2</b> Using package functions</a></li>
+<li class="chapter" data-level="9.1.3" data-path="best-practice.html"><a href="best-practice.html#use-of-pipes"><i class="fa fa-check"></i><b>9.1.3</b> Use of pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="best-practice.html"><a href="best-practice.html#code-layout"><i class="fa fa-check"></i><b>9.2</b> Code Layout</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="best-practice.html"><a href="best-practice.html#code-spacing"><i class="fa fa-check"></i><b>9.2.1</b> Code spacing</a></li>
+<li class="chapter" data-level="9.2.2" data-path="best-practice.html"><a href="best-practice.html#code-width"><i class="fa fa-check"></i><b>9.2.2</b> Code width</a></li>
+<li class="chapter" data-level="9.2.3" data-path="best-practice.html"><a href="best-practice.html#code-length"><i class="fa fa-check"></i><b>9.2.3</b> Code length</a></li>
+<li class="chapter" data-level="9.2.4" data-path="best-practice.html"><a href="best-practice.html#linters"><i class="fa fa-check"></i><b>9.2.4</b> Linters</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="best-practice.html"><a href="best-practice.html#project-structure"><i class="fa fa-check"></i><b>9.3</b> Project structure</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="best-practice.html"><a href="best-practice.html#documentation"><i class="fa fa-check"></i><b>9.3.1</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="best-practice.html"><a href="best-practice.html#centralised-code-structure"><i class="fa fa-check"></i><b>9.3.2</b> Centralised code structure</a></li>
+<li class="chapter" data-level="9.3.3" data-path="best-practice.html"><a href="best-practice.html#data-storage"><i class="fa fa-check"></i><b>9.3.3</b> Data storage</a></li>
+<li class="chapter" data-level="9.3.4" data-path="best-practice.html"><a href="best-practice.html#project-management"><i class="fa fa-check"></i><b>9.3.4</b> Project management</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="RAP.html"><a href="RAP.html"><i class="fa fa-check"></i><b>10</b> DfT RAP guidance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="RAP.html"><a href="RAP.html#what"><i class="fa fa-check"></i><b>10.1</b> What</a></li>
+<li class="chapter" data-level="10.2" data-path="RAP.html"><a href="RAP.html#dft-rap-levels-guidance"><i class="fa fa-check"></i><b>10.2</b> DfT RAP levels guidance</a></li>
+<li class="chapter" data-level="10.3" data-path="RAP.html"><a href="RAP.html#when"><i class="fa fa-check"></i><b>10.3</b> When</a></li>
+<li class="chapter" data-level="10.4" data-path="RAP.html"><a href="RAP.html#additional-resources"><i class="fa fa-check"></i><b>10.4</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="efficiency.html"><a href="efficiency.html"><i class="fa fa-check"></i><b>11</b> Code efficiency and speed</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="efficiency.html"><a href="efficiency.html#checking-code-speed"><i class="fa fa-check"></i><b>11.1</b> Checking code speed</a></li>
+<li class="chapter" data-level="11.2" data-path="efficiency.html"><a href="efficiency.html#data-read-efficiency"><i class="fa fa-check"></i><b>11.2</b> Data read efficiency</a></li>
+<li class="chapter" data-level="11.3" data-path="efficiency.html"><a href="efficiency.html#ram-usage"><i class="fa fa-check"></i><b>11.3</b> RAM usage</a></li>
+<li class="chapter" data-level="11.4" data-path="efficiency.html"><a href="efficiency.html#package-selection"><i class="fa fa-check"></i><b>11.4</b> Package selection</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>12</b> Spatial Analysis in R</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="spatial.html"><a href="spatial.html#what-is-spatial-data"><i class="fa fa-check"></i><b>12.1</b> What is Spatial Data?</a></li>
+<li class="chapter" data-level="12.2" data-path="spatial.html"><a href="spatial.html#packages-1"><i class="fa fa-check"></i><b>12.2</b> Packages</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial.html"><a href="spatial.html#reading-in-spatial-data"><i class="fa fa-check"></i><b>12.3</b> Reading in Spatial Data</a></li>
+<li class="chapter" data-level="12.4" data-path="spatial.html"><a href="spatial.html#crs-projections"><i class="fa fa-check"></i><b>12.4</b> CRS Projections</a></li>
+<li class="chapter" data-level="12.5" data-path="spatial.html"><a href="spatial.html#manipulating-spatial-data"><i class="fa fa-check"></i><b>12.5</b> Manipulating Spatial Data</a></li>
+<li class="chapter" data-level="12.6" data-path="spatial.html"><a href="spatial.html#spatial-analysis---joins"><i class="fa fa-check"></i><b>12.6</b> Spatial Analysis - Joins</a></li>
+<li class="chapter" data-level="12.7" data-path="spatial.html"><a href="spatial.html#plotting-and-simplifying"><i class="fa fa-check"></i><b>12.7</b> Plotting and simplifying</a></li>
+<li class="chapter" data-level="12.8" data-path="spatial.html"><a href="spatial.html#mapping-spatial-data"><i class="fa fa-check"></i><b>12.8</b> Mapping Spatial Data</a></li>
+<li class="chapter" data-level="12.9" data-path="spatial.html"><a href="spatial.html#mapping-with-leaflet"><i class="fa fa-check"></i><b>12.9</b> Mapping with {leaflet}</a></li>
+<li class="chapter" data-level="12.10" data-path="spatial.html"><a href="spatial.html#other-spatial-types"><i class="fa fa-check"></i><b>12.10</b> Other Spatial Types</a></li>
+<li class="chapter" data-level="12.11" data-path="spatial.html"><a href="spatial.html#further-resources"><i class="fa fa-check"></i><b>12.11</b> Further Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>13</b> Functions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="functions.html"><a href="functions.html#user-defined-functions-udfs"><i class="fa fa-check"></i><b>13.1</b> User defined functions (UDFs)</a></li>
+<li class="chapter" data-level="13.2" data-path="functions.html"><a href="functions.html#top-tips-for-writing-functions"><i class="fa fa-check"></i><b>13.2</b> Top tips for writing functions</a></li>
+<li class="chapter" data-level="13.3" data-path="functions.html"><a href="functions.html#function-structure"><i class="fa fa-check"></i><b>13.3</b> Function structure</a></li>
+<li class="chapter" data-level="13.4" data-path="functions.html"><a href="functions.html#function-with-purrr-structure"><i class="fa fa-check"></i><b>13.4</b> Function with <code>purrr</code> structure</a></li>
+<li class="chapter" data-level="13.5" data-path="functions.html"><a href="functions.html#packages-within-dft"><i class="fa fa-check"></i><b>13.5</b> Packages within DfT</a></li>
+<li class="chapter" data-level="13.6" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>13.6</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="qa.html"><a href="qa.html"><i class="fa fa-check"></i><b>14</b> Quality assurance in code</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="qa.html"><a href="qa.html#qa-of-data"><i class="fa fa-check"></i><b>14.1</b> QA of data</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="qa.html"><a href="qa.html#adding-clear-messages-to-functions"><i class="fa fa-check"></i><b>14.1.1</b> Adding clear messages to functions</a></li>
+<li class="chapter" data-level="14.1.2" data-path="qa.html"><a href="qa.html#generating-qa-reports"><i class="fa fa-check"></i><b>14.1.2</b> Generating QA reports</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="qa.html"><a href="qa.html#qa-of-code"><i class="fa fa-check"></i><b>14.2</b> QA of code</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="qa.html"><a href="qa.html#code-commenting"><i class="fa fa-check"></i><b>14.2.1</b> Code commenting</a></li>
+<li class="chapter" data-level="14.2.2" data-path="qa.html"><a href="qa.html#code-reviews"><i class="fa fa-check"></i><b>14.2.2</b> Code reviews</a></li>
+<li class="chapter" data-level="14.2.3" data-path="qa.html"><a href="qa.html#testing-code"><i class="fa fa-check"></i><b>14.2.3</b> Testing code</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DfT R Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="best-practice" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Writing good quality code<a href="best-practice.html#best-practice" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This section provides standards for best practice in writing R code. This is one of the most important aspects of coding; it allows you to write code which is easy to use, develop or maintain, simple for other people to read and less prone to errors and bugs.</p>
+<div id="best-practice-in-code" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Best practice in code<a href="best-practice.html#best-practice-in-code" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Unlike Python, R does not have a single “best practice standard” for writing code. The below is not intended to be an exhaustive list, and merely highlights the most common and/or problematic issues that learning R coders are likely to encounter, and the best practice alternatives to them. For a full list of commonly accepted best practice, see the <a href="https://style.tidyverse.org/">Tidyverse Style Guide</a>.</p>
+<div id="assigning-variables" class="section level3 hasAnchor" number="9.1.1">
+<h3><span class="header-section-number">9.1.1</span> Assigning variables<a href="best-practice.html#assigning-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Variables can be assigned in multiple different ways in R, the most common using <code>=</code> or <code>&lt;-</code>. Good practice is to only ever use the arrow when assigning variables, leaving <code>=</code> for assigning arguments in functions only.</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="best-practice.html#cb232-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb232-2"><a href="best-practice.html#cb232-2" aria-hidden="true" tabindex="-1"></a><span class="do">##Bad; assigning using =</span></span>
+<span id="cb232-3"><a href="best-practice.html#cb232-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb232-4"><a href="best-practice.html#cb232-4" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">=</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span>
+<span id="cb232-5"><a href="best-practice.html#cb232-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb232-6"><a href="best-practice.html#cb232-6" aria-hidden="true" tabindex="-1"></a><span class="do">##Good; assigning using &lt;-, using = for function arguments only</span></span>
+<span id="cb232-7"><a href="best-practice.html#cb232-7" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb232-8"><a href="best-practice.html#cb232-8" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>You can use the RStudio shortcut <strong>alt + -</strong> to insert an arrow in your code.</p>
+<p>Assignment should only ever happen on the left (beginning) of any code, as assignment at the end is unexpected and easy to miss in code.</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="best-practice.html#cb233-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb233-2"><a href="best-practice.html#cb233-2" aria-hidden="true" tabindex="-1"></a><span class="do">##Bad; assigning at the end</span></span>
+<span id="cb233-3"><a href="best-practice.html#cb233-3" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>) <span class="ot">-&gt;</span> vector</span>
+<span id="cb233-4"><a href="best-practice.html#cb233-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb233-5"><a href="best-practice.html#cb233-5" aria-hidden="true" tabindex="-1"></a><span class="do">##Good; assigning at the start</span></span>
+<span id="cb233-6"><a href="best-practice.html#cb233-6" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+</div>
+<div id="using-package-functions" class="section level3 hasAnchor" number="9.1.2">
+<h3><span class="header-section-number">9.1.2</span> Using package functions<a href="best-practice.html#using-package-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It’s good practice to always specify the package associated with a function using the double colon notation:</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="best-practice.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>() <span class="co">#Bad</span></span>
+<span id="cb234-2"><a href="best-practice.html#cb234-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>() <span class="co">#Good</span></span>
+<span id="cb234-3"><a href="best-practice.html#cb234-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb234-4"><a href="best-practice.html#cb234-4" aria-hidden="true" tabindex="-1"></a><span class="fu">pivot_longer</span>() <span class="co">#Bad</span></span>
+<span id="cb234-5"><a href="best-practice.html#cb234-5" aria-hidden="true" tabindex="-1"></a>tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>() <span class="co">#Good</span></span></code></pre></div>
+<p>This allows a user to understand the origin of each function at a glance, makes debugging easier and also prevents package conflicts.</p>
+</div>
+<div id="use-of-pipes" class="section level3 hasAnchor" number="9.1.3">
+<h3><span class="header-section-number">9.1.3</span> Use of pipes<a href="best-practice.html#use-of-pipes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The “pipe” function <code>%&gt;%</code> is taken from the {magrittr} package and is extensively used throughout the tidyverse (and this book!). It takes the object before the pipe and applies it as the first argument in the process after the pipe. Whenever you see a pipe within code, you can therefore read it as an <em>and then</em> statement. For example, the code below can be read as “take mtcars <em>and then</em> filter on the mpg column, <em>and then</em> select the disp and cyl columns.</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="best-practice.html#cb235-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> <span class="do">##and then</span></span>
+<span id="cb235-2"><a href="best-practice.html#cb235-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> <span class="do">##and then</span></span>
+<span id="cb235-3"><a href="best-practice.html#cb235-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(disp, cyl)</span></code></pre></div>
+<p>Piped code therefore works in exactly the same way as standard nested code, but is significantly easier to read, particularly as you do multiple operations on the same dataset. Below is an example of the same operations carried out using nested code and also piped code:</p>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="best-practice.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="co">#This code is nested and difficult to read and understand</span></span>
+<span id="cb236-2"><a href="best-practice.html#cb236-2" aria-hidden="true" tabindex="-1"></a> dplyr<span class="sc">::</span><span class="fu">summarise</span>(dplyr<span class="sc">::</span><span class="fu">group_by</span>(dplyr<span class="sc">::</span><span class="fu">filter</span>(mtcars, am <span class="sc">==</span> <span class="dv">1</span>), gear, carb, vs), <span class="at">disp =</span> <span class="fu">mean</span>(disp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span>
+<span id="cb236-3"><a href="best-practice.html#cb236-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb236-4"><a href="best-practice.html#cb236-4" aria-hidden="true" tabindex="-1"></a><span class="co">#This code is piped and easy to read</span></span>
+<span id="cb236-5"><a href="best-practice.html#cb236-5" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb236-6"><a href="best-practice.html#cb236-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(am <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb236-7"><a href="best-practice.html#cb236-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(gear, carb, vs) <span class="sc">%&gt;%</span></span>
+<span id="cb236-8"><a href="best-practice.html#cb236-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">disp =</span> <span class="fu">mean</span>(disp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) </span></code></pre></div>
+<p>Piping also works on many non-tidyverse functions; for those which do not take the dataset as the first option, you will need to name the other arguments in the function, e.g:</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="best-practice.html#cb237-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb237-2"><a href="best-practice.html#cb237-2" aria-hidden="true" tabindex="-1"></a><span class="co">#In this openxlsx function, the first argument is the workbook name and the second is the data frame</span></span>
+<span id="cb237-3"><a href="best-practice.html#cb237-3" aria-hidden="true" tabindex="-1"></a><span class="co">#The data can be piped in as long as the first argument is named, meaning the piped data is passed to the second argument</span></span>
+<span id="cb237-4"><a href="best-practice.html#cb237-4" aria-hidden="true" tabindex="-1"></a>openxlsx<span class="sc">::</span><span class="fu">writeData</span>(<span class="at">wb =</span> test1) </span></code></pre></div>
+<p>The most common example of code which does not work with piping is from the {ggplot2} package. Here, ggproto objects are added to the original ggplot call using <code>+</code>, which cannot be substituted for a pipe. You can however still pipe data objects into a ggplot:</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="best-practice.html#cb238-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span></span>
+<span id="cb238-2"><a href="best-practice.html#cb238-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb238-3"><a href="best-practice.html#cb238-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(disp, cyl) <span class="sc">%&gt;%</span></span>
+<span id="cb238-4"><a href="best-practice.html#cb238-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb238-5"><a href="best-practice.html#cb238-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Data can be piped into the ggplot call</span></span>
+<span id="cb238-6"><a href="best-practice.html#cb238-6" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> disp, <span class="at">y =</span> cyl))<span class="sc">+</span></span>
+<span id="cb238-7"><a href="best-practice.html#cb238-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb238-8"><a href="best-practice.html#cb238-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Subsequent ggproto objects must be added, not piped</span></span>
+<span id="cb238-9"><a href="best-practice.html#cb238-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code></pre></div>
+</div>
+</div>
+<div id="code-layout" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Code Layout<a href="best-practice.html#code-layout" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Having a clean and consistent layout to every code makes it easy to read and understand, and simplifies the process of improving or fixing code.</p>
+<div id="code-spacing" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Code spacing<a href="best-practice.html#code-spacing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Adding line breaks and spaces into your code makes it more human readable. As a general rule, you should aim to space out code as you would normal text. Add a space either side of mathematical symbols such as <code>=</code>, <code>+</code>, or <code>-</code> and assignment arrows <code>&lt;-</code>. Add a space after commas but not before, as you would naturally.</p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="best-practice.html#cb239-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb239-2"><a href="best-practice.html#cb239-2" aria-hidden="true" tabindex="-1"></a><span class="do">##Bad; code is squished up and difficult to read</span></span>
+<span id="cb239-3"><a href="best-practice.html#cb239-3" aria-hidden="true" tabindex="-1"></a>vector<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">2</span>) </span>
+<span id="cb239-4"><a href="best-practice.html#cb239-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb239-5"><a href="best-practice.html#cb239-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Good; clearly spaced</span></span>
+<span id="cb239-6"><a href="best-practice.html#cb239-6" aria-hidden="true" tabindex="-1"></a>vector <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">1</span>, <span class="at">to =</span> <span class="dv">10</span>, <span class="at">by =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>Spacing around brackets is different to normal use:</p>
+<ul>
+<li>When round brackets <code>()</code> are used in a function call, don’t add a space between the function name and the bracket</li>
+</ul>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="best-practice.html#cb240-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span> (mtcars, mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co">#Bad</span></span>
+<span id="cb240-2"><a href="best-practice.html#cb240-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(mtcars, mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co">#Good</span></span></code></pre></div>
+<ul>
+<li>Curly brackets should start on the same line as the previous function call, and their contents should start on a new line.</li>
+</ul>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="best-practice.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Bad</span></span>
+<span id="cb241-2"><a href="best-practice.html#cb241-2" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x){x<span class="sc">+</span><span class="dv">1</span>} </span>
+<span id="cb241-3"><a href="best-practice.html#cb241-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb241-4"><a href="best-practice.html#cb241-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Good</span></span>
+<span id="cb241-5"><a href="best-practice.html#cb241-5" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(x){</span>
+<span id="cb241-6"><a href="best-practice.html#cb241-6" aria-hidden="true" tabindex="-1"></a>  x<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb241-7"><a href="best-practice.html#cb241-7" aria-hidden="true" tabindex="-1"></a>} </span></code></pre></div>
+<ul>
+<li>Spaces should never be used in colon notation (e.g. <code>:</code>, <code>::</code>)</li>
+</ul>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="best-practice.html#cb242-1" aria-hidden="true" tabindex="-1"></a>dplyr <span class="sc">::</span> <span class="fu">select</span>() <span class="co">#Bad</span></span>
+<span id="cb242-2"><a href="best-practice.html#cb242-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>() <span class="co">#Good</span></span></code></pre></div>
+</div>
+<div id="code-width" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Code width<a href="best-practice.html#code-width" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The width of each line of code on the screen has a big impact on how easy it is to read. It’s easy to miss content which goes off the end of the screen, and annoying to keep scrolling horizontally.</p>
+<p>Older style guides recommend that each line of code should be no more than 80 characters, whereas more modern guides designed for larger screens suggest 120 characters. Either way, you should ensure that your code always fits comfortably on the screen when using a laptop.</p>
+<p>Any single line of code which goes over this limit should be broken up using line breaks, and the subsequent lines should be indented (RStudio does this automatically for you).</p>
+<p>When adding line breaks to piped code, a new line should be started <em>after</em> each pipe, not before.</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="best-practice.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Bad; a very long single line of code:</span></span>
+<span id="cb243-2"><a href="best-practice.html#cb243-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(disp, cyl) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">arrange</span>(cyl)</span>
+<span id="cb243-3"><a href="best-practice.html#cb243-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-4"><a href="best-practice.html#cb243-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Good; code with line breaks after each pipe and indentation of subsequent lines</span></span>
+<span id="cb243-5"><a href="best-practice.html#cb243-5" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb243-6"><a href="best-practice.html#cb243-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(mpg <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb243-7"><a href="best-practice.html#cb243-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(disp, cyl) <span class="sc">%&gt;%</span> </span>
+<span id="cb243-8"><a href="best-practice.html#cb243-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(cyl)</span>
+<span id="cb243-9"><a href="best-practice.html#cb243-9" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<p>When adding line breaks to a single long function, it’s good practice to add one after each argument:</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="best-practice.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Bad; a very long single line of code:</span></span>
+<span id="cb244-2"><a href="best-practice.html#cb244-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(mtcars, <span class="at">mpg_grouped =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(mpg <span class="sc">&lt;=</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">&quot;Poor&quot;</span>, mpg <span class="sc">&gt;</span> <span class="dv">15</span> <span class="sc">&amp;</span> mpg <span class="sc">&lt;=</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>, mpg <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">&quot;Good&quot;</span>))</span>
+<span id="cb244-3"><a href="best-practice.html#cb244-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb244-4"><a href="best-practice.html#cb244-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Good; code with line breaks after each argument and indentation of subsequent lines</span></span>
+<span id="cb244-5"><a href="best-practice.html#cb244-5" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(mtcars, </span>
+<span id="cb244-6"><a href="best-practice.html#cb244-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">mpg_grouped =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb244-7"><a href="best-practice.html#cb244-7" aria-hidden="true" tabindex="-1"></a>                mpg <span class="sc">&lt;=</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">&quot;Poor&quot;</span>, </span>
+<span id="cb244-8"><a href="best-practice.html#cb244-8" aria-hidden="true" tabindex="-1"></a>                mpg <span class="sc">&gt;</span> <span class="dv">15</span> <span class="sc">&amp;</span> mpg <span class="sc">&lt;=</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">&quot;Average&quot;</span>, </span>
+<span id="cb244-9"><a href="best-practice.html#cb244-9" aria-hidden="true" tabindex="-1"></a>                mpg <span class="sc">&gt;</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">&quot;Good&quot;</span>)</span>
+<span id="cb244-10"><a href="best-practice.html#cb244-10" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb244-11"><a href="best-practice.html#cb244-11" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<p>RStudio comes with an inbuilt code length guide on the script window; this grey line shows you how wide 80 characters is. You can adjust this to 120 characters by going to <strong>Tools -&gt; Global Options… -&gt; Code -&gt; Display</strong>.</p>
+</div>
+<div id="code-length" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> Code length<a href="best-practice.html#code-length" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Similar to taking into account the width of your code in files, it’s also sensible to consider how long your code files are. Excessively long code files make it difficult to find what you’re looking for, and also increase the risk of merge conflicts when using Github.</p>
+<ul>
+<li>Your code should be split across multiple files as often as possible, while retaining code logic and flow.</li>
+<li>A good general rule is that each code file should perform a single clearly defined purpose.</li>
+<li>If an individual file gets over a few hundred lines of code, think about whether it would be better split into smaller sections?</li>
+<li>Individual functions shouldn’t exceed more than 1-2 screen lengths of code; if your code goes beyond that, it would likely work better as multiple utility functions.</li>
+</ul>
+<p>Splitting code across multiple files can make it more difficult to run in the correct order. You can avoid this by <em>sourcing</em> code files. The <code>source()</code> function takes the filepath of an R code file as its argument, and runs all of the code in that file, at the point you place it in your code e.g.</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="best-practice.html#cb245-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb245-2"><a href="best-practice.html#cb245-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Run a file of functions associated with my project</span></span>
+<span id="cb245-3"><a href="best-practice.html#cb245-3" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;functions.R&quot;</span>)</span>
+<span id="cb245-4"><a href="best-practice.html#cb245-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Read in and process data for the project, using these functions</span></span>
+<span id="cb245-5"><a href="best-practice.html#cb245-5" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;read_data.R&quot;</span>)</span>
+<span id="cb245-6"><a href="best-practice.html#cb245-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Produce a chart visualising the processed data</span></span>
+<span id="cb245-7"><a href="best-practice.html#cb245-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;chart_code.R&quot;</span>)</span></code></pre></div>
+<p>This allows you to maintain a logical running order of your code, while keeping code files a manageable length.</p>
+<p>You can also split code within a file into individual named sections using section indicators. To do this, write the section name as a normal comment, followed by four or more <code>#</code> or <code>-</code>. These sections can then be easily navigated between using the “jump to” menu at the bottom of the script window, and sections expanded and collapsed if required.</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="best-practice.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="do">##This is section 1 ----</span></span>
+<span id="cb246-2"><a href="best-practice.html#cb246-2" aria-hidden="true" tabindex="-1"></a>Code goes here</span>
+<span id="cb246-3"><a href="best-practice.html#cb246-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb246-4"><a href="best-practice.html#cb246-4" aria-hidden="true" tabindex="-1"></a><span class="co">#This is section 2 ####</span></span>
+<span id="cb246-5"><a href="best-practice.html#cb246-5" aria-hidden="true" tabindex="-1"></a>More code</span></code></pre></div>
+</div>
+<div id="linters" class="section level3 hasAnchor" number="9.2.4">
+<h3><span class="header-section-number">9.2.4</span> Linters<a href="best-practice.html#linters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If it seems a bit daunting to implement coding best practice, don’t panic! There are tools available, known as linters, which will check your code for you and point out the areas where you can improve.</p>
+<p>The easiest one to use in R is the {lintr} library. You can use the <code>lint()</code> and <code>lint_dir()</code> functions to check your code, with the functions returning a line-by-line breakdown of issues it has spotted in your code.</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="best-practice.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lintr)</span>
+<span id="cb247-2"><a href="best-practice.html#cb247-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb247-3"><a href="best-practice.html#cb247-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the code in a single file</span></span>
+<span id="cb247-4"><a href="best-practice.html#cb247-4" aria-hidden="true" tabindex="-1"></a>lintr<span class="sc">::</span><span class="fu">lint</span>(your_file_name)</span>
+<span id="cb247-5"><a href="best-practice.html#cb247-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb247-6"><a href="best-practice.html#cb247-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Check all the code in a whole directory</span></span>
+<span id="cb247-7"><a href="best-practice.html#cb247-7" aria-hidden="true" tabindex="-1"></a>lintr<span class="sc">::</span><span class="fu">lint_dir</span>(your_directory)</span></code></pre></div>
+</div>
+</div>
+<div id="project-structure" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Project structure<a href="best-practice.html#project-structure" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Having a consistent and logical structure across all coding projects makes it easy for others to understand how your code works, make use of documentation, and run and develop your code. A good R coding project makes use of the following:</p>
+<div id="documentation" class="section level3 hasAnchor" number="9.3.1">
+<h3><span class="header-section-number">9.3.1</span> Documentation<a href="best-practice.html#documentation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All projects should have a README file associated with them. README files are stored in the root folder of a project, and as a minimum should contain essential instructions for an experienced coder using this project for the first time. It can include far more detailed documentation of the code, processes and usage if you want.</p>
+<p>README files can either be .md (markdown) or .html files. You can write a .md file directly in Markdown, or use an RMarkdown document to generate one in either format. Check <a href="https://www.makeareadme.com/">here</a> for more advice on README content and structure.</p>
+</div>
+<div id="centralised-code-structure" class="section level3 hasAnchor" number="9.3.2">
+<h3><span class="header-section-number">9.3.2</span> Centralised code structure<a href="best-practice.html#centralised-code-structure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Running code files in the wrong order, or forgetting to run parts of code is the most likely point of failure for a project. You can ensure that code across multiple files is always run in the correct order by using the <code>source()</code> function to call all code in order. You should aim to do this from a single central file, and store all your other code files in a <em>source code</em> or <em>R</em> folder. You can also use the <code>markdown::render()</code> function to knit rmarkdown documents from this central file.</p>
+<p>See <a href="https://github.com/department-for-transport">the Department for Transport github</a> for many examples of R coding projects which run from a single central file.</p>
+</div>
+<div id="data-storage" class="section level3 hasAnchor" number="9.3.3">
+<h3><span class="header-section-number">9.3.3</span> Data storage<a href="best-practice.html#data-storage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When creating a project, give some thought to how you want to organise data used in the project, and outputs produced by it. Good practice is to have separate folders for raw data, clean data following processing, and publication-ready outputs.</p>
+<p>It is always sensible to save a hard copy (e.g. CSV) version of clean data prior to outputting in tables, charts, etc. Having this data stored centrally allows for multiple outputs to be created from the same processing code, as well as automated QA to be performed directly on the clean data.</p>
+</div>
+<div id="project-management" class="section level3 hasAnchor" number="9.3.4">
+<h3><span class="header-section-number">9.3.4</span> Project management<a href="best-practice.html#project-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Part of managing coding projects is ensuring that the code is accessible and works for everyone working on the project (or who may be working on it in future). This should be managed using both <strong>version control</strong> and <strong>package management</strong>.</p>
+<p>Version control should be carried out using a linked Github repository. This allows you to carry out development work safely, ensure people are using the correct version of code, audit and monitor changes made, and roll back code to fix bugs. Check out the Github Coffee and Coding channel for advice and support getting started with this.</p>
+<p>Package management ensures that everyone running the project has all of the necessary packages they need, and that everyone is using the same versions. Differing versions of the same package is one of the most common sources of bugs, so this is an important aspect of reproducible code. {renv} is the recommended package management approach for R, see Chapter <a href="packages.html#packages">3</a> for more details on using this.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="plots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="RAP.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

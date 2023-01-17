@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 The R basics | DfT R Cookbook</title>
+  <meta name="description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 The R basics | DfT R Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  <meta name="github-repo" content="departmentfortransport/R-cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 The R basics | DfT R Cookbook" />
+  
+  <meta name="twitter:description" content="Guidance and code examples for R usage for DfT and beyond" />
+  
+
+<meta name="author" content="Isi Avbulimen, Hannah Bougdah, Tamsin Forbes, Jack Marks, Tim Taylor, Francesca Bryden" />
+
+
+<meta name="date" content="2023-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="why-do-we-need-another-book.html"/>
+<link rel="next" href="packages.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/d3-3.5.6/d3.min.js"></script>
+<link href="libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet" />
+<script src="libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="libs/highlight-6.2.0/textmate.css" rel="stylesheet" />
+<script src="libs/highlight-6.2.0/highlight.js"></script>
+<script src="libs/profvis-binding-0.3.7/profvis.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html#section" id="toc-section"></a></li>
+<li class="chapter" data-level="1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html"><i class="fa fa-check"></i><b>1</b> Why do we need <em>another</em> book?</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#coding-standards"><i class="fa fa-check"></i><b>1.1</b> Coding standards</a></li>
+<li class="chapter" data-level="1.2" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#data"><i class="fa fa-check"></i><b>1.2</b> Data</a></li>
+<li class="chapter" data-level="1.3" data-path="why-do-we-need-another-book.html"><a href="why-do-we-need-another-book.html#work-in-progress"><i class="fa fa-check"></i><b>1.3</b> Work in progress</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>2</b> The R basics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="basics.html"><a href="basics.html#r-family"><i class="fa fa-check"></i><b>2.1</b> R family</a></li>
+<li class="chapter" data-level="2.2" data-path="basics.html"><a href="basics.html#dft-rrstudio---subject-to-change"><i class="fa fa-check"></i><b>2.2</b> DfT R/RStudio - subject to change</a></li>
+<li class="chapter" data-level="2.3" data-path="basics.html"><a href="basics.html#rstudio-ide"><i class="fa fa-check"></i><b>2.3</b> RStudio IDE</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="basics.html"><a href="basics.html#left-bottom-left-if-you-have-scripts-open"><i class="fa fa-check"></i><b>2.3.1</b> Left (bottom left if you have scripts open)</a></li>
+<li class="chapter" data-level="2.3.2" data-path="basics.html"><a href="basics.html#top-right-environment-and-other-tabs"><i class="fa fa-check"></i><b>2.3.2</b> Top right; <strong>Environment</strong>, and other tabs</a></li>
+<li class="chapter" data-level="2.3.3" data-path="basics.html"><a href="basics.html#bottom-right"><i class="fa fa-check"></i><b>2.3.3</b> Bottom right</a></li>
+<li class="chapter" data-level="2.3.4" data-path="basics.html"><a href="basics.html#other-handy-buttons-in-rstudio-ide"><i class="fa fa-check"></i><b>2.3.4</b> Other handy buttons in RStudio IDE</a></li>
+<li class="chapter" data-level="2.3.5" data-path="basics.html"><a href="basics.html#rstudio-menu-bar-a-few-pointers"><i class="fa fa-check"></i><b>2.3.5</b> RStudio menu bar a few pointers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="basics.html"><a href="basics.html#projects"><i class="fa fa-check"></i><b>2.4</b> Projects</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="basics.html"><a href="basics.html#folders"><i class="fa fa-check"></i><b>2.4.1</b> Folders</a></li>
+<li class="chapter" data-level="2.4.2" data-path="basics.html"><a href="basics.html#sessioninfo"><i class="fa fa-check"></i><b>2.4.2</b> sessionInfo()</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="basics.html"><a href="basics.html#r-memory"><i class="fa fa-check"></i><b>2.5</b> R memory</a></li>
+<li class="chapter" data-level="2.6" data-path="basics.html"><a href="basics.html#a-note-on-rounding"><i class="fa fa-check"></i><b>2.6</b> A note on rounding</a></li>
+<li class="chapter" data-level="2.7" data-path="basics.html"><a href="basics.html#assignment-operators---vs"><i class="fa fa-check"></i><b>2.7</b> Assignment operators <code>&lt;-</code> vs <code>=</code></a></li>
+<li class="chapter" data-level="2.8" data-path="basics.html"><a href="basics.html#arithmetic-operators"><i class="fa fa-check"></i><b>2.8</b> Arithmetic operators</a></li>
+<li class="chapter" data-level="2.9" data-path="basics.html"><a href="basics.html#relational-operators"><i class="fa fa-check"></i><b>2.9</b> Relational operators</a></li>
+<li class="chapter" data-level="2.10" data-path="basics.html"><a href="basics.html#logical-operators"><i class="fa fa-check"></i><b>2.10</b> Logical operators</a></li>
+<li class="chapter" data-level="2.11" data-path="basics.html"><a href="basics.html#vectors"><i class="fa fa-check"></i><b>2.11</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="basics.html"><a href="basics.html#vector-types"><i class="fa fa-check"></i><b>2.11.1</b> Types</a></li>
+<li class="chapter" data-level="2.11.2" data-path="basics.html"><a href="basics.html#conversion-between-atomic-vector-types"><i class="fa fa-check"></i><b>2.11.2</b> Conversion between atomic vector types</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>3</b> R Packages</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="packages.html"><a href="packages.html#what-are-packages"><i class="fa fa-check"></i><b>3.1</b> What are packages?</a></li>
+<li class="chapter" data-level="3.2" data-path="packages.html"><a href="packages.html#best-practice-in-using-packages"><i class="fa fa-check"></i><b>3.2</b> Best practice in using packages</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="packages.html"><a href="packages.html#calling-packages"><i class="fa fa-check"></i><b>3.2.1</b> Calling packages</a></li>
+<li class="chapter" data-level="3.2.2" data-path="packages.html"><a href="packages.html#core-package-usage"><i class="fa fa-check"></i><b>3.2.2</b> Core package usage</a></li>
+<li class="chapter" data-level="3.2.3" data-path="packages.html"><a href="packages.html#using-github-packages"><i class="fa fa-check"></i><b>3.2.3</b> Using Github packages</a></li>
+<li class="chapter" data-level="3.2.4" data-path="packages.html"><a href="packages.html#using-packages-instead-of-stand-alone-functions"><i class="fa fa-check"></i><b>3.2.4</b> Using packages instead of stand-alone functions</a></li>
+<li class="chapter" data-level="3.2.5" data-path="packages.html"><a href="packages.html#heavy-dependency-packages"><i class="fa fa-check"></i><b>3.2.5</b> Heavy dependency packages</a></li>
+<li class="chapter" data-level="3.2.6" data-path="packages.html"><a href="packages.html#specifying-packages-when-using-functions"><i class="fa fa-check"></i><b>3.2.6</b> Specifying packages when using functions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="packages.html"><a href="packages.html#recommended-packages"><i class="fa fa-check"></i><b>3.3</b> Recommended packages</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="packages.html"><a href="packages.html#tidyverse"><i class="fa fa-check"></i><b>3.3.1</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.3.2" data-path="packages.html"><a href="packages.html#non-tidyverse-packages"><i class="fa fa-check"></i><b>3.3.2</b> Non-tidyverse packages</a></li>
+<li class="chapter" data-level="3.3.3" data-path="packages.html"><a href="packages.html#dft-specific-packages"><i class="fa fa-check"></i><b>3.3.3</b> DfT-specific packages</a></li>
+<li class="chapter" data-level="3.3.4" data-path="packages.html"><a href="packages.html#specialist-packages"><i class="fa fa-check"></i><b>3.3.4</b> Specialist packages</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="packages.html"><a href="packages.html#package-management"><i class="fa fa-check"></i><b>3.4</b> Package management</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-import.html"><a href="data-import.html"><i class="fa fa-check"></i><b>4</b> Data Importing/Exporting and interaction with other programmes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-import.html"><a href="data-import.html#libraries"><i class="fa fa-check"></i><b>4.1</b> Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-import.html"><a href="data-import.html#navigating-folders"><i class="fa fa-check"></i><b>4.2</b> Navigating folders</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="data-import.html"><a href="data-import.html#down"><i class="fa fa-check"></i><b>4.2.1</b> Down</a></li>
+<li class="chapter" data-level="4.2.2" data-path="data-import.html"><a href="data-import.html#up"><i class="fa fa-check"></i><b>4.2.2</b> Up</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="data-import.html"><a href="data-import.html#rds"><i class="fa fa-check"></i><b>4.3</b> .rds</a></li>
+<li class="chapter" data-level="4.4" data-path="data-import.html"><a href="data-import.html#csv"><i class="fa fa-check"></i><b>4.4</b> .csv</a></li>
+<li class="chapter" data-level="4.5" data-path="data-import.html"><a href="data-import.html#xlsx-and-.xls"><i class="fa fa-check"></i><b>4.5</b> .xlsx and .xls</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="data-import.html"><a href="data-import.html#single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.1</b> Single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.2" data-path="data-import.html"><a href="data-import.html#single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.2</b> Single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.3" data-path="data-import.html"><a href="data-import.html#many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.3</b> Many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.4" data-path="data-import.html"><a href="data-import.html#many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.4</b> Many worksheets - many workbooks</a></li>
+<li class="chapter" data-level="4.5.5" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---single-workbook"><i class="fa fa-check"></i><b>4.5.5</b> Non-rectangular data - single worksheet - single workbook</a></li>
+<li class="chapter" data-level="4.5.6" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---single-worksheet---many-workbooks"><i class="fa fa-check"></i><b>4.5.6</b> Non-rectangular data - single worksheet - many workbooks</a></li>
+<li class="chapter" data-level="4.5.7" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---single-workbook"><i class="fa fa-check"></i><b>4.5.7</b> Non-rectangular data - many worksheets - single workbook</a></li>
+<li class="chapter" data-level="4.5.8" data-path="data-import.html"><a href="data-import.html#non-rectangular-data---many-worksheets---many-workbooks"><i class="fa fa-check"></i><b>4.5.8</b> Non-rectangular data - many worksheets - many workbooks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="data-import.html"><a href="data-import.html#exporting-to-.xlsx"><i class="fa fa-check"></i><b>4.6</b> Exporting to .xlsx</a></li>
+<li class="chapter" data-level="4.7" data-path="data-import.html"><a href="data-import.html#sav"><i class="fa fa-check"></i><b>4.7</b> .sav</a></li>
+<li class="chapter" data-level="4.8" data-path="data-import.html"><a href="data-import.html#sql"><i class="fa fa-check"></i><b>4.8</b> SQL</a></li>
+<li class="chapter" data-level="4.9" data-path="data-import.html"><a href="data-import.html#gcp"><i class="fa fa-check"></i><b>4.9</b> GCP</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="data-import.html"><a href="data-import.html#bigquery"><i class="fa fa-check"></i><b>4.9.1</b> BigQuery</a></li>
+<li class="chapter" data-level="4.9.2" data-path="data-import.html"><a href="data-import.html#google-cloud-storage"><i class="fa fa-check"></i><b>4.9.2</b> Google Cloud Storage</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="tables.html"><a href="tables.html"><i class="fa fa-check"></i><b>5</b> Table/Data Frame manipulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tables.html"><a href="tables.html#pivoting-tables"><i class="fa fa-check"></i><b>5.1</b> Pivoting tables</a></li>
+<li class="chapter" data-level="5.2" data-path="tables.html"><a href="tables.html#dropping-and-selecting-columns"><i class="fa fa-check"></i><b>5.2</b> Dropping and selecting columns</a></li>
+<li class="chapter" data-level="5.3" data-path="tables.html"><a href="tables.html#rename-variables"><i class="fa fa-check"></i><b>5.3</b> Rename variables</a></li>
+<li class="chapter" data-level="5.4" data-path="tables.html"><a href="tables.html#filtering-data"><i class="fa fa-check"></i><b>5.4</b> Filtering data</a></li>
+<li class="chapter" data-level="5.5" data-path="tables.html"><a href="tables.html#group-data"><i class="fa fa-check"></i><b>5.5</b> Group data</a></li>
+<li class="chapter" data-level="5.6" data-path="tables.html"><a href="tables.html#order-data"><i class="fa fa-check"></i><b>5.6</b> Order data</a></li>
+<li class="chapter" data-level="5.7" data-path="tables.html"><a href="tables.html#get-counts-of-data"><i class="fa fa-check"></i><b>5.7</b> Get counts of data</a></li>
+<li class="chapter" data-level="5.8" data-path="tables.html"><a href="tables.html#combine-tables"><i class="fa fa-check"></i><b>5.8</b> Combine tables</a></li>
+<li class="chapter" data-level="5.9" data-path="tables.html"><a href="tables.html#joining-tables"><i class="fa fa-check"></i><b>5.9</b> Joining tables</a></li>
+<li class="chapter" data-level="5.10" data-path="tables.html"><a href="tables.html#select-specific-columns-in-a-join"><i class="fa fa-check"></i><b>5.10</b> Select specific columns in a join</a></li>
+<li class="chapter" data-level="5.11" data-path="tables.html"><a href="tables.html#sum-rows-or-columns"><i class="fa fa-check"></i><b>5.11</b> Sum rows or columns</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="tables.html"><a href="tables.html#sum-rows"><i class="fa fa-check"></i><b>5.11.1</b> Sum rows</a></li>
+<li class="chapter" data-level="5.11.2" data-path="tables.html"><a href="tables.html#sum-columns"><i class="fa fa-check"></i><b>5.11.2</b> Sum columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="tables.html"><a href="tables.html#replace-nas-or-other-values"><i class="fa fa-check"></i><b>5.12</b> Replace NAs or other values</a></li>
+<li class="chapter" data-level="5.13" data-path="tables.html"><a href="tables.html#reordering-rowscolumns"><i class="fa fa-check"></i><b>5.13</b> Reordering rows/columns</a>
+<ul>
+<li class="chapter" data-level="5.13.1" data-path="tables.html"><a href="tables.html#reordering-rows"><i class="fa fa-check"></i><b>5.13.1</b> Reordering rows</a></li>
+<li class="chapter" data-level="5.13.2" data-path="tables.html"><a href="tables.html#reordering-columns"><i class="fa fa-check"></i><b>5.13.2</b> Reordering columns</a></li>
+</ul></li>
+<li class="chapter" data-level="5.14" data-path="tables.html"><a href="tables.html#creating-new-variables"><i class="fa fa-check"></i><b>5.14</b> Creating new variables</a></li>
+<li class="chapter" data-level="5.15" data-path="tables.html"><a href="tables.html#summarising-data"><i class="fa fa-check"></i><b>5.15</b> Summarising data</a></li>
+<li class="chapter" data-level="5.16" data-path="tables.html"><a href="tables.html#look-up-tables"><i class="fa fa-check"></i><b>5.16</b> Look up tables</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="dates-times.html"><a href="dates-times.html"><i class="fa fa-check"></i><b>6</b> Working with dates and times</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="dates-times.html"><a href="dates-times.html#working-with-dates"><i class="fa fa-check"></i><b>6.1</b> Working with dates</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date"><i class="fa fa-check"></i><b>6.1.1</b> Converting a character to a date</a></li>
+<li class="chapter" data-level="6.1.2" data-path="dates-times.html"><a href="dates-times.html#get-year-from-date"><i class="fa fa-check"></i><b>6.1.2</b> Get year from date</a></li>
+<li class="chapter" data-level="6.1.3" data-path="dates-times.html"><a href="dates-times.html#get-month-from-date"><i class="fa fa-check"></i><b>6.1.3</b> Get month from date</a></li>
+<li class="chapter" data-level="6.1.4" data-path="dates-times.html"><a href="dates-times.html#get-day-from-date"><i class="fa fa-check"></i><b>6.1.4</b> Get day from date</a></li>
+<li class="chapter" data-level="6.1.5" data-path="dates-times.html"><a href="dates-times.html#get-weekday-from-date"><i class="fa fa-check"></i><b>6.1.5</b> Get weekday from date</a></li>
+<li class="chapter" data-level="6.1.6" data-path="dates-times.html"><a href="dates-times.html#get-quarter-from-date"><i class="fa fa-check"></i><b>6.1.6</b> Get quarter from date</a></li>
+<li class="chapter" data-level="6.1.7" data-path="dates-times.html"><a href="dates-times.html#find-difference-between-two-dates"><i class="fa fa-check"></i><b>6.1.7</b> Find difference between two dates</a></li>
+<li class="chapter" data-level="6.1.8" data-path="dates-times.html"><a href="dates-times.html#convert-month-integer-to-character"><i class="fa fa-check"></i><b>6.1.8</b> Convert month (integer to character)</a></li>
+<li class="chapter" data-level="6.1.9" data-path="dates-times.html"><a href="dates-times.html#convert-month-character-to-integer"><i class="fa fa-check"></i><b>6.1.9</b> Convert month (character to integer)</a></li>
+<li class="chapter" data-level="6.1.10" data-path="dates-times.html"><a href="dates-times.html#merge-separate-date-information-into-a-date"><i class="fa fa-check"></i><b>6.1.10</b> Merge separate date information into a date</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="dates-times.html"><a href="dates-times.html#working-with-date-times"><i class="fa fa-check"></i><b>6.2</b> Working with date-times</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="dates-times.html"><a href="dates-times.html#converting-a-character-to-a-date-time"><i class="fa fa-check"></i><b>6.2.1</b> Converting a character to a date-time</a></li>
+<li class="chapter" data-level="6.2.2" data-path="dates-times.html"><a href="dates-times.html#extract-date-from-date-time-variable"><i class="fa fa-check"></i><b>6.2.2</b> Extract date from date time variable</a></li>
+<li class="chapter" data-level="6.2.3" data-path="dates-times.html"><a href="dates-times.html#convert-character-to-hms-time-variable"><i class="fa fa-check"></i><b>6.2.3</b> Convert character to hms (time) variable</a></li>
+<li class="chapter" data-level="6.2.4" data-path="dates-times.html"><a href="dates-times.html#extract-hour-from-time"><i class="fa fa-check"></i><b>6.2.4</b> Extract hour from time</a></li>
+<li class="chapter" data-level="6.2.5" data-path="dates-times.html"><a href="dates-times.html#extract-minute-from-time"><i class="fa fa-check"></i><b>6.2.5</b> Extract minute from time</a></li>
+<li class="chapter" data-level="6.2.6" data-path="dates-times.html"><a href="dates-times.html#extract-second-from-time"><i class="fa fa-check"></i><b>6.2.6</b> Extract second from time</a></li>
+<li class="chapter" data-level="6.2.7" data-path="dates-times.html"><a href="dates-times.html#merge-separate-time-information-into-one-variable"><i class="fa fa-check"></i><b>6.2.7</b> Merge separate time information into one variable</a></li>
+<li class="chapter" data-level="6.2.8" data-path="dates-times.html"><a href="dates-times.html#find-the-difference-between-two-times"><i class="fa fa-check"></i><b>6.2.8</b> find the difference between two times</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>7</b> Working with factors</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factors.html"><a href="factors.html#common-uses"><i class="fa fa-check"></i><b>7.1</b> Common uses</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="factors.html"><a href="factors.html#tabulation-of-data"><i class="fa fa-check"></i><b>7.1.1</b> Tabulation of data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="factors.html"><a href="factors.html#ordering-of-data-for-output"><i class="fa fa-check"></i><b>7.1.2</b> Ordering of data for output</a></li>
+<li class="chapter" data-level="7.1.3" data-path="factors.html"><a href="factors.html#statistical-models"><i class="fa fa-check"></i><b>7.1.3</b> Statistical models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="factors.html"><a href="factors.html#other-things-to-know-about-factors"><i class="fa fa-check"></i><b>7.2</b> Other things to know about factors</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factors.html"><a href="factors.html#renaming-factor-levels"><i class="fa fa-check"></i><b>7.2.1</b> Renaming factor levels</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factors.html"><a href="factors.html#combining-factors-does-not-result-in-a-factor"><i class="fa fa-check"></i><b>7.2.2</b> Combining factors does not result in a factor</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factors.html"><a href="factors.html#numeric-vectors-that-have-been-read-as-factors"><i class="fa fa-check"></i><b>7.2.3</b> Numeric vectors that have been read as factors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factors.html"><a href="factors.html#helpful-packages"><i class="fa fa-check"></i><b>7.3</b> Helpful packages</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="plots.html"><a href="plots.html"><i class="fa fa-check"></i><b>8</b> Plotting and Data Visualisations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="plots.html"><a href="plots.html#plotting-in-base-r"><i class="fa fa-check"></i><b>8.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="8.2" data-path="plots.html"><a href="plots.html#plotting-with-ggplot2"><i class="fa fa-check"></i><b>8.2</b> Plotting with {ggplot2}</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="plots.html"><a href="plots.html#line-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.1</b> Line charts with {ggplot2}</a></li>
+<li class="chapter" data-level="8.2.2" data-path="plots.html"><a href="plots.html#aesthetic-mappings"><i class="fa fa-check"></i><b>8.2.2</b> Aesthetic mappings</a></li>
+<li class="chapter" data-level="8.2.3" data-path="plots.html"><a href="plots.html#bar-charts-with-ggplot2"><i class="fa fa-check"></i><b>8.2.3</b> Bar charts with {ggplot2}</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="plots.html"><a href="plots.html#dft-colours-and-themes-the-dftplotr-package"><i class="fa fa-check"></i><b>8.3</b> DfT colours and themes: the dftplotr package</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="plots.html"><a href="plots.html#custom-dft-theme"><i class="fa fa-check"></i><b>8.3.1</b> Custom DfT Theme</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="plots.html"><a href="plots.html#more-ggplot2-charts"><i class="fa fa-check"></i><b>8.4</b> More {ggplot2} charts</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="plots.html"><a href="plots.html#scatter-plots"><i class="fa fa-check"></i><b>8.4.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="8.4.2" data-path="plots.html"><a href="plots.html#horizontal-bar-chart"><i class="fa fa-check"></i><b>8.4.2</b> Horizontal bar chart</a></li>
+<li class="chapter" data-level="8.4.3" data-path="plots.html"><a href="plots.html#stacked-bar-chart"><i class="fa fa-check"></i><b>8.4.3</b> Stacked bar chart</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="plots.html"><a href="plots.html#interactive-charts-with-plotly"><i class="fa fa-check"></i><b>8.5</b> Interactive charts with {plotly}</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="plots.html"><a href="plots.html#plotly-with-ggplot2"><i class="fa fa-check"></i><b>8.5.1</b> {plotly} with {ggplot2}</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="best-practice.html"><a href="best-practice.html"><i class="fa fa-check"></i><b>9</b> Writing good quality code</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="best-practice.html"><a href="best-practice.html#best-practice-in-code"><i class="fa fa-check"></i><b>9.1</b> Best practice in code</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="best-practice.html"><a href="best-practice.html#assigning-variables"><i class="fa fa-check"></i><b>9.1.1</b> Assigning variables</a></li>
+<li class="chapter" data-level="9.1.2" data-path="best-practice.html"><a href="best-practice.html#using-package-functions"><i class="fa fa-check"></i><b>9.1.2</b> Using package functions</a></li>
+<li class="chapter" data-level="9.1.3" data-path="best-practice.html"><a href="best-practice.html#use-of-pipes"><i class="fa fa-check"></i><b>9.1.3</b> Use of pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="best-practice.html"><a href="best-practice.html#code-layout"><i class="fa fa-check"></i><b>9.2</b> Code Layout</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="best-practice.html"><a href="best-practice.html#code-spacing"><i class="fa fa-check"></i><b>9.2.1</b> Code spacing</a></li>
+<li class="chapter" data-level="9.2.2" data-path="best-practice.html"><a href="best-practice.html#code-width"><i class="fa fa-check"></i><b>9.2.2</b> Code width</a></li>
+<li class="chapter" data-level="9.2.3" data-path="best-practice.html"><a href="best-practice.html#code-length"><i class="fa fa-check"></i><b>9.2.3</b> Code length</a></li>
+<li class="chapter" data-level="9.2.4" data-path="best-practice.html"><a href="best-practice.html#linters"><i class="fa fa-check"></i><b>9.2.4</b> Linters</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="best-practice.html"><a href="best-practice.html#project-structure"><i class="fa fa-check"></i><b>9.3</b> Project structure</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="best-practice.html"><a href="best-practice.html#documentation"><i class="fa fa-check"></i><b>9.3.1</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.2" data-path="best-practice.html"><a href="best-practice.html#centralised-code-structure"><i class="fa fa-check"></i><b>9.3.2</b> Centralised code structure</a></li>
+<li class="chapter" data-level="9.3.3" data-path="best-practice.html"><a href="best-practice.html#data-storage"><i class="fa fa-check"></i><b>9.3.3</b> Data storage</a></li>
+<li class="chapter" data-level="9.3.4" data-path="best-practice.html"><a href="best-practice.html#project-management"><i class="fa fa-check"></i><b>9.3.4</b> Project management</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="RAP.html"><a href="RAP.html"><i class="fa fa-check"></i><b>10</b> DfT RAP guidance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="RAP.html"><a href="RAP.html#what"><i class="fa fa-check"></i><b>10.1</b> What</a></li>
+<li class="chapter" data-level="10.2" data-path="RAP.html"><a href="RAP.html#dft-rap-levels-guidance"><i class="fa fa-check"></i><b>10.2</b> DfT RAP levels guidance</a></li>
+<li class="chapter" data-level="10.3" data-path="RAP.html"><a href="RAP.html#when"><i class="fa fa-check"></i><b>10.3</b> When</a></li>
+<li class="chapter" data-level="10.4" data-path="RAP.html"><a href="RAP.html#additional-resources"><i class="fa fa-check"></i><b>10.4</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="efficiency.html"><a href="efficiency.html"><i class="fa fa-check"></i><b>11</b> Code efficiency and speed</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="efficiency.html"><a href="efficiency.html#checking-code-speed"><i class="fa fa-check"></i><b>11.1</b> Checking code speed</a></li>
+<li class="chapter" data-level="11.2" data-path="efficiency.html"><a href="efficiency.html#data-read-efficiency"><i class="fa fa-check"></i><b>11.2</b> Data read efficiency</a></li>
+<li class="chapter" data-level="11.3" data-path="efficiency.html"><a href="efficiency.html#ram-usage"><i class="fa fa-check"></i><b>11.3</b> RAM usage</a></li>
+<li class="chapter" data-level="11.4" data-path="efficiency.html"><a href="efficiency.html#package-selection"><i class="fa fa-check"></i><b>11.4</b> Package selection</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>12</b> Spatial Analysis in R</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="spatial.html"><a href="spatial.html#what-is-spatial-data"><i class="fa fa-check"></i><b>12.1</b> What is Spatial Data?</a></li>
+<li class="chapter" data-level="12.2" data-path="spatial.html"><a href="spatial.html#packages-1"><i class="fa fa-check"></i><b>12.2</b> Packages</a></li>
+<li class="chapter" data-level="12.3" data-path="spatial.html"><a href="spatial.html#reading-in-spatial-data"><i class="fa fa-check"></i><b>12.3</b> Reading in Spatial Data</a></li>
+<li class="chapter" data-level="12.4" data-path="spatial.html"><a href="spatial.html#crs-projections"><i class="fa fa-check"></i><b>12.4</b> CRS Projections</a></li>
+<li class="chapter" data-level="12.5" data-path="spatial.html"><a href="spatial.html#manipulating-spatial-data"><i class="fa fa-check"></i><b>12.5</b> Manipulating Spatial Data</a></li>
+<li class="chapter" data-level="12.6" data-path="spatial.html"><a href="spatial.html#spatial-analysis---joins"><i class="fa fa-check"></i><b>12.6</b> Spatial Analysis - Joins</a></li>
+<li class="chapter" data-level="12.7" data-path="spatial.html"><a href="spatial.html#plotting-and-simplifying"><i class="fa fa-check"></i><b>12.7</b> Plotting and simplifying</a></li>
+<li class="chapter" data-level="12.8" data-path="spatial.html"><a href="spatial.html#mapping-spatial-data"><i class="fa fa-check"></i><b>12.8</b> Mapping Spatial Data</a></li>
+<li class="chapter" data-level="12.9" data-path="spatial.html"><a href="spatial.html#mapping-with-leaflet"><i class="fa fa-check"></i><b>12.9</b> Mapping with {leaflet}</a></li>
+<li class="chapter" data-level="12.10" data-path="spatial.html"><a href="spatial.html#other-spatial-types"><i class="fa fa-check"></i><b>12.10</b> Other Spatial Types</a></li>
+<li class="chapter" data-level="12.11" data-path="spatial.html"><a href="spatial.html#further-resources"><i class="fa fa-check"></i><b>12.11</b> Further Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>13</b> Functions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="functions.html"><a href="functions.html#user-defined-functions-udfs"><i class="fa fa-check"></i><b>13.1</b> User defined functions (UDFs)</a></li>
+<li class="chapter" data-level="13.2" data-path="functions.html"><a href="functions.html#top-tips-for-writing-functions"><i class="fa fa-check"></i><b>13.2</b> Top tips for writing functions</a></li>
+<li class="chapter" data-level="13.3" data-path="functions.html"><a href="functions.html#function-structure"><i class="fa fa-check"></i><b>13.3</b> Function structure</a></li>
+<li class="chapter" data-level="13.4" data-path="functions.html"><a href="functions.html#function-with-purrr-structure"><i class="fa fa-check"></i><b>13.4</b> Function with <code>purrr</code> structure</a></li>
+<li class="chapter" data-level="13.5" data-path="functions.html"><a href="functions.html#packages-within-dft"><i class="fa fa-check"></i><b>13.5</b> Packages within DfT</a></li>
+<li class="chapter" data-level="13.6" data-path="functions.html"><a href="functions.html#further-reading"><i class="fa fa-check"></i><b>13.6</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="qa.html"><a href="qa.html"><i class="fa fa-check"></i><b>14</b> Quality assurance in code</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="qa.html"><a href="qa.html#qa-of-data"><i class="fa fa-check"></i><b>14.1</b> QA of data</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="qa.html"><a href="qa.html#adding-clear-messages-to-functions"><i class="fa fa-check"></i><b>14.1.1</b> Adding clear messages to functions</a></li>
+<li class="chapter" data-level="14.1.2" data-path="qa.html"><a href="qa.html#generating-qa-reports"><i class="fa fa-check"></i><b>14.1.2</b> Generating QA reports</a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="qa.html"><a href="qa.html#qa-of-code"><i class="fa fa-check"></i><b>14.2</b> QA of code</a>
+<ul>
+<li class="chapter" data-level="14.2.1" data-path="qa.html"><a href="qa.html#code-commenting"><i class="fa fa-check"></i><b>14.2.1</b> Code commenting</a></li>
+<li class="chapter" data-level="14.2.2" data-path="qa.html"><a href="qa.html#code-reviews"><i class="fa fa-check"></i><b>14.2.2</b> Code reviews</a></li>
+<li class="chapter" data-level="14.2.3" data-path="qa.html"><a href="qa.html#testing-code"><i class="fa fa-check"></i><b>14.2.3</b> Testing code</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">DfT R Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="basics" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> The R basics<a href="basics.html#basics" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="r-family" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> R family<a href="basics.html#r-family" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A few of the common R relations are</p>
+<ul>
+<li>R is the programming language, born in 1997, based on S, <a href="https://en.wikipedia.org/wiki/R_(programming_language)">honest</a>.</li>
+<li>RStudio is a useful integrated development environment (IDE) that makes it cleaner to write, run and organise R code.</li>
+<li>Rproj is the file extension for an R project, essentially a working directory marker, shortens file paths, keeps everything relevant to your project together and easy to reference.</li>
+<li>packages are collections of functions written to make specific tasks easier, eg the {stringr} package contains functions to work with strings. Packages are often referred to as libraries in other programming languages.</li>
+<li>.R is the file extension for a basic R script in which anything not commented out with <code>#</code> is code that is run.</li>
+<li>.Rmd is the file extension for Rmarkdown an R package useful for producing reports. A .Rmd script is different to a .R script in that the default is text rather than code. Code is placed in code chunks - similar to how a Jupyter Notebook looks.</li>
+</ul>
+</div>
+<div id="dft-rrstudio---subject-to-change" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> DfT R/RStudio - subject to change<a href="basics.html#dft-rrstudio---subject-to-change" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Which version of R/RStudio should I use at DfT? A good question. Currently the ‘best’ version of R we have available on network is linked to RStudio version 11453. This can be accessed via the Citrix app on the Windows 10 devices, or via Citrix desktop. The local version of RStudio on the Windows 10 devices is currently unusable (user testing is ongoing to change this). There is also a 11423 version of RStudio available which uses slightly older versions of packages.</p>
+</div>
+<div id="rstudio-ide" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> RStudio IDE<a href="basics.html#rstudio-ide" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The RStudio integrated development environment has some very useful features which make writing and organising code a lot easier. It’s divided into 3 panes;</p>
+<div id="left-bottom-left-if-you-have-scripts-open" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Left (bottom left if you have scripts open)<a href="basics.html#left-bottom-left-if-you-have-scripts-open" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>this is the <strong>Console</strong> it shows you what code has been run and outputs.</li>
+</ul>
+</div>
+<div id="top-right-environment-and-other-tabs" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Top right; <strong>Environment</strong>, and other tabs<a href="basics.html#top-right-environment-and-other-tabs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Environment</strong> tab shows what objects have been created in the global environment in the current session.</li>
+<li><strong>Connections</strong> tab will show any connections you have set up this session, for example, to an SQL server.</li>
+</ul>
+</div>
+<div id="bottom-right" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Bottom right<a href="basics.html#bottom-right" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>Files</strong> tab shows what directory you are in and the files there.</li>
+<li><strong>Plots</strong> tab shows all the plot outputs created this session, you can navigate through them.</li>
+<li><strong>Packages</strong> tab shows a list of installed packages, if the box in front of the package name is checked then this package has been loaded this session.</li>
+<li><strong>Help</strong> tab can be used to search for help on a topic/package function, it also holds any output from <code>?function_name</code> help command that has been run in the console, again you can navigate through help topics using the left and right arrows.</li>
+<li><strong>Viewer</strong> tab can be used to view local web content.</li>
+</ul>
+<p>For some pictures have a look at DfE’s <strong>R Training Course</strong> <a href="https://dfe-analytical-services.github.io/r-training-course/getting-started-with-rstudio.html">getting started with rstudio</a></p>
+<p>Or Matt Dray’s <a href="https://matt-dray.github.io/beginner-r-feat-pkmn/#4_the_rstudio_interface">Beginner R Featuring Pokemon: the RStudio interface</a></p>
+</div>
+<div id="other-handy-buttons-in-rstudio-ide" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Other handy buttons in RStudio IDE<a href="basics.html#other-handy-buttons-in-rstudio-ide" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li>top left new script icon; blank page with green circle and white cross.</li>
+<li>top right project icon; 3D transparent light blue cube with R. Use this to create and open projects.</li>
+</ul>
+</div>
+<div id="rstudio-menu-bar-a-few-pointers" class="section level3 hasAnchor" number="2.3.5">
+<h3><span class="header-section-number">2.3.5</span> RStudio menu bar a few pointers<a href="basics.html#rstudio-menu-bar-a-few-pointers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><strong>View</strong> contains <strong>Zoom In</strong> <strong>Zoom Out</strong></li>
+<li><strong>Tools</strong> -&gt; <strong>Global Options</strong> contains many useful setting tabs such as <strong>Appearance</strong> where you can change the RStudio theme, and <strong>Code</strong> -&gt; <strong>Display</strong> where you can set a margin vertical guideline (default is 80 characters).</li>
+</ul>
+</div>
+</div>
+<div id="projects" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Projects<a href="basics.html#projects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Why you should work in an R project, how to set up and project happiness. See this section of <a href="https://matt-dray.github.io/beginner-r-feat-pkmn/#3_project_working">Beginner R Featuring Pokemon</a> by Matt Dray.</p>
+<div id="folders" class="section level3 hasAnchor" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Folders<a href="basics.html#folders" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When you set up a project it is good practise to include separate folders for different types of files such as</p>
+<ul>
+<li>data; for the data your R code is using</li>
+<li>output; for files creates by your code</li>
+<li>R; all your code files, eg .R, .Rmd</li>
+<li>images</li>
+</ul>
+</div>
+<div id="sessioninfo" class="section level3 hasAnchor" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> sessionInfo()<a href="basics.html#sessioninfo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Include a saved file of the sessionInfo() output, this command prints out the versions of all the packages currently loaded. This information is essential when passing on code as packages can be updated and code breaking changes made.</p>
+</div>
+</div>
+<div id="r-memory" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> R memory<a href="basics.html#r-memory" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R works in RAM, so its memory is only as good as the amount of RAM you have - however this should be sufficient for most tasks. More info in the <strong>Memory</strong> chapter of Advanced R by Hadley Wickham <a href="http://adv-r.had.co.nz/memory.html">here</a>.</p>
+</div>
+<div id="a-note-on-rounding" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> A note on rounding<a href="basics.html#a-note-on-rounding" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For rounding numerical values we have the base function <code>round(x, digits = 0)</code>. This rounds the value of the first argument to the specified number of decimal places (default 0).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="basics.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="fl">3.5</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## [1] -2  0  0  2  2  4  4</code></pre>
+<p>For example, note that 1.5 and 2.5 both round to 2, which is probably not what you were expecting, this is generally referred to as ‘round half to even’. The <code>round()</code> documentation explains all (<code>?round</code>)</p>
+<blockquote>
+<p>Note that for rounding off a 5, the IEC 60559 standard (see also ‘IEEE 754’)
+is expected to be used, <em>‘go to the even digit’</em>. Therefore <code>round(0.5)</code> is <code>0</code>
+and <code>round(-1.5)</code> is <code>-2</code>. However, this is dependent on OS services and on
+representation error (since e.g. <code>0.15</code> is not represented exactly, the
+rounding rule applies to the represented number and not to the printed number,
+and so <code>round(0.15, 1)</code> could be either <code>0.1</code> or <code>0.2</code>).</p>
+</blockquote>
+<p>To implement what we consider normal rounding we can use the {janitor} package and the function <code>round_half_up</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="basics.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="basics.html#cb8-1" aria-hidden="true" tabindex="-1"></a>janitor<span class="sc">::</span><span class="fu">round_half_up</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="fl">3.5</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## [1] -2 -1  1  2  3  4  5</code></pre>
+<p>If we do not have access to the package (or do not want to depend on the package) then we can implement^[see <a href="https://stackoverflow.com/questions/12688717/round-up-from-5/12688836#12688836">stackoverflow</a></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="basics.html#cb10-1" aria-hidden="true" tabindex="-1"></a>round_half_up_v2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">digits =</span> <span class="dv">0</span>) {</span>
+<span id="cb10-2"><a href="basics.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  posneg <span class="ot">&lt;-</span> <span class="fu">sign</span>(x)</span>
+<span id="cb10-3"><a href="basics.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">abs</span>(x) <span class="sc">*</span> <span class="dv">10</span> <span class="sc">^</span> digits</span>
+<span id="cb10-4"><a href="basics.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> z <span class="sc">+</span> <span class="fl">0.5</span></span>
+<span id="cb10-5"><a href="basics.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">trunc</span>(z)</span>
+<span id="cb10-6"><a href="basics.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> z <span class="sc">/</span> <span class="dv">10</span> <span class="sc">^</span> digits</span>
+<span id="cb10-7"><a href="basics.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  z <span class="sc">*</span> posneg</span>
+<span id="cb10-8"><a href="basics.html#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-9"><a href="basics.html#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="basics.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round_half_up_v2</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="fl">3.5</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## [1] -2 -1  1  2  3  4  5</code></pre>
+</div>
+<div id="assignment-operators---vs" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Assignment operators <code>&lt;-</code> vs <code>=</code><a href="basics.html#assignment-operators---vs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To assign or to equal? These are not always the same thing. In R to assign a value to a variable it is advised to use <code>&lt;-</code> rather than <code>=</code>. The latter is generally used for setting parameters inside functions, e.g., <code>my_string &lt;- stringr::str_match(string = "abc", pattern = "a")</code>. More on assignment operators <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/assignOps.html">here</a>.</p>
+</div>
+<div id="arithmetic-operators" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Arithmetic operators<a href="basics.html#arithmetic-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>addition</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="basics.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<ul>
+<li>subtraction</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="basics.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> <span class="sc">-</span> <span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<ul>
+<li>multiplication</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="basics.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<ul>
+<li>division</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="basics.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">/</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 1.5</code></pre>
+<ul>
+<li>exponent</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="basics.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">^</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<ul>
+<li>modulus (remainder on divsion)</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="basics.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="sc">%%</span> <span class="dv">6</span> </span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<ul>
+<li>integer division</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="basics.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">50</span> <span class="sc">%/%</span> <span class="dv">8</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+</div>
+<div id="relational-operators" class="section level2 hasAnchor" number="2.9">
+<h2><span class="header-section-number">2.9</span> Relational operators<a href="basics.html#relational-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>less than</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="basics.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fl">3.14</span> <span class="sc">&lt;</span> <span class="fl">3.142</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ul>
+<li>greater than</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="basics.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fl">3.14159</span> <span class="sc">&gt;</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ul>
+<li>less than or equal to</li>
+</ul>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="basics.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&lt;=</span> <span class="fl">3.14</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="basics.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fl">3.14</span> <span class="sc">&lt;=</span> <span class="fl">3.14</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ul>
+<li>greater than or equal to</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="basics.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;=</span> <span class="fl">3.14</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="basics.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fl">3.14</span> <span class="sc">&gt;=</span> <span class="fl">3.14</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<ul>
+<li>equal to</li>
+</ul>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="basics.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">==</span> <span class="fl">3.14159</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<ul>
+<li>not equal to</li>
+</ul>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="basics.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">!=</span> <span class="fl">3.14159</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="logical-operators" class="section level2 hasAnchor" number="2.10">
+<h2><span class="header-section-number">2.10</span> Logical operators<a href="basics.html#logical-operators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Logical operations are possible only for numeric, logical or complex types. Note that 0 (or complex version 0 + 0i) is equivalent to <code>FALSE</code>, and all other numbers (numeric or complex) are equivalent to <code>TRUE</code>.</p>
+<ul>
+<li>not <code>!</code></li>
+</ul>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="basics.html#cb42-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="dv">0</span>, <span class="cn">FALSE</span>, <span class="sc">-</span><span class="dv">4</span>)</span>
+<span id="cb42-2"><a href="basics.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span>x</span></code></pre></div>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE</code></pre>
+<ul>
+<li>element-wise and <code>&amp;</code></li>
+</ul>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="basics.html#cb44-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.14</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="dv">0</span>)</span>
+<span id="cb44-2"><a href="basics.html#cb44-2" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&amp;</span> y</span></code></pre></div>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE</code></pre>
+<ul>
+<li>first element and <code>&amp;&amp;</code></li>
+</ul>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="basics.html#cb46-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&amp;&amp;</span> y</span></code></pre></div>
+<pre><code>## Warning in x &amp;&amp; y: &#39;length(x) = 4 &gt; 1&#39; in coercion to &#39;logical(1)&#39;
+
+## Warning in x &amp;&amp; y: &#39;length(x) = 4 &gt; 1&#39; in coercion to &#39;logical(1)&#39;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<ul>
+<li>element-wise or <code>|</code></li>
+</ul>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="basics.html#cb49-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">|</span> y</span></code></pre></div>
+<pre><code>## [1]  TRUE FALSE  TRUE  TRUE</code></pre>
+<ul>
+<li>first element or <code>||</code></li>
+</ul>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="basics.html#cb51-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">FALSE</span>, <span class="dv">8</span>)</span>
+<span id="cb51-2"><a href="basics.html#cb51-2" aria-hidden="true" tabindex="-1"></a>y <span class="sc">||</span> z</span></code></pre></div>
+<pre><code>## Warning in y || z: &#39;length(x) = 4 &gt; 1&#39; in coercion to &#39;logical(1)&#39;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="vectors" class="section level2 hasAnchor" number="2.11">
+<h2><span class="header-section-number">2.11</span> Vectors<a href="basics.html#vectors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="vector-types" class="section level3 hasAnchor" number="2.11.1">
+<h3><span class="header-section-number">2.11.1</span> Types<a href="basics.html#vector-types" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are four main atomic vector types that you are likely to come across
+when using R<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>; <strong>logical</strong> (<code>TRUE</code>
+or <code>FALSE</code>), <em>double</em> (<code>3.142</code>), <em>integer</em> (<code>2L</code>) and <em>character</em> (<code>"Awesome"</code>)</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="basics.html#cb54-1" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb54-2"><a href="basics.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v1)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="basics.html#cb56-1" aria-hidden="true" tabindex="-1"></a>v1 <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb56-2"><a href="basics.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v1)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="basics.html#cb58-1" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="fl">1.5</span></span>
+<span id="cb58-2"><a href="basics.html#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v2)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="basics.html#cb60-1" aria-hidden="true" tabindex="-1"></a>v2 <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb60-2"><a href="basics.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v2)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="basics.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># integer values must be followed by an L to be stored as integers</span></span>
+<span id="cb62-2"><a href="basics.html#cb62-2" aria-hidden="true" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb62-3"><a href="basics.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v3)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="basics.html#cb64-1" aria-hidden="true" tabindex="-1"></a>v3 <span class="ot">&lt;-</span> 2L</span>
+<span id="cb64-2"><a href="basics.html#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v3)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="basics.html#cb66-1" aria-hidden="true" tabindex="-1"></a>v4 <span class="ot">&lt;-</span> <span class="st">&quot;Awesome&quot;</span></span>
+<span id="cb66-2"><a href="basics.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(v4)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>As well as the atomic vector types you will often encounter two other vector
+types; <strong>Date</strong> and <strong>factor</strong> . As well as some notes here this book also contains fuller sections on both</p>
+<ul>
+<li>Chapter 5 <a href="dates-times.html#dates-times">Working with dates and times</a></li>
+<li>Chapter 6 <a href="factors.html#factors">Working with factors</a></li>
+</ul>
+<p>Factor vectors are used to represent categorical data. They are actually integer vectors with two additional attributes, levels and class. At this stage it is not worth worrying too much about what attributes are, but is suffiecient to understand that, for factors, the levels attribute gives the possible categories, and combined with the integer values works much like a lookup table. The <code>class</code> attribute is just “factor”.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="basics.html#cb68-1" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;good&quot;</span>, <span class="st">&quot;bad&quot;</span>, <span class="st">&quot;bad&quot;</span>, <span class="st">&quot;amazing&quot;</span>))</span>
+<span id="cb68-2"><a href="basics.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(ratings)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="basics.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(ratings)</span></code></pre></div>
+<pre><code>## $levels
+## [1] &quot;amazing&quot; &quot;bad&quot;     &quot;good&quot;   
+## 
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<p>Date vectors are just vectors of class double with an additional class attribute set as “Date”.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="basics.html#cb72-1" aria-hidden="true" tabindex="-1"></a>DfT_birthday <span class="ot">&lt;-</span> lubridate<span class="sc">::</span><span class="fu">as_date</span>(<span class="st">&quot;1919-08-14&quot;</span>)</span>
+<span id="cb72-2"><a href="basics.html#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="basics.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(DfT_birthday)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="basics.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(DfT_birthday)</span></code></pre></div>
+<pre><code>## $class
+## [1] &quot;Date&quot;</code></pre>
+<p>If we remove the class using <code>unclass()</code> we can reveal the value of the double, which is the number of days since “1970-01-01”<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, since DfT’s birthday is before this date, the double is negative.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="basics.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unclass</span>(DfT_birthday)</span></code></pre></div>
+<pre><code>## [1] -18403</code></pre>
+</div>
+<div id="conversion-between-atomic-vector-types" class="section level3 hasAnchor" number="2.11.2">
+<h3><span class="header-section-number">2.11.2</span> Conversion between atomic vector types<a href="basics.html#conversion-between-atomic-vector-types" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Converting between the atomic vector types is done using the <code>as.character</code>, <code>as.integer</code>, <code>as.logical</code> and <code>as.double</code> functions.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="basics.html#cb78-1" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> <span class="fl">1.5</span></span>
+<span id="cb78-2"><a href="basics.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(value)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="basics.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(value)</span></code></pre></div>
+<pre><code>## [1] &quot;1.5&quot;</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="basics.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.logical</span>(value)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Where it is not possible to convert a value you will get a warning message</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="basics.html#cb84-1" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> <span class="st">&quot;z&quot;</span></span>
+<span id="cb84-2"><a href="basics.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(value)</span></code></pre></div>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>When combining different vector types, coercion will obey the following hierarchy: character, double, integer, logical.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="basics.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">c</span>(<span class="fl">9.9</span>, 3L, <span class="st">&quot;pop&quot;</span>, <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="basics.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">c</span>(<span class="fl">9.9</span>, 3L, <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="basics.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="fu">c</span>(3L, <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="basics.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(<span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>technically there are more, see
+<a href="https://adv-r.hadley.nz/vectors-chap.html#atomic-vectors" class="uri">https://adv-r.hadley.nz/vectors-chap.html#atomic-vectors</a><a href="basics.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>a special date known as the Unix Epoch<a href="basics.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="why-do-we-need-another-book.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="packages.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
